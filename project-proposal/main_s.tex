@@ -1,0 +1,235 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% -----------------------------------------------------
+% bvraghav-tiet-ucs503p-article.sty
+% -----------------------------------------------------
+
+% Variable: Lab Instructor
+\makeatletter \newcommand{\BvrSetLabInstructor}[1]{%
+  \gdef\Bvr@LabInstructor{#1}}
+% default
+\newcommand{\Bvr@LabInstructor}{Ms. Anushka}
+% public accessor
+\newcommand{\BvrLabInstructorValue}{\Bvr@LabInstructor}
+\makeatother
+
+% Add subtitle
+\usepackage{titling}
+% -- Set title bold
+\pretitle{\begin{center}\bfseries\fontsize{18bp}{18bp}\selectfont}
+\makeatletter
+\newcommand{\BvrSubtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip 0.5em}%
+}
+\makeatother
+
+% Hints in the section title(s)
+\newcommand{\BvrHint}[1]{%
+  {\normalfont\normalsize\itshape\hfill #1}}
+
+% -----------------------------------------------------
+
+\title{Real Estate Price Prediction and Marketplace Platform}
+
+\BvrSetLabInstructor{Ms. Anushka}
+
+\BvrSubtitle{%
+  Project Proposal for UCS503P  \\
+  Submitted to: \BvrLabInstructorValue \\ \bfseries
+  Thapar Institute of Engineering and Technology% 
+}
+
+\author{
+  Guntaas Singh%
+  \thanks{Roll No: \texttt{1024030108}}
+  \and 
+  Haneesh%
+  \thanks{Roll No: \texttt{1024030112}}
+  \and
+  Atiksh Gupta%
+  \thanks{Roll No: \texttt{102303133}}
+  \and
+  Dhruv Rajput%
+  \thanks{Roll No: \texttt{1024030538}}
+}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Higher-order goal%
+  \BvrHint{\ldots secondary framing}}
+This project aims to improve real estate market transparency by providing predictive pricing and seamless buyer-seller communication. While the topic covers various property types like commercial and entertainment zones, the immediate engineering objective is to translate efficient property transactions into a measurable, deployable software solution.
+
+\section{Time-to-value %
+\BvrHint{\ldots primary heuristic}}
+\begin{itemize}[leftmargin=0.7cm]
+    \item We will deliver meaningful increments quickly by prototyping the core user workflow and validating it with users within a short iteration window.
+    \item We will prioritize fast feedback over perfection by using weekly iterations (and targeting CI-backed automation early) to reduce release friction.
+    \item Success is defined by what can be delivered and measured in the first iteration, then improved based on user feedback.
+\end{itemize}
+
+\section{Problem Statement}
+Buyers and sellers face significant delays and uncertainty regarding property valuations and transaction coordination. Common pain points include:
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{Fragmentation:} complaints and communications are often made via multiple channels (calls, social media, paper forms), causing lost context.
+    \item \textbf{Low transparency:} buyers cannot easily verify if a property is priced fairly based on current market trends.
+    \item \textbf{Slow coordination:} buyers and sellers lack a unified, trackable workflow to negotiate and schedule site visits.
+\end{itemize}
+
+\textbf{Why this matters now (contextual relevance):} In a fast-moving real estate market, improving the communication and pricing process can noticeably reduce transaction delays and missed opportunities.
+
+\section{Proposed Solution %
+\BvrHint{\ldots Software Proposition}}
+\subsection{Overview}
+Build a \textbf{web-based} real estate marketplace system with the following components:
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{Property Listing Portal:} Users submit a property with photos, area category (e.g., commercial, entertainment), and locality details.
+    \item \textbf{Machine Learning Predictor:} Analyzes property data and outputs an estimated future price.
+    \item \textbf{Buyer Barometer:} Visual indicators using eye-catching images to highlight properties selling at favorable rates.
+    \item \textbf{Integrated Communication:} A WhatsApp-like chat for buyers and sellers to negotiate and generate site appointments.
+    \item \textbf{Payment Integration:} Secure checkout via payment apps to confirm transactions or booking fees.
+\end{itemize}
+
+\subsection{Core workflow}
+\begin{enumerate}[leftmargin=0.7cm]
+    \item Seller lists a property and the system immediately generates a price prediction.
+    \item System validates completeness and suggests possible duplicates (lightweight similarity on text/category and approximate location).
+    \item Buyer discovers the property, guided by the visual Buyer Barometer.
+    \item Buyer and seller negotiate and schedule a site visit via the built-in chat.
+    \item Buyer confirms the agreement or appointment fee using the integrated payment app.
+\end{enumerate}
+
+\subsection{Operational constraints for an educational setting}
+\begin{itemize}[leftmargin=0.7cm]
+    \item Keep the solution usable on low-to-mid range devices via responsive web design.
+    \item Focus on workflow, automation, and system correctness over building complex deep-learning models.
+    \item Design for deployability using common web hosting and managed databases.
+\end{itemize}
+
+\section{Solution Approach %
+\BvrHint{\ldots Engineering focus}}
+This is an engineering course project, so we focus on scalable administrative and workflow aspects rather than novel algorithm research.
+
+\subsection{Machine Learning pricing assistance %
+\BvrHint{\ldots predictive modeling}}
+Price prediction will be regression-based. We will implement a Multiple Linear Regression model where the predicted price ($\hat{y}$) is calculated as:
+
+$$\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_n x_n + \epsilon$$
+
+To evaluate the accuracy of these predictions against actual closing prices, we will measure the Mean Squared Error (MSE):
+
+$$MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
+
+\subsection{Web architecture %
+\BvrHint{\ldots web-based solution}}
+A typical 3-tier web architecture:
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{Frontend:} responsive UI for buyers and sellers (listings, chat interfaces, barometer dashboards).
+    \item \textbf{Backend API:} authentication, listing submission, ML prediction endpoints, WebSocket chat handling, and payment gateway logic.
+    \item \textbf{Database:} store users, property data, chat history, attachments metadata.
+\end{itemize}
+
+\subsection{CI/CD and fast delivery enabler}
+CI/CD will be used to:
+\begin{itemize}[leftmargin=0.7cm]
+    \item Automatically build and run tests on every change.
+    \item Produce repeatable deployment artifacts to staging.
+    \item Enable safe and frequent releases of incremental features.
+\end{itemize}
+
+\section{Evaluation Criterion %
+\BvrHint{\ldots measurable and attributable}}
+We define success using measurable metrics tied to the core workflow.
+
+\subsection{Primary evaluation metric}
+\textbf{Time-to-appointment:} time between a buyer's first message and a confirmed site visit in the system.
+\begin{itemize}[leftmargin=0.7cm]
+    \item Target: median time $\le$ 2 hours during pilot window.
+    \item Attribution: measured from database timestamps (first message vs. appointment confirmation by seller).
+\end{itemize}
+
+\subsection{Secondary evaluation metrics}
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{Prediction Accuracy:} keeping the ML model's MSE within a 10\% variance of actual local market prices.
+    \item \textbf{Engagement Rate:} percentage of properties utilizing the chat negotiation tool.
+    \item \textbf{Reliability:} availability of staging/production for login and submission during business hours (e.g., $\ge$ 99\% uptime in pilot).
+\end{itemize}
+
+\subsection{Pilot validation plan %
+\BvrHint{\ldots high-level}}
+\begin{itemize}[leftmargin=0.7cm]
+    \item Recruit 10--20 pilot users (citizens) and 3--5 staff roles (department simulation if real staff unavailable).
+    \item Compare metrics before/after within the iteration window by logging baseline estimates via short interviews or existing process observations.
+\end{itemize}
+
+\section{Scalability %
+\BvrHint{\ldots with foresight}}
+The proposition should scale in both theoretical and practical senses.
+
+\begin{enumerate}[leftmargin=0.7cm]
+    \item \textbf{Scalable (theoretically):} The system should support growth in number of properties and concurrent dashboard usage by:
+    \begin{itemize}[leftmargin=0.7cm]
+        \item decoupling components (frontend/backend),
+        \item enabling pagination and indexing for common queries,
+        \item using stateless API design.
+    \end{itemize}
+    
+    \item \textbf{Operationally deployable (practically):} The system should run on common web hosting:
+    \begin{itemize}[leftmargin=0.7cm]
+        \item managed database,
+        \item containerized or platform-hosted deployment,
+        \item CI/CD pipeline for staging/production.
+    \end{itemize}
+\end{enumerate}
+
+\section{Engine availability heuristic}
+A mature set of ``engines'' (tooling/services) is available to implement this as a web-based project:
+\begin{itemize}[leftmargin=0.7cm]
+    \item Web framework (e.g., Flask/Django or Node.js) for REST APIs and WebSocket communication.
+    \item Managed relational or document database (e.g., PostgreSQL or MongoDB).
+    \item ML libraries (e.g., scikit-learn) for the linear regression model.
+    \item Payment gateway API (e.g., Stripe, Razorpay) for transaction confirmations.
+    \item CI runner and staging deployment target.
+\end{itemize}
+
+\section{Project scope and deliverables %
+\BvrHint{\ldots iteration-friendly}}
+\subsection{Initial deliverable %
+\BvrHint{\ldots first iteration}}
+\begin{itemize}[leftmargin=0.7cm]
+    \item Property submission form + basic Linear Regression price output.
+    \item Buyer Barometer UI implementation on the listing page.
+    \item Basic logging and timestamps for Time-to-appointment measurement.
+    \item CI: build + backend unit tests + linting.
+    \item CD to staging with a single command or pipeline job.
+\end{itemize}
+
+\subsection{Subsequent deliverables}
+\begin{itemize}[leftmargin=0.7cm]
+    \item Real-time WhatsApp-like chat layer via WebSockets.
+    \item Payment app integration for appointment booking fees.
+    \item Admin dashboard for market metrics and active negotiations.
+\end{itemize}
+
+\section{Risks and mitigations}
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{Data privacy / consent:} minimize collected data; securely manage payment tokens.
+    \item \textbf{Model Inaccuracy:} start with a baseline Linear Regression model and update weights as more property data is collected.
+    \item \textbf{Evaluation measurement ambiguity:} instrument timestamps and define clear status transitions before development begins.
+    \item \textbf{Operational issues in pilot:} use staging early; ensure CI/CD produces repeatable deployments.
+\end{itemize}
+
+\section{Summary}
+This project proposes a deployable web platform to reduce transaction delays in the real estate market. It meets the course criteria by emphasizing time-to-value through rapid iterations, implementing CI/CD to support frequent safe releases, and using measurable evaluation criteria (especially time-to-appointment). It remains focused on engineering workflow, practical ML deployment, and scalability readiness rather than research-driven novelty.
+
+\end{document}
