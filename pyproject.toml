@@ -1,0 +1,24 @@
+[project]
+name = "real-estate-marketplace"
+version = "0.1.0"
+description = "Real Estate Price Prediction and Marketplace Platform (UCS503P Project)"
+authors = [
+    { name = "Guntaas Singh", email = "guntaas@thapar.edu" },
+    { name = "Haneesh" },
+    { name = "Atiksh Gupta" },
+    { name = "Dhruv Rajput" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "flask>=3.0.0",
+    "flask-cors>=5.0.0",
+    "scikit-learn>=1.4.0",
+    "numpy>=1.26.0",
+    "pytest>=8.0.0"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["code/backend/tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
