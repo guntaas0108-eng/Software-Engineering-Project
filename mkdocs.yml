@@ -1,0 +1,14 @@
+site_name: EstatePulse Documentation
+site_description: Real Estate Price Prediction and Marketplace Platform (UCS503P Project)
+site_author: Guntaas Singh, Haneesh, Atiksh Gupta, Dhruv Rajput
+repo_url: https://github.com/guntaas-singh/Software-Engineering-Project
+
+theme:
+  name: readthedocs
+
+nav:
+  - Home: index.md
+  - System Architecture: architecture.md
+  - Machine Learning & Buyer Barometer: ml-model.md
+  - REST API Reference: api-reference.md
+  - Course Evaluation Metrics: evaluation-metrics.md
