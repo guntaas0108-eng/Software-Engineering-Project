@@ -22,8 +22,3 @@ This directory contains the complete weekly individual software engineering jour
 - **Role:** Integration, Testing & DevOps  
 - **Coverage:** Weeks 1 to 4 (Repository & CI Setup, Sprint 2 Testing, Sprint 3 Testing, UI Integration & Regression)
 
----
-
-## 📅 Team Sprint Journals
-- [Sprint 1: Proposal & Environment Setup](sprint-1-proposal-and-setup.md)
-- [Sprint 2: Prototype Development & Testing](sprint-2-prototype-development.md)
