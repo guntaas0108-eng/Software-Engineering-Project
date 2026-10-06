@@ -4,7 +4,17 @@ This directory contains the weekly individual software engineering journals for 
 
 ---
 
-## 👥 Team Directory & Roles
+## 📄 Individual Consolidated Journals (All 4 Weeks in One File)
+
+For easy reading, printing, or evaluation submission, each member has a complete 4-week consolidated journal:
+- 📘 **[Haneesh (1024030112) — Complete Journal](Haneesh_1024030112_Journal.md)**
+- 📘 **[Guntaas Singh (1024030108) — Complete Journal](Guntaas_Singh_1024030108_Journal.md)**
+- 📘 **[Dhruv Rajput (1024030538) — Complete Journal](Dhruv_Rajput_1024030538_Journal.md)**
+- 📘 **[Atiksh (102303133) — Complete Journal](Atiksh_102303133_Journal.md)**
+
+---
+
+## 👥 Weekly Breakdown Directory
 
 ### 1. [Haneesh (1024030112)](person1-ml-dataset/index.md)
 **Role:** Machine Learning, Dataset & Authentication/CRUD  
