@@ -99,7 +99,7 @@ async function handleSendOtp(e) {
         const res = await fetch(`${API_BASE}/api/auth/send-otp`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone_number: phone })
+            body: JSON.stringify({ phone: phone })
         });
         const data = await res.json();
         if (data.success) {
@@ -124,7 +124,7 @@ async function handleVerifyOtp(e) {
         const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone_number: phone, otp, full_name: name, role })
+            body: JSON.stringify({ phone: phone, otp: otp, name: name, role: role })
         });
         const data = await res.json();
         if (data.success) {
@@ -1016,5 +1016,6 @@ window.addEventListener('load', async () => {
     await delay(800);
     bg.remove();
 });
+
 
 
