@@ -50,6 +50,42 @@ def ml_metrics():
 
 
 # -------------------------------------------------------------
+# Auth & OTP Endpoints
+# -------------------------------------------------------------
+@app.route("/api/auth/send-otp", methods=["POST"])
+def send_otp():
+    data = request.get_json() or {}
+    phone = data.get("phone")
+    if not phone:
+        return jsonify({"success": False, "error": "Phone number required"}), 400
+    
+    otp = db.generate_otp(phone)
+    # Simulate sending SMS by printing to console
+    print(f"\n{'='*40}")
+    print(f"MOCK SMS TO {phone}:")
+    print(f"Your EstatePulse OTP is: {otp}")
+    print(f"{'='*40}\n")
+    
+    return jsonify({"success": True, "message": "OTP sent successfully (Check console!)"})
+
+@app.route("/api/auth/verify-otp", methods=["POST"])
+def verify_otp():
+    data = request.get_json() or {}
+    phone = data.get("phone")
+    otp = data.get("otp")
+    name = data.get("name")
+    role = data.get("role")
+    
+    if not phone or not otp:
+        return jsonify({"success": False, "error": "Phone and OTP required"}), 400
+        
+    success, result = db.verify_otp(phone, otp, name, role)
+    if success:
+        return jsonify({"success": True, "user": result})
+    else:
+        return jsonify({"success": False, "error": result}), 400
+
+# -------------------------------------------------------------
 # Property Listing Endpoints
 # -------------------------------------------------------------
 @app.route("/api/properties", methods=["GET"])
@@ -60,6 +96,7 @@ def get_properties():
     search = request.args.get("search")
     min_price = request.args.get("min_price", type=float)
     max_price = request.args.get("max_price", type=float)
+    seller_phone = request.args.get("seller_phone")
 
     query = "SELECT * FROM properties WHERE 1=1"
     params = []
@@ -79,6 +116,9 @@ def get_properties():
     if max_price is not None:
         query += " AND price <= ?"
         params.append(max_price)
+    if seller_phone:
+        query += " AND seller_phone = ?"
+        params.append(seller_phone)
     if search:
         query += " AND (title LIKE ? OR locality LIKE ? OR description LIKE ?)"
         term = f"%{search}%"

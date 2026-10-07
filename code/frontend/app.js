@@ -7,11 +7,11 @@ let chatPollingInterval = null;
 let currentLivePrediction = null;
 let debounceTimeout = null;
 
+let currentUser = null;
+
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
-    loadProperties();
-    triggerLivePrediction();
-    loadAnalytics();
+    checkAuth();
 
     // Set minimum appointment date to tomorrow
     const tomorrow = new Date();
@@ -22,6 +22,173 @@ document.addEventListener("DOMContentLoaded", () => {
         dateInput.value = tomorrow.toISOString().split("T")[0];
     }
 });
+
+function checkAuth() {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+        currentUser = JSON.parse(storedUser);
+        document.getElementById('auth-overlay').classList.add('hidden');
+        document.getElementById('logout-btn').style.display = 'inline-block';
+        applyRoleBasedUI();
+        initApp();
+    } else {
+        document.getElementById('auth-overlay').classList.remove('hidden');
+    }
+}
+
+function initApp() {
+    loadProperties();
+    triggerLivePrediction();
+    loadAnalytics();
+}
+
+function applyRoleBasedUI() {
+    const tabBtnMarketplace = document.getElementById('tab-btn-marketplace');
+    const tabBtnAnalytics = document.getElementById('tab-btn-analytics');
+    const tabBtnMyProperties = document.getElementById('tab-btn-my-properties');
+    const tabBtnSell = document.getElementById('tab-btn-sell');
+    
+    if (currentUser.role === 'buyer') {
+        if (tabBtnMarketplace) tabBtnMarketplace.style.display = 'inline-flex';
+        if (tabBtnAnalytics) tabBtnAnalytics.style.display = 'inline-flex';
+        if (tabBtnMyProperties) tabBtnMyProperties.style.display = 'none';
+        if (tabBtnSell) tabBtnSell.style.display = 'none';
+        const chatLabel = document.getElementById('chat-tab-label');
+        if (chatLabel) chatLabel.textContent = 'Chat & Visits';
+        switchTab('marketplace');
+    } else if (currentUser.role === 'seller') {
+        if (tabBtnMarketplace) tabBtnMarketplace.style.display = 'none';
+        if (tabBtnAnalytics) tabBtnAnalytics.style.display = 'none';
+        if (tabBtnMyProperties) tabBtnMyProperties.style.display = 'inline-flex';
+        if (tabBtnSell) tabBtnSell.style.display = 'inline-flex';
+        const chatLabel = document.getElementById('chat-tab-label');
+        if (chatLabel) chatLabel.textContent = 'Leads/Chats';
+        switchTab('my-properties');
+        loadMyProperties();
+    }
+    
+    const name = currentUser.full_name || currentUser.name || '';
+    const phone = currentUser.phone_number || currentUser.phone || '';
+
+    const modalApptName = document.getElementById('modal-appt-name');
+    if (modalApptName) modalApptName.value = name;
+    const modalApptPhone = document.getElementById('modal-appt-phone');
+    if (modalApptPhone) modalApptPhone.value = phone;
+    
+    const propSeller = document.getElementById('prop-seller');
+    if (propSeller) propSeller.value = name;
+    const propPhone = document.getElementById('prop-phone');
+    if (propPhone) propPhone.value = phone;
+
+    const modalPayBuyerName = document.getElementById('modal-pay-buyer-name');
+    if (modalPayBuyerName) modalPayBuyerName.value = name;
+}
+
+function logout() {
+    localStorage.removeItem('currentUser');
+    currentUser = null;
+    location.reload();
+}
+
+async function handleSendOtp(e) {
+    e.preventDefault();
+    const phone = document.getElementById('auth-phone').value.trim();
+    if (!phone) return;
+    
+    try {
+        const res = await fetch(`${API_BASE}/api/auth/send-otp`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ phone_number: phone })
+        });
+        const data = await res.json();
+        if (data.success) {
+            showAuthStep(2);
+            showToast("OTP sent to " + phone);
+        } else {
+            showToast("Error: " + data.error);
+        }
+    } catch (err) {
+        showToast("Network error sending OTP");
+    }
+}
+
+async function handleVerifyOtp(e) {
+    e.preventDefault();
+    const phone = document.getElementById('auth-phone').value.trim();
+    const otp = document.getElementById('auth-otp').value.trim();
+    const name = document.getElementById('auth-name').value.trim();
+    const role = document.getElementById('auth-role').value;
+    
+    try {
+        const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ phone_number: phone, otp, full_name: name, role })
+        });
+        const data = await res.json();
+        if (data.success) {
+            localStorage.setItem('currentUser', JSON.stringify(data.user));
+            checkAuth();
+            showToast("Welcome " + name);
+        } else {
+            showToast("Error: " + data.error);
+        }
+    } catch (err) {
+        showToast("Network error verifying OTP");
+    }
+}
+
+function showAuthStep(step) {
+    document.querySelectorAll('.auth-step').forEach(el => el.classList.add('hidden'));
+    document.getElementById('auth-step-' + step).classList.remove('hidden');
+}
+
+async function loadMyProperties() {
+    if (!currentUser || currentUser.role !== 'seller') return;
+    try {
+        const phone = currentUser.phone_number || currentUser.phone || '';
+        const res = await fetch(`${API_BASE}/api/properties?seller_phone=${encodeURIComponent(phone)}`);
+        const data = await res.json();
+        if (data.success) {
+            renderMyPropertiesGrid(data.data);
+        }
+    } catch (err) {
+        console.error("Error loading my properties:", err);
+    }
+}
+
+function renderMyPropertiesGrid(props) {
+    const grid = document.getElementById("my-properties-grid");
+    if (!grid) return;
+    if (props.length === 0) {
+        grid.innerHTML = '<div style="padding:2rem;">No properties listed yet.</div>';
+        return;
+    }
+    
+    grid.innerHTML = props.map(p => {
+        const thumb = p.image_url || "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80";
+        return `
+            <article class="property-card">
+                <div class="card-img-wrapper">
+                    <img src="${thumb}" alt="${p.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80'">
+                    <span class="card-type-tag">${p.property_type}</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">${p.title}</h3>
+                    <div class="card-locality">📍 ${p.locality}, ${p.city}</div>
+                    <div class="card-price-row">
+                        <div class="price-main-val">₹${p.price}</div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-outline btn-sm" onclick="viewPropertyDetail(${p.id})">🔍 Details</button>
+                        <button class="btn btn-primary btn-sm" onclick="openChatForProperty(${p.id})">💬 Leads</button>
+                    </div>
+                </div>
+            </article>
+        `;
+    }).join("");
+}
 
 // -------------------------------------------------------------
 // Navigation & Tab Switching
@@ -510,7 +677,7 @@ async function handleSendMessage(e) {
     if (!text) return;
 
     const role = document.getElementById("chat-sender-role").value;
-    const senderName = role === "buyer" ? "Guntaas Singh (Buyer)" : activePropertyForChat.seller_name;
+    const senderName = currentUser ? (currentUser.full_name || currentUser.name) : "Buyer";
 
     try {
         const res = await fetch(`${API_BASE}/api/properties/${activePropertyForChat.id}/messages`, {
@@ -849,3 +1016,5 @@ window.addEventListener('load', async () => {
     await delay(800);
     bg.remove();
 });
+
+

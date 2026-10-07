@@ -16,6 +16,50 @@
             <span class="l-char">E</span><span class="l-char">S</span><span class="l-char">T</span><span class="l-char">A</span><span class="l-char">T</span><span class="l-char">E</span><span class="l-char">P</span><span class="l-char">U</span><span class="l-char">L</span><span class="l-char">S</span><span class="l-char">E</span>
         </div>
     </div>
+
+    <!-- Auth Overlay -->
+    <div id="auth-overlay" class="auth-overlay hidden">
+        <div class="auth-box glass-panel" style="position: relative;">
+            <button onclick="hideAuthOverlay()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8;">✕</button>
+            <div class="auth-header">
+                <h2>Welcome to EstatePulse</h2>
+                <p>Sign in or create an account</p>
+            </div>
+            
+            <div id="auth-step-1" class="auth-step active">
+                <form id="send-otp-form" onsubmit="handleSendOtp(event)">
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="auth-phone" required placeholder="+91 9876543210" class="modern-input">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Send OTP</button>
+                </form>
+            </div>
+
+            <div id="auth-step-2" class="auth-step hidden">
+                <form id="verify-otp-form" onsubmit="handleVerifyOtp(event)">
+                    <div class="form-group">
+                        <label>Enter OTP</label>
+                        <input type="text" id="auth-otp" required placeholder="123456" class="modern-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="auth-name" required placeholder="John Doe" class="modern-input">
+                    </div>
+                    <div class="form-group">
+                        <label>I am a...</label>
+                        <select id="auth-role" class="modern-input" required>
+                            <option value="buyer">Buyer</option>
+                            <option value="seller">Seller</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Verify & Continue</button>
+                    <button type="button" class="btn btn-outline btn-block mt-2" onclick="showAuthStep(1)">Back</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Top Navigation Header -->
     <header class="navbar">
         <div class="nav-container">
@@ -31,11 +75,14 @@
                 <button class="nav-btn active" id="tab-btn-marketplace" onclick="switchTab('marketplace')">
                     <span class="btn-icon">🏠</span> Marketplace
                 </button>
+                <button class="nav-btn" id="tab-btn-my-properties" onclick="switchTab('my-properties')" style="display: none;">
+                    <span class="btn-icon">📋</span> My Properties
+                </button>
                 <button class="nav-btn" id="tab-btn-sell" onclick="switchTab('sell')">
                     <span class="btn-icon">➕</span> List Property
                 </button>
                 <button class="nav-btn" id="tab-btn-chat" onclick="switchTab('chat')">
-                    <span class="btn-icon">💬</span> Chat & Visits
+                    <span class="btn-icon">💬</span> <span id="chat-tab-label">Chat & Visits</span>
                 </button>
                 <button class="nav-btn" id="tab-btn-analytics" onclick="switchTab('analytics')">
                     <span class="btn-icon">📈</span> Metrics & ML Model
@@ -45,6 +92,8 @@
             <div class="nav-status">
                 <span class="status-dot"></span>
                 <span class="status-label">ML Regression Active</span>
+                <button class="btn btn-sm btn-primary ml-3" id="login-btn" onclick="showAuthOverlay()" style="display: none; margin-left: 10px;">Login</button>
+                <button class="btn btn-sm btn-outline ml-3" id="logout-btn" onclick="logout()" style="display: none; margin-left: 10px;">Logout</button>
             </div>
         </div>
     </header>
@@ -241,7 +290,7 @@
                             <div class="form-grid-2">
                                 <div class="form-group">
                                     <label>Seller Name *</label>
-                                    <input type="text" id="prop-seller" required placeholder="Your name" value="Guntaas Singh">
+                                    <input type="text" id="prop-seller" required placeholder="Your name" value="">
                                 </div>
 
                                 <div class="form-group">
@@ -540,6 +589,28 @@
             </div>
         </section>
 
+        <!-- ======================================================== -->
+        <!-- TAB 5: MY PROPERTIES (SELLER ONLY) -->
+        <!-- ======================================================== -->
+        <section id="tab-my-properties" class="tab-pane">
+            <div class="hero-banner bento-hero">
+                <div class="hero-text">
+                    <h1>My Properties</h1>
+                    <p>Manage your listings, analyze leads, and track ML valuations.</p>
+                </div>
+            </div>
+            <div class="bento-grid">
+                <div class="bento-card col-span-full">
+                    <div class="card-title">
+                        <h3>📋 Active Listings</h3>
+                    </div>
+                    <div class="properties-grid" id="my-properties-grid">
+                        <!-- Injected via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- ======================================================== -->
@@ -562,7 +633,7 @@
                 <div class="form-grid-2">
                     <div class="form-group">
                         <label>Your Name *</label>
-                        <input type="text" id="modal-appt-name" required value="Guntaas Singh">
+                        <input type="text" id="modal-appt-name" required value="">
                     </div>
                     <div class="form-group">
                         <label>Phone Number *</label>
@@ -624,7 +695,7 @@
                 </div>
                 <div class="form-group">
                     <label>Buyer Name</label>
-                    <input type="text" id="modal-pay-buyer-name" required value="Guntaas Singh">
+                    <input type="text" id="modal-pay-buyer-name" required value="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeModals()">Cancel</button>

@@ -1453,3 +1453,111 @@ input:focus, select:focus, textarea:focus {
 @media (max-width: 768px) {
     .loader-word { font-size: 2.2rem; gap: 8px; }
 }
+
+/* Glassmorphism & Auth Overlay */
+.auth-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.auth-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.auth-header p {
+    color: var(--text-secondary);
+}
+
+.auth-step {
+    display: none;
+}
+
+.auth-step.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.modern-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    margin-bottom: 0.5rem;
+}
+
+.modern-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+/* Bento Box Grid for Seller Dashboard */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.bento-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bento-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.col-span-full {
+    grid-column: 1 / -1;
+}
+
+.bento-hero {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+}

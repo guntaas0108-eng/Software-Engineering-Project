@@ -15,6 +15,24 @@ def init_db(ml_predictor=None):
     cur = conn.cursor()
 
     cur.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        phone TEXT UNIQUE NOT NULL,
+        role TEXT NOT NULL,
+        created_at TEXT
+    );
+    """)
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS otp_codes (
+        phone TEXT PRIMARY KEY,
+        otp TEXT NOT NULL,
+        expires_at TEXT NOT NULL
+    );
+    """)
+
+    cur.execute("""
     CREATE TABLE IF NOT EXISTS properties (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT NOT NULL,
@@ -304,3 +322,48 @@ def add_property(data, ml_predictor):
         "id": prop_id,
         "prediction": pred_res
     }
+
+import random
+from datetime import timedelta
+
+def generate_otp(phone):
+    conn = get_connection()
+    cur = conn.cursor()
+    otp = str(random.randint(1000, 9999))
+    expires = (datetime.now(timezone.utc) + timedelta(minutes=10)).isoformat()
+    cur.execute("INSERT OR REPLACE INTO otp_codes (phone, otp, expires_at) VALUES (?, ?, ?)", (phone, otp, expires))
+    conn.commit()
+    conn.close()
+    return otp
+
+def verify_otp(phone, otp, name=None, role=None):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT otp, expires_at FROM otp_codes WHERE phone = ?", (phone,))
+    row = cur.fetchone()
+    
+    if not row or row["otp"] != otp:
+        conn.close()
+        return False, "Invalid or missing OTP."
+    
+    if datetime.fromisoformat(row["expires_at"]) < datetime.now(timezone.utc):
+        conn.close()
+        return False, "OTP expired."
+        
+    cur.execute("DELETE FROM otp_codes WHERE phone = ?", (phone,))
+    
+    cur.execute("SELECT * FROM users WHERE phone = ?", (phone,))
+    user = cur.fetchone()
+    
+    if not user:
+        if not name or not role:
+            conn.close()
+            return False, "New user requires name and role."
+        now_str = datetime.now(timezone.utc).isoformat()
+        cur.execute("INSERT INTO users (name, phone, role, created_at) VALUES (?, ?, ?, ?)", (name, phone, role, now_str))
+        cur.execute("SELECT * FROM users WHERE phone = ?", (phone,))
+        user = cur.fetchone()
+        
+    conn.commit()
+    conn.close()
+    return True, dict(user)
