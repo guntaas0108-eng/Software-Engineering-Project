@@ -1,23 +1,23 @@
 :root {
-    --primary: #2563eb;
-    --primary-dark: #1d4ed8;
-    --primary-light: #eff6ff;
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: rgba(99, 102, 241, 0.15);
     --accent: #10b981;
     --accent-dark: #059669;
     --warning: #f59e0b;
     --danger: #ef4444;
-    --bg-main: #f8fafc;
-    --card-bg: #ffffff;
-    --border: #e2e8f0;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #94a3b8;
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 16px;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -2px rgba(0,0,0,0.05);
-    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.05);
+    --bg-main: #0b1120;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --border: rgba(255, 255, 255, 0.1);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.5);
+    --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.5);
+    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.5);
 }
 
 * {
@@ -36,7 +36,7 @@ body {
 
 /* Navbar */
 .navbar {
-    background: #ffffff;
+    background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
@@ -98,7 +98,7 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: #f1f5f9;
+    background: rgba(255,255,255,0.05);
     padding: 4px;
     border-radius: var(--radius-md);
 }
@@ -123,7 +123,7 @@ body {
 }
 
 .nav-btn.active {
-    background: #ffffff;
+    background: var(--card-bg);
     color: var(--primary);
     box-shadow: var(--shadow-sm);
 }
@@ -239,7 +239,7 @@ body {
 
 /* Filters */
 .filter-card {
-    background: #ffffff;
+    background: var(--card-bg);
     padding: 1.25rem;
     border-radius: var(--radius-md);
     border: 1px solid var(--border);
@@ -282,7 +282,7 @@ input[type="text"], input[type="number"], input[type="date"], input[type="url"],
     border-radius: var(--radius-sm);
     font-size: 0.9rem;
     font-family: inherit;
-    background: #ffffff;
+    background: var(--card-bg);
     color: var(--text-primary);
     outline: none;
     transition: border-color 0.15s ease;
@@ -333,7 +333,7 @@ input:focus, select:focus, textarea:focus {
 
 /* Property Card */
 .property-card {
-    background: #ffffff;
+    background: var(--card-bg);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border);
     overflow: hidden;
@@ -421,7 +421,7 @@ input:focus, select:focus, textarea:focus {
 
 /* Pricing & ML Valuation Row */
 .card-price-row {
-    background: #f8fafc;
+    background: rgba(255,255,255,0.02);
     border: 1px solid #f1f5f9;
     padding: 0.75rem;
     border-radius: var(--radius-sm);
@@ -483,7 +483,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .card-barometer.barometer-high {
-    background: #fffbeb;
+    background: rgba(245, 158, 11, 0.1);
     border: 1px solid #fde68a;
     color: #92400e;
 }
@@ -514,7 +514,7 @@ input:focus, select:focus, textarea:focus {
 
 .spec-pill {
     font-size: 0.76rem;
-    background: #f1f5f9;
+    background: rgba(255,255,255,0.05);
     color: var(--text-secondary);
     padding: 3px 8px;
     border-radius: 4px;
@@ -550,7 +550,7 @@ input:focus, select:focus, textarea:focus {
 .btn-secondary:hover { background: #cbd5e1; }
 
 .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-primary); }
-.btn-outline:hover { background: #f8fafc; border-color: #cbd5e1; }
+.btn-outline:hover { background: rgba(255,255,255,0.02); border-color: #cbd5e1; }
 
 .btn-success { background: var(--accent); color: #ffffff; }
 .btn-success:hover { background: var(--accent-dark); }
@@ -560,7 +560,7 @@ input:focus, select:focus, textarea:focus {
 
 /* Form Container */
 .form-container {
-    background: #ffffff;
+    background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: 2rem;
@@ -614,7 +614,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .highlight-box {
-    background: #f8fafc;
+    background: rgba(255,255,255,0.02);
     border: 2px dashed #cbd5e1;
     padding: 1rem;
     border-radius: var(--radius-md);
@@ -629,7 +629,7 @@ input:focus, select:focus, textarea:focus {
 
 /* Duplicate detection banner */
 .duplicate-warning {
-    background: #fffbeb;
+    background: rgba(245, 158, 11, 0.1);
     border: 1px solid #fde68a;
     padding: 0.75rem 1rem;
     border-radius: var(--radius-md);
@@ -645,7 +645,7 @@ input:focus, select:focus, textarea:focus {
 
 /* Valuation Sidebar Panel */
 .valuation-card {
-    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    background: linear-gradient(180deg, rgba(15,23,42,0.8) 0%, rgba(11,17,32,0.9) 100%);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
@@ -672,7 +672,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .val-display {
-    background: #ffffff;
+    background: var(--card-bg);
     border: 1px solid var(--border);
     padding: 1.25rem;
     border-radius: var(--radius-md);
@@ -770,7 +770,7 @@ input:focus, select:focus, textarea:focus {
 
 /* Chat Layout */
 .chat-wrapper {
-    background: #ffffff;
+    background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     display: grid;
@@ -782,7 +782,7 @@ input:focus, select:focus, textarea:focus {
 
 .chat-sidebar {
     border-right: 1px solid var(--border);
-    background: #f8fafc;
+    background: rgba(255,255,255,0.02);
     display: flex;
     flex-direction: column;
 }
@@ -790,7 +790,7 @@ input:focus, select:focus, textarea:focus {
 .chat-sidebar-header {
     padding: 1.25rem 1rem;
     border-bottom: 1px solid var(--border);
-    background: #ffffff;
+    background: var(--card-bg);
 }
 
 .chat-sidebar-header h3 {
@@ -819,7 +819,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .chat-channel-item:hover {
-    background: #f1f5f9;
+    background: rgba(255,255,255,0.05);
 }
 
 .chat-channel-item.active {
@@ -859,12 +859,12 @@ input:focus, select:focus, textarea:focus {
 .chat-main {
     display: flex;
     flex-direction: column;
-    background: #f1f5f9;
+    background: rgba(255,255,255,0.05);
 }
 
 .chat-navbar {
     padding: 0.85rem 1.25rem;
-    background: #ffffff;
+    background: var(--card-bg);
     border-bottom: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
@@ -929,7 +929,7 @@ input:focus, select:focus, textarea:focus {
 
 .message-bubble.seller {
     align-self: flex-start;
-    background: #ffffff;
+    background: var(--card-bg);
     color: var(--text-primary);
     border-bottom-left-radius: 2px;
 }
@@ -959,7 +959,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .chat-input-area {
-    background: #ffffff;
+    background: var(--card-bg);
     border-top: 1px solid var(--border);
     padding: 0.75rem 1.25rem;
     display: flex;
@@ -1013,7 +1013,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .metric-box {
-    background: #ffffff;
+    background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
@@ -1079,7 +1079,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .card {
-    background: #ffffff;
+    background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
@@ -1120,13 +1120,13 @@ input:focus, select:focus, textarea:focus {
 }
 
 .data-table th {
-    background: #f8fafc;
+    background: rgba(255,255,255,0.02);
     font-weight: 700;
     color: var(--text-secondary);
 }
 
 .data-table code {
-    background: #f1f5f9;
+    background: rgba(255,255,255,0.05);
     padding: 2px 6px;
     border-radius: 4px;
     font-family: 'JetBrains Mono', monospace;
@@ -1157,7 +1157,7 @@ input:focus, select:focus, textarea:focus {
 .chart-track {
     width: 100%;
     height: 12px;
-    background: #f1f5f9;
+    background: rgba(255,255,255,0.05);
     border-radius: 6px;
     overflow: hidden;
 }
@@ -1172,7 +1172,7 @@ input:focus, select:focus, textarea:focus {
 .fill-high { background: #f59e0b; }
 
 .info-callout {
-    background: #f8fafc;
+    background: rgba(255,255,255,0.02);
     border-left: 4px solid var(--primary);
     padding: 0.85rem 1rem;
     font-size: 0.82rem;
@@ -1197,7 +1197,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .modal-box {
-    background: #ffffff;
+    background: var(--card-bg);
     width: 100%;
     max-width: 520px;
     border-radius: var(--radius-lg);
@@ -1248,7 +1248,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .input-readonly {
-    background: #f1f5f9;
+    background: rgba(255,255,255,0.05);
     cursor: not-allowed;
     font-weight: 600;
 }
@@ -1371,7 +1371,7 @@ input:focus, select:focus, textarea:focus {
 .loader-line {
     width: 100%;
     height: 100%;
-    background: #ffffff;
+    background: var(--card-bg);
     box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
     transform-origin: left;
     transform: scaleX(0);
@@ -1540,7 +1540,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .bento-card {
-    background: #ffffff;
+    background: var(--card-bg);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border);
     padding: 1.5rem;
@@ -1561,3 +1561,94 @@ input:focus, select:focus, textarea:focus {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
     box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
 }
+
+.card, .bento-card, .filter-card, .valuation-card, .chat-wrapper, .modal-box, .auth-box, .glass-panel {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    box-shadow: var(--shadow-md) !important;
+    background: var(--card-bg) !important;
+}
+
+.modern-input, select, textarea {
+    background: rgba(15, 23, 42, 0.6) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border) !important;
+}
+
+.modern-input:focus, select:focus, textarea:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px var(--primary-light) !important;
+}
+
+.modern-input::placeholder, textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.hero-text h1 {
+    background: linear-gradient(135deg, #a5b4fc, #818cf8, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4f46e5, #3b82f6) !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4) !important;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6) !important;
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #059669, #10b981) !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4) !important;
+}
+
+.btn-success:hover {
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6) !important;
+    transform: translateY(-2px);
+}
+
+.prop-card {
+    transition: all 0.3s ease;
+    background: var(--card-bg) !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    backdrop-filter: blur(12px);
+}
+.prop-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px -10px rgba(99, 102, 241, 0.3) !important;
+    border-color: rgba(99, 102, 241, 0.3) !important;
+}
+.prop-img-container img {
+    opacity: 0.9;
+}
+.prop-card:hover .prop-img-container img {
+    opacity: 1;
+    transform: scale(1.05);
+    transition: all 0.5s ease;
+}
+
+/* Fix chat messages */
+.chat-msg.buyer .msg-bubble { background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; }
+.chat-msg.seller .msg-bubble { background: rgba(255,255,255,0.1); color: var(--text-primary); border: 1px solid var(--border); }
+
+/* Make the brand pop */
+.brand-icon { filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.8)); }
+.brand-title { color: #f8fafc; font-weight: 800; letter-spacing: -0.5px; }
+
+/* Filter Card enhancements */
+.filter-card {
+    background: linear-gradient(180deg, rgba(30,41,59,0.7) 0%, rgba(15,23,42,0.8) 100%) !important;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-main); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
