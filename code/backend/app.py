@@ -85,6 +85,22 @@ def verify_otp():
     else:
         return jsonify({"success": False, "error": result}), 400
 
+@app.route("/api/auth/login", methods=["POST"])
+def login():
+    data = request.get_json() or {}
+    phone = data.get("phone")
+    name = data.get("name")
+    role = data.get("role")
+    
+    if not phone:
+        return jsonify({"success": False, "error": "Phone required"}), 400
+        
+    success, result = db.login_user(phone, name, role)
+    if success:
+        return jsonify({"success": True, "user": result})
+    else:
+        return jsonify({"success": False, "error": result}), 400
+
 # -------------------------------------------------------------
 # Property Listing Endpoints
 # -------------------------------------------------------------
@@ -473,3 +489,4 @@ if __name__ == "__main__":
     threading.Timer(1.5, lambda: webbrowser.open(url)).start()
     
     app.run(host="0.0.0.0", port=port, debug=False)
+

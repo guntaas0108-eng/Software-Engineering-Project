@@ -90,58 +90,31 @@ function logout() {
     location.reload();
 }
 
-async function handleSendOtp(e) {
+async function handleLogin(e) {
     e.preventDefault();
     const phone = document.getElementById('auth-phone').value.trim();
-    if (!phone) return;
-    
-    try {
-        const res = await fetch(`${API_BASE}/api/auth/send-otp`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone: phone })
-        });
-        const data = await res.json();
-        if (data.success) {
-            showAuthStep(2);
-            showToast("OTP sent to " + phone);
-        } else {
-            showToast("Error: " + data.error);
-        }
-    } catch (err) {
-        showToast("Network error sending OTP");
-    }
-}
-
-async function handleVerifyOtp(e) {
-    e.preventDefault();
-    const phone = document.getElementById('auth-phone').value.trim();
-    const otp = document.getElementById('auth-otp').value.trim();
     const name = document.getElementById('auth-name').value.trim();
     const role = document.getElementById('auth-role').value;
     
+    if (!phone) return;
+    
     try {
-        const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
+        const res = await fetch(${API_BASE}/api/auth/login, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ phone: phone, otp: otp, name: name, role: role })
+            body: JSON.stringify({ phone: phone, name: name, role: role })
         });
         const data = await res.json();
         if (data.success) {
             localStorage.setItem('currentUser', JSON.stringify(data.user));
             checkAuth();
-            showToast("Welcome " + name);
+            showToast("Welcome back!");
         } else {
             showToast("Error: " + data.error);
         }
     } catch (err) {
-        showToast("Network error verifying OTP");
+        showToast("Network error logging in");
     }
-}
-
-function showAuthStep(step) {
-    document.querySelectorAll('.auth-step').forEach(el => el.classList.add('hidden'));
-    document.getElementById('auth-step-' + step).classList.remove('hidden');
 }
 
 async function loadMyProperties() {
@@ -1016,6 +989,7 @@ window.addEventListener('load', async () => {
     await delay(800);
     bg.remove();
 });
+
 
 
 

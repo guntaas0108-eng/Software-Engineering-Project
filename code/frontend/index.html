@@ -19,43 +19,34 @@
 
     <!-- Auth Overlay -->
     <div id="auth-overlay" class="auth-overlay hidden">
-        <div class="auth-box glass-panel" style="position: relative;">
-            <button onclick="hideAuthOverlay()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8;">✕</button>
+                <div class="auth-box glass-panel" style="position: relative;">
+            <button onclick="hideAuthOverlay()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8;">?</button>
             <div class="auth-header">
                 <h2>Welcome to EstatePulse</h2>
                 <p>Sign in or create an account</p>
             </div>
             
-            <div id="auth-step-1" class="auth-step active">
-                <form id="send-otp-form" onsubmit="handleSendOtp(event)">
-                    <div class="form-group">
-                        <label>Phone Number</label>
-                        <input type="tel" id="auth-phone" required placeholder="+91 9876543210" class="modern-input">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Send OTP</button>
-                </form>
-            </div>
-
-            <div id="auth-step-2" class="auth-step hidden">
-                <form id="verify-otp-form" onsubmit="handleVerifyOtp(event)">
-                    <div class="form-group">
-                        <label>Enter OTP</label>
-                        <input type="text" id="auth-otp" required placeholder="123456" class="modern-input">
-                    </div>
-                    <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="auth-name" required placeholder="John Doe" class="modern-input">
-                    </div>
-                    <div class="form-group">
-                        <label>I am a...</label>
-                        <select id="auth-role" class="modern-input" required>
-                            <option value="buyer">Buyer</option>
-                            <option value="seller">Seller</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Verify & Continue</button>
-                    <button type="button" class="btn btn-outline btn-block mt-2" onclick="showAuthStep(1)">Back</button>
-                </form>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="auth-phone" required placeholder="E.g. 9876543210" class="modern-input">
+                </div>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="auth-name" placeholder="John Doe (Optional if existing)" class="modern-input">
+                </div>
+                <div class="form-group">
+                    <label>I am a...</label>
+                    <select id="auth-role" class="modern-input" required>
+                        <option value="buyer">Buyer</option>
+                        <option value="seller">Seller</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login / Register</button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <button type="button" class="btn btn-outline btn-block" onclick="hideAuthOverlay()">Continue as Guest</button>
             </div>
         </div>
     </div>
@@ -724,4 +715,6 @@
     <script src="app.js"></script>
 </body>
 </html>
+
+
 

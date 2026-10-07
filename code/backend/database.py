@@ -367,3 +367,23 @@ def verify_otp(phone, otp, name=None, role=None):
     conn.commit()
     conn.close()
     return True, dict(user)
+
+
+def login_user(phone, name=None, role=None):
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM users WHERE phone = ?", (phone,))
+    user = cur.fetchone()
+    
+    if not user:
+        if not name or not role:
+            conn.close()
+            return False, "New user requires name and role."
+        now_str = datetime.now(timezone.utc).isoformat()
+        cur.execute("INSERT INTO users (name, phone, role, created_at) VALUES (?, ?, ?, ?)", (name, phone, role, now_str))
+        cur.execute("SELECT * FROM users WHERE phone = ?", (phone,))
+        user = cur.fetchone()
+        
+    conn.commit()
+    conn.close()
+    return True, dict(user)
