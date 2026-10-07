@@ -124,13 +124,13 @@
                         <div class="search-inputs-row">
                             <div class="search-input-group flex-2">
                                 <label>Location or Keyword</label>
-                                <input type="text" id="search-input" placeholder="Search by locality, title..." class="minimal-input" oninput="triggerLiveSearch()">
+                                <input type="text" id="search-input" placeholder="Search by locality, title..." class="minimal-input" oninput="debounceFilter()">
                             </div>
                             <div class="search-divider"></div>
                             <div class="search-input-group">
                                 <label>City</label>
                                 <select id="city-filter" class="minimal-input" onchange="loadProperties()">
-                                    <option value="">All Cities</option>
+                                    <option value="All">All Cities</option>
                                     <option value="Bangalore">Bangalore</option>
                                     <option value="Chandigarh">Chandigarh</option>
                                     <option value="Patiala">Patiala</option>
@@ -140,7 +140,7 @@
                             <div class="search-input-group">
                                 <label>Category</label>
                                 <select id="category-filter" class="minimal-input" onchange="loadProperties()">
-                                    <option value="">All Types</option>
+                                    <option value="All">All Types</option>
                                     <option value="Apartment">Apartment</option>
                                     <option value="House">House</option>
                                     <option value="Commercial">Commercial</option>
@@ -149,7 +149,7 @@
                         </div>
                         <div class="search-action-row">
                             <select id="barometer-filter" class="minimal-input barometer-select" onchange="loadProperties()">
-                                <option value="">AI Rating: Any</option>
+                                <option value="All">AI Rating: Any</option>
                                 <option value="good">Great Deals (< Market)</option>
                                 <option value="fair">Fair Market Value</option>
                             </select>

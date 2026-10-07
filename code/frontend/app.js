@@ -194,10 +194,10 @@ function switchTab(tabName) {
 // -------------------------------------------------------------
 async function loadProperties() {
     try {
-        const city = document.getElementById("filter-city").value;
-        const ptype = document.getElementById("filter-type").value;
-        const barometer = document.getElementById("filter-barometer").value;
-        const search = document.getElementById("filter-search").value.trim();
+        const city = document.getElementById("city-filter").value;
+        const ptype = document.getElementById("category-filter").value;
+        const barometer = document.getElementById("barometer-filter").value;
+        const search = document.getElementById("search-input").value.trim();
 
         const params = new URLSearchParams();
         if (city !== "All") params.append("city", city);
@@ -228,10 +228,10 @@ function debounceFilter() {
 }
 
 function resetFilters() {
-    document.getElementById("filter-search").value = "";
-    document.getElementById("filter-city").value = "All";
-    document.getElementById("filter-type").value = "All";
-    document.getElementById("filter-barometer").value = "All";
+    document.getElementById("search-input").value = "";
+    document.getElementById("city-filter").value = "All";
+    document.getElementById("category-filter").value = "All";
+    document.getElementById("barometer-filter").value = "All";
     loadProperties();
 }
 
