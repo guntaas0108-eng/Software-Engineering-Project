@@ -255,7 +255,7 @@ function renderProperties(props) {
         grid.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: #fff; border-radius: 12px;">
                 <h3>No properties found matching criteria</h3>
-                <p style="color: #64748b; margin-top: 0.5rem;">Try adjusting filters or clear your search terms.</p>
+                <p style="color: rgba(255,255,255,0.7); margin-top: 0.5rem;">Try adjusting filters or clear your search terms.</p>
                 <button class="btn btn-secondary" style="margin-top: 1rem;" onclick="resetFilters()">Reset Filters</button>
             </div>
         `;
@@ -357,12 +357,12 @@ async function viewPropertyDetail(propId) {
                 <img src="${p.image_url}" style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
                 <div>
                     <h4 style="margin-bottom: 0.5rem;">Overview</h4>
-                    <p style="color: #475569; font-size: 0.9rem; margin-bottom: 1rem;">${p.description || "Well maintained property in prime location."}</p>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 1rem;">${p.description || "Well maintained property in prime location."}</p>
                     
-                    <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                             <strong>Asking Price:</strong>
-                            <span style="font-size: 1.1rem; color: #2563eb; font-weight: 800;">${formatINR(p.price)}</span>
+                            <span style="font-size: 1.1rem; color: #ffffff; font-weight: 800;">${formatINR(p.price)}</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                             <strong>ML Fair Valuation:</strong>
@@ -383,7 +383,7 @@ async function viewPropertyDetail(propId) {
             <div style="background: #f1f5f9; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
                 <h4 style="margin-bottom: 0.5rem;">Buyer Barometer Analysis</h4>
                 <p style="font-size: 0.88rem; color: #334155;"><strong>Status:</strong> ${v.barometer_verdict || p.barometer_verdict} (${v.difference_percentage || 0}% variance)</p>
-                <p style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">${v.advice || "Fair market listing."}</p>
+                <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-top: 4px;">${v.advice || "Fair market listing."}</p>
             </div>
 
             <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
@@ -867,7 +867,7 @@ async function loadAppointmentsTable() {
 
         const tbody = document.getElementById("appointments-tbody");
         if (data.data.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #94a3b8;">No site visits scheduled yet. Use the marketplace or chat to schedule one.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: rgba(255,255,255,0.7);">No site visits scheduled yet. Use the marketplace or chat to schedule one.</td></tr>`;
             return;
         }
 
@@ -875,8 +875,8 @@ async function loadAppointmentsTable() {
             const isConfirmed = a.status === "confirmed";
             const timeDur = a.time_to_appointment_seconds !== null ? `${Math.round(a.time_to_appointment_seconds / 60)} min` : "Pending seller confirmation";
             const statusBadge = isConfirmed ? 
-                `<span style="background: #d1fae5; color: #047857; padding: 3px 8px; border-radius: 4px; font-weight: 700;">Confirmed</span>` :
-                `<span style="background: #fef3c7; color: #b45309; padding: 3px 8px; border-radius: 4px; font-weight: 700;">Pending</span>`;
+                `<span style="background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); padding: 3px 8px; border-radius: 4px; font-weight: 700;">Confirmed</span>` :
+                `<span style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); padding: 3px 8px; border-radius: 4px; font-weight: 700;">Pending</span>`;
 
             return `
                 <tr>
