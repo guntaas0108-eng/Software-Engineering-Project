@@ -17,37 +17,49 @@
         </div>
     </div>
 
-    <!-- Auth Overlay -->
-    <div id="auth-overlay" class="auth-overlay hidden">
-                <div class="auth-box glass-panel" style="position: relative;">
-            <button onclick="hideAuthOverlay()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8;">?</button>
+        <!-- Buyer Auth Overlay -->
+    <div id="auth-buyer-overlay" class="auth-overlay hidden">
+        <div class="auth-box glass-panel" style="position: relative; border-top: 4px solid #3b82f6;">
+            <button onclick="hideAuthOverlays()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8;">?</button>
             <div class="auth-header">
-                <h2>Welcome to EstatePulse</h2>
-                <p>Sign in or create an account</p>
+                <h2>Buyer Portal</h2>
+                <p>Sign in to schedule visits & chat with sellers</p>
             </div>
             
-            <form id="login-form" onsubmit="handleLogin(event)">
+            <form id="login-buyer-form" onsubmit="handleLogin(event, 'buyer')">
                 <div class="form-group">
                     <label>Phone Number</label>
-                    <input type="tel" id="auth-phone" required placeholder="E.g. 9876543210" class="modern-input">
+                    <input type="tel" id="auth-buyer-phone" required placeholder="E.g. 9876543210" class="modern-input">
                 </div>
                 <div class="form-group">
                     <label>Full Name</label>
-                    <input type="text" id="auth-name" placeholder="John Doe (Optional if existing)" class="modern-input">
+                    <input type="text" id="auth-buyer-name" placeholder="John Doe (Optional if registered)" class="modern-input">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Enter Marketplace</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Seller Auth Overlay -->
+    <div id="auth-seller-overlay" class="auth-overlay hidden">
+        <div class="auth-box glass-panel" style="position: relative; border-top: 4px solid #10b981;">
+            <button onclick="hideAuthOverlays()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8;">?</button>
+            <div class="auth-header">
+                <h2>Seller Dashboard</h2>
+                <p>Sign in to manage listings & view leads</p>
+            </div>
+            
+            <form id="login-seller-form" onsubmit="handleLogin(event, 'seller')">
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="auth-seller-phone" required placeholder="E.g. 9876543210" class="modern-input">
                 </div>
                 <div class="form-group">
-                    <label>I am a...</label>
-                    <select id="auth-role" class="modern-input" required>
-                        <option value="buyer">Buyer</option>
-                        <option value="seller">Seller</option>
-                    </select>
+                    <label>Full Name</label>
+                    <input type="text" id="auth-seller-name" placeholder="John Doe (Optional if registered)" class="modern-input">
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Login / Register</button>
+                <button type="submit" class="btn btn-success btn-block">Access Dashboard</button>
             </form>
-            
-            <div style="text-align: center; margin-top: 15px;">
-                <button type="button" class="btn btn-outline btn-block" onclick="hideAuthOverlay()">Continue as Guest</button>
-            </div>
         </div>
     </div>
 
@@ -715,6 +727,7 @@
     <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
