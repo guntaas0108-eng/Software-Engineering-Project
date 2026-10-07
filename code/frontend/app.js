@@ -194,10 +194,15 @@ function switchTab(tabName) {
 // -------------------------------------------------------------
 async function loadProperties() {
     try {
-        const city = document.getElementById("city-filter").value;
-        const ptype = document.getElementById("category-filter").value;
-        const barometer = document.getElementById("barometer-filter").value;
-        const search = document.getElementById("search-input").value.trim();
+        const cityEl = document.getElementById("city-filter");
+        const ptypeEl = document.getElementById("category-filter");
+        const barometerEl = document.getElementById("barometer-filter");
+        const searchEl = document.getElementById("search-input");
+
+        const city = cityEl ? cityEl.value : "All";
+        const ptype = ptypeEl ? ptypeEl.value : "All";
+        const barometer = barometerEl ? barometerEl.value : "All";
+        const search = searchEl ? searchEl.value.trim() : "";
 
         const params = new URLSearchParams();
         if (city !== "All") params.append("city", city);
@@ -205,18 +210,17 @@ async function loadProperties() {
         if (barometer !== "All") params.append("barometer", barometer);
         if (search) params.append("search", search);
 
-        const res = await fetch(`${API_BASE}/api/properties?${params.toString()}`);
+        const res = await fetch(API_BASE + '/api/properties?' + params.toString());
         const data = await res.json();
 
         if (data.success) {
             currentProperties = data.data;
             renderProperties(data.data);
             populateChatChannels(data.data);
-            updateHeroStats(data.data);
         }
     } catch (err) {
         console.error("Error loading properties:", err);
-        showToast("Error connecting to server. Is backend running?");
+        showToast("Error loading properties: " + err.message);
     }
 }
 
@@ -334,9 +338,7 @@ function renderProperties(props) {
     }).join("");
 }
 
-function updateHeroStats(props) {
-    document.getElementById("hero-total-props").textContent = props.length;
-}
+
 
 // -------------------------------------------------------------
 // Property Detail View
@@ -812,12 +814,12 @@ async function loadAnalytics() {
         // Primary Metric
         const apptMetrics = data.appointments;
         document.getElementById("metric-median-time").textContent = apptMetrics.median_time_to_appointment_human || "0.0 min";
-        document.getElementById("hero-median-time").textContent = apptMetrics.median_time_to_appointment_human || "< 2 hrs";
+        // hero-median-time removed
 
         // ML Metrics
         const ml = data.ml_model;
         document.getElementById("metric-r2").textContent = ml.r2_score;
-        document.getElementById("hero-model-r2").textContent = ml.r2_score;
+        // hero-model-r2 removed
         document.getElementById("metric-rmse").textContent = `RMSE: ₹ ${Math.round(ml.rmse).toLocaleString("en-IN")}`;
 
         document.getElementById("diag-mse").textContent = ml.mse.toLocaleString("en-IN");
