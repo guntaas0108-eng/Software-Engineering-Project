@@ -422,6 +422,14 @@ def get_system_metrics():
 
 
 if __name__ == "__main__":
+    import threading
+    import webbrowser
+    
     port = int(os.environ.get("PORT", 5000))
-    print(f"Real Estate Marketplace starting on http://localhost:{port}")
+    url = f"http://localhost:{port}"
+    print(f"Real Estate Marketplace starting on {url}")
+    
+    # Automatically open the site in the default browser after 1.5 seconds
+    threading.Timer(1.5, lambda: webbrowser.open(url)).start()
+    
     app.run(host="0.0.0.0", port=port, debug=False)
