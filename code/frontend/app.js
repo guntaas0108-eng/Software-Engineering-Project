@@ -798,3 +798,54 @@ window.addEventListener('load', () => {
         }, 2200);
     }
 });
+
+// ========================================================
+// DYNAMIC KINETIC LOADER LOGIC
+// ========================================================
+window.addEventListener('load', async () => {
+    const bg = document.getElementById('dynamic-loader');
+    if (!bg) return;
+    
+    const word = document.getElementById('loader-word');
+    const letters = document.querySelectorAll('.l-char');
+    
+    // 11 Unique Premium Colors
+    const colors = [
+        '#1e3a8a', // Deep Blue
+        '#064e3b', // Emerald
+        '#4c1d95', // Deep Purple
+        '#7f1d1d', // Crimson
+        '#9a3412', // Burnt Orange
+        '#0f766e', // Teal
+        '#4338ca', // Indigo
+        '#be123c', // Rose
+        '#0369a1', // Ocean Blue
+        '#6d28d9', // Violet
+        '#0f172a'  // Final Slate
+    ];
+    
+    const delay = ms => new Promise(r => setTimeout(r, ms));
+    
+    // 1. Show letters one by one with background change
+    for (let i = 0; i < letters.length; i++) {
+        bg.style.backgroundColor = colors[i];
+        letters[i].style.animation = `anim-${i} 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards`;
+        await delay(180); // Fast, rhythmic pace
+    }
+    
+    await delay(300);
+    
+    // 2. Join together
+    word.classList.add('joined');
+    bg.style.backgroundColor = '#0b1120'; // Return to deep slate
+    
+    await delay(600);
+    
+    // 3. Zoom towards the user
+    word.classList.add('zoom-out');
+    bg.style.opacity = '0';
+    
+    // Remove from DOM
+    await delay(800);
+    bg.remove();
+});

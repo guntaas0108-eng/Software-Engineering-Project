@@ -1400,3 +1400,56 @@ input:focus, select:focus, textarea:focus {
     40% { transform: scaleX(0.4); }
     100% { transform: scaleX(1); }
 }
+
+/* ========================================================
+   DYNAMIC KINETIC LOADING SCREEN
+   ======================================================== */
+.dynamic-loader {
+    position: fixed;
+    inset: 0;
+    background-color: #0b1120;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.4s ease, opacity 0.8s ease;
+    overflow: hidden;
+}
+.loader-word {
+    display: flex;
+    gap: 20px; /* Initial wide spacing */
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 5rem;
+    font-weight: 800;
+    color: white;
+    transition: gap 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.8s ease;
+}
+.loader-word.joined {
+    gap: 0px; /* Join together */
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+}
+.loader-word.zoom-out {
+    transform: scale(25); /* Zoom towards the user */
+    opacity: 0;
+}
+.l-char {
+    display: inline-block;
+    opacity: 0;
+}
+
+/* Unique animations for each letter */
+@keyframes anim-0 { from { transform: translateY(-250px) rotate(-45deg); opacity: 0; } to { transform: translateY(0) rotate(0); opacity: 1; } }
+@keyframes anim-1 { from { transform: translateX(250px) scale(2.5); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
+@keyframes anim-2 { from { transform: translateY(250px) rotate(45deg); opacity: 0; } to { transform: translateY(0) rotate(0); opacity: 1; } }
+@keyframes anim-3 { from { transform: translateX(-250px) scale(0); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
+@keyframes anim-4 { from { transform: translateY(-250px) rotateX(90deg); opacity: 0; } to { transform: translateY(0) rotateX(0); opacity: 1; } }
+@keyframes anim-5 { from { transform: translateY(250px) rotateY(90deg); opacity: 0; } to { transform: translateY(0) rotateY(0); opacity: 1; } }
+@keyframes anim-6 { from { transform: scale(6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes anim-7 { from { transform: translateX(250px) translateY(-250px) rotate(180deg); opacity: 0; } to { transform: translate(0,0) rotate(0); opacity: 1; } }
+@keyframes anim-8 { from { transform: translateX(-250px) translateY(250px) rotate(-180deg); opacity: 0; } to { transform: translate(0,0) rotate(0); opacity: 1; } }
+@keyframes anim-9 { from { transform: rotate(-180deg) scale(0); opacity: 0; } to { transform: rotate(0) scale(1); opacity: 1; } }
+@keyframes anim-10 { from { transform: translateY(-350px) scale(4); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+
+@media (max-width: 768px) {
+    .loader-word { font-size: 2.2rem; gap: 8px; }
+}
