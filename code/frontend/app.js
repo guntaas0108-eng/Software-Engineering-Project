@@ -90,11 +90,10 @@ function logout() {
     location.reload();
 }
 
-async function handleLogin(e) {
+async function handleLogin(e, role) {
     e.preventDefault();
-    const phone = document.getElementById('auth-phone').value.trim();
-    const name = document.getElementById('auth-name').value.trim();
-    const role = document.getElementById('auth-role').value;
+    const phone = document.getElementById('auth-' + role + '-phone').value.trim();
+    const name = document.getElementById('auth-' + role + '-name').value.trim();
     
     if (!phone) return;
     
@@ -989,6 +988,11 @@ window.addEventListener('load', async () => {
     await delay(800);
     bg.remove();
 });
+
+
+
+
+
 
 
 
