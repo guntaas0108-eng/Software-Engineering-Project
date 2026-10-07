@@ -781,3 +781,20 @@ function escapeHtml(str) {
     if (!str) return "";
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
+
+// ========================================================
+// PREMIUM LOADING SCREEN LOGIC
+// ========================================================
+window.addEventListener('load', () => {
+    const loader = document.getElementById('premium-loader');
+    if (loader) {
+        // Wait for the CSS animation to complete (approx 2.2s)
+        setTimeout(() => {
+            loader.classList.add('hidden');
+            // Remove from DOM entirely after fade transition
+            setTimeout(() => {
+                loader.remove();
+            }, 800);
+        }, 2200);
+    }
+});
