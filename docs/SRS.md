@@ -660,14 +660,4 @@ stateDiagram-v2
 2. **Computer Vision Image Deduplication:** Integrating Perceptual Hashing (pHash) or convolutional neural network embeddings to identify duplicate property submissions sharing identical exterior photography.
 3. **Automated Production CI/CD Deployment:** Extending GitHub Actions workflow to auto-deploy production containers to PaaS environments (e.g., Render, Railway, or AWS Lightsail) upon branch merges.
 
----
 
-### Verification and Approval Sign-Off
-
-| Role | Name | Roll Number | Signature / Status |
-| :--- | :--- | :--- | :--- |
-| **Team Member 1** | Guntaas Singh | 1024030108 | Completed |
-| **Team Member 2** | Haneesh | 1024030112 | Completed |
-| **Team Member 3** | Dhruv Rajput | 1024030538 | Completed |
-| **Team Member 4** | Atiksh Gupta | 102303133 | Completed |
-| **Course Instructor** | Ms. Anushka | Faculty, TIET | Pending Lab Review |

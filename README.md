@@ -41,7 +41,7 @@
 
 The repository maintains full software engineering artifacts compliant with IEEE/course requirements:
 
-- 📕 [**Official Software Requirements Specification (SRS.pdf)**](SRS.pdf) *(or view in [docs/SRS.pdf](docs/SRS.pdf))*: Complete 17-page compiled academic document with cover page, Table of Contents, and high-resolution UML diagrams matching TIET course requirements.
+- 📕 [**Official Software Requirements Specification (SRS.pdf)**](SRS.pdf) *(or view in [docs/SRS.pdf](docs/SRS.pdf))*: Complete 16-page compiled academic document with cover page, Table of Contents, and high-resolution UML diagrams matching TIET course requirements.
 - 📑 [**Software Requirements Specification (Markdown)**](SRS.md) *(or view in [docs/SRS.md](docs/SRS.md))*: Formal specification covering scope, user classes, functional & non-functional requirements, UML diagrams (Use Case, Class, Activity, Sequence), and mathematical models.
 - 📜 [**Formal LaTeX SRS Source (docs/SRS.tex)**](docs/SRS.tex): Publication-grade LaTeX source ready for formal PDF compilation.
 - 📑 [**Approved Course Proposal (PDF)**](project-proposal/Software_Eng_Project.pdf) & [**LaTeX Source**](project-proposal/main_s.tex): Approved problem statement and time-to-value heuristics.
