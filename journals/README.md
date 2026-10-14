@@ -22,10 +22,3 @@ This directory contains the complete weekly individual software engineering jour
 - **Role:** Integration, Testing & DevOps  
 - **Coverage:** Weeks 1 to 5 (Repository & CI Setup, Sprint 2 Testing, Sprint 3 Testing, UI Integration & Regression, Sprint 4 Targeted Integration & CI Checks)
 
----
-
-## 📂 Sprint 4 / Week 5 Standalone Records
-- [`journals/week5/person1-haneesh-ml-auth/`](week5/person1-haneesh-ml-auth/week5-sprint4-ml-appointment-validation-access-control.md)
-- [`journals/week5/person2-guntaas-frontend-buyer/`](week5/person2-guntaas-frontend-buyer/week5-sprint4-buyer-chat-appointment-ui.md)
-- [`journals/week5/person3-dhruv-backend-database/`](week5/person3-dhruv-backend-database/week5-sprint4-core-chat-appointment-backend.md)
-- [`journals/week5/person4-atiksh-integration-testing-devops/`](week5/person4-atiksh-integration-testing-devops/week5-sprint4-targeted-integration-checks.md)
