@@ -50,7 +50,7 @@ The repository maintains full software engineering artifacts compliant with IEEE
 - 📑 [**REST API Documentation**](docs/api-reference.md): Endpoints, JSON payloads, response formats, and error handling.
 - 📑 [**Machine Learning Formulation**](docs/ml-model.md): Multiple Linear Regression derivations, residual metrics, and synthetic seed datasets.
 - 📑 [**Evaluation & Performance Metrics**](docs/evaluation-metrics.md): Time-to-Appointment attribution and measurement criteria.
-- 📘 [**Team Engineering Journals**](journals/README.md): Individual student development logs for Sprints 1 through 4.
+- 📘 [**Team Engineering Journals**](journals/README.md): Individual student development logs for Sprints 1 through 4 (Weeks 1 to 5).
 
 ---
 
