@@ -8,6 +8,7 @@ theme:
 
 nav:
   - Home: index.md
+  - Software Requirements Specification (SRS): SRS.md
   - System Architecture: architecture.md
   - Machine Learning & Buyer Barometer: ml-model.md
   - REST API Reference: api-reference.md
