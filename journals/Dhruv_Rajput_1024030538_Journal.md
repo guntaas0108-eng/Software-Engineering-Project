@@ -1,4 +1,4 @@
-# Weekly Engineering Journal (5 Weeks)
+# Weekly Engineering Journal (7 Weeks)
 
 **Student Name:** Dhruv Rajput  
 **Roll Number:** 1024030538  
@@ -123,5 +123,59 @@ The backend/database work defines the core data and route responsibilities for c
 
 ## Learning
 I learned the importance of keeping clear ownership of the core data model while coordinating validation and permission checks across the team.
+
+---
+
+# Week 6 – Sprint 4 Message Synchronization & Backend Verification
+
+## Objective
+Stabilize the Django backend for Sprint 4 messaging and appointments by verifying message retrieval, conversation permissions, database consistency and appointment status handling.
+
+## Work Done
+- Reviewed the reported message-sync issue where the recipient's browser displayed new messages only after a manual refresh.
+- Identified backend checks for retrieving newly created messages while ensuring that only conversation participants can access them.
+- Reviewed the need to preserve message timestamps/read tracking and appointment status transitions during the synchronization update.
+- Prepared to verify database migrations and Django system checks before accepting the updated Sprint 4 changes.
+- Kept existing property CRUD, ownership checks, search/filter and saved-property behavior in the regression checklist.
+
+## Outcome
+Backend verification points for the chat synchronization fix and appointment workflow are documented. Migration correctness, permission behavior and automated test results remain pending until run against the updated project.
+
+## Issues / Follow-up
+- Run Django system checks and verify migrations on the current project checkout.
+- Test message persistence, participant permissions and retrieval of newly created messages.
+- Confirm that buyer requests and seller responses preserve the expected appointment status and timestamps.
+- Run the automated test suite and record the actual output, including any remaining failures.
+
+## Learning
+I learned that reliable messaging depends on both the backend data/access rules and the way the frontend retrieves updates. Automatic synchronization must not weaken conversation permissions or duplicate stored messages.
+
+---
+
+# Week 7 – Sprint 5: Payment Integration (First 50%)
+
+## Student
+Dhruv Rajput — Person 3: Frontend, Buyer & Buyer Barometer
+
+## Objective
+Plan the buyer-facing interface required to connect the existing buyer experience to the new payment backend.
+
+## Work Done
+- Identified the buyer checkout page as a remaining Sprint 5 requirement.
+- Listed the UI states required for the payment flow: checkout, successful payment, failed payment, and cancellation.
+- Identified the need to show the buyer clear payment status and relevant appointment/payment details.
+- Kept the existing buyer property browsing and Buyer Barometer features in scope for regression testing.
+
+## Outcome
+The buyer-facing payment UI requirements have been outlined. The checkout and payment result screens are still pending and should not be treated as completed.
+
+## Issues / Follow-up
+- Build the buyer checkout page and connect it to the backend order-creation flow.
+- Display success, failure, and cancellation states clearly.
+- Test the buyer flow in a separate browser session and verify that existing buyer pages still work.
+- Ensure the interface never treats a payment as successful based only on a client-side message.
+
+## Learning
+A payment interface must communicate each possible result clearly and rely on server-verified payment status rather than trusting the browser alone.
 
 ---

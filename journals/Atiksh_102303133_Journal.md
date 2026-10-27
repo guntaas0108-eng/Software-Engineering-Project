@@ -1,4 +1,4 @@
-# Weekly Engineering Journal (5 Weeks)
+# Weekly Engineering Journal (7 Weeks)
 
 **Student Name:** Atiksh  
 **Roll Number:** 102303133  
@@ -123,5 +123,61 @@ Integration checks were scoped to confirm that the new features work with authen
 
 ## Learning
 I learned that targeted integration checks help detect cross-module problems, and that test results should be reported from actual runs rather than assumptions.
+
+---
+
+# Week 6 – Sprint 4 Chat Auto-Sync, Appointment Integration & CI Verification
+
+## Objective
+Stabilize Sprint 4 chat and appointment workflows by verifying automatic message synchronization, checking end-to-end behavior and preparing the changes for integration testing and CI.
+
+## Work Done
+- Investigated the reported chat behavior in which messages appeared in the recipient's browser only after a manual refresh.
+- Prepared an updated project package intended to add automatic message synchronization as a fallback when WebSocket delivery is unavailable.
+- Defined an end-to-end test sequence for buyer and seller sessions, bidirectional messaging, appointment requests and seller confirmation or decline.
+- Recorded the need to run the full Django test suite and resolve any errors before declaring Sprint 4 complete.
+- Identified CI and acceptance evidence required before moving to the next sprint.
+
+## Outcome
+An updated chat auto-sync package was prepared for local verification. Its behavior has not yet been confirmed on the team's machine; Sprint 4 remains pending successful automated tests and live two-browser testing.
+
+## Issues / Follow-up
+- Run Django checks and the full automated test suite, then record actual pass/fail results.
+- Test that messages appear in separate buyer and seller sessions without manual refresh.
+- Verify appointment requests, status changes and access restrictions end to end.
+- Confirm the GitHub Actions workflow result and report only status observed after the run.
+
+## Learning
+I learned that WebSocket delivery and fallback synchronization need separate verification. Integration work should preserve authorization, prevent duplicate messages and use actual test evidence before a sprint is marked complete.
+
+---
+
+# Week 7 – Sprint 5: Payment Integration (First 50%)
+
+## Student
+Atiksh Gupta — Person 4: Chat, Appointments, Payments & Admin, CI/CD and Testing
+
+## Objective
+Implement the initial payment-management and admin foundation for Sprint 5, while tracking what remains before the feature is ready for demonstration.
+
+## Work Done
+- Added the initial payment-processing foundation using Razorpay-oriented order creation and signature-verification logic.
+- Added payment status/transaction tracking and an initial payment migration.
+- Added a basic admin payment dashboard intended to show payment information and summary statistics.
+- Integrated payment records with Django admin.
+- Added basic admin-access tests and identified the need for a full local test run.
+
+## Outcome
+The Sprint 5 package contains an initial payment backend and admin dashboard. The code has not yet been verified end-to-end against Razorpay's sandbox, so the payment feature is still in progress.
+
+## Issues / Follow-up
+- Configure test credentials locally without committing secrets.
+- Run Django system checks, migrations, and the test suite.
+- Build and integrate the buyer-facing checkout and result screens.
+- Add webhook/reconciliation handling and broader admin management for users, listings, and appointments.
+- Complete end-to-end sandbox testing before marking Sprint 5 complete.
+
+## Learning
+Admin visibility is useful for monitoring transactions, but a complete payment feature also requires a buyer checkout flow, server-side verification, failure handling, and end-to-end tests.
 
 ---

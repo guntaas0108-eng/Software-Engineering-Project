@@ -1,4 +1,4 @@
-# Weekly Engineering Journal (5 Weeks)
+# Weekly Engineering Journal (7 Weeks)
 
 **Student Name:** Guntaas Singh  
 **Roll Number:** 1024030108  
@@ -120,5 +120,60 @@ The frontend contribution centers on the two user-facing Sprint 4 additions—me
 
 ## Learning
 I learned that chat and appointment interfaces need clear state feedback and must be tested against real authenticated sessions and backend responses, not only by rendering templates.
+
+---
+
+# Week 6 – Sprint 4 Buyer Chat Auto-Sync & Appointment UI Verification
+
+## Objective
+Improve and verify the buyer-facing chat and site-visit experience, with focus on showing new messages and appointment status changes without requiring a manual page refresh.
+
+## Work Done
+- Reproduced the reported issue in which a message sent from one browser appeared in the other browser only after refreshing.
+- Reviewed the buyer-facing chat flow and the requirement to update the conversation view without reloading the entire page.
+- Prepared a browser test using separate authenticated buyer and seller sessions in Brave and Chrome.
+- Identified checks for duplicate messages, message ordering and clear display of appointment status changes.
+- Kept existing property search/filter, property details and saved-property features in the UI regression checklist.
+
+## Outcome
+The frontend acceptance criteria for automatic message synchronization and appointment-status display are documented. The fix is not considered verified until messages appear in both directions without refreshing in the running application.
+
+## Issues / Follow-up
+- Test the updated chat interface with separate buyer and seller accounts.
+- Confirm that messages appear without manually refreshing either browser.
+- Confirm that appointment status shown to the buyer matches the backend state.
+- Check loading, empty, success and error states in the browser and record actual results.
+
+## Learning
+I learned that a chat interface needs to update its visible state after new messages arrive; a successful send action alone does not prove that recipient-side synchronization works.
+
+---
+
+# Week 7 – Sprint 5: Payment Integration (First 50%)
+
+## Student
+Guntaas Singh — Person 2: Backend, Database & Seller Module
+
+## Objective
+Contribute to the backend and database foundation needed for Sprint 5 payment processing while preserving existing seller and property functionality.
+
+## Work Done
+- Reviewed the payment transaction data requirements, including transaction identifiers and payment status.
+- Added/covered the payment database model and its initial migration in the Sprint 5 project package.
+- Implemented backend order-creation logic intended to support the Razorpay test-payment flow.
+- Added payment status and transaction tracking fields/logic.
+- Identified seller and property workflows as existing functionality that must remain unaffected.
+
+## Outcome
+The project package contains a backend foundation for storing payment information and initiating a payment order. This work still requires local Django checks and sandbox verification.
+
+## Issues / Follow-up
+- Run `python manage.py migrate` and `python manage.py check` locally.
+- Verify the payment model and order-creation endpoint with valid test configuration.
+- Test that existing seller and property CRUD features still work.
+- Do not use live payment credentials during development.
+
+## Learning
+Payment processing needs persistent transaction records and server-side validation. A database model and order endpoint alone do not complete the buyer checkout experience.
 
 ---
