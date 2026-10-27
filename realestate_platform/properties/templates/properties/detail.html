@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}{{ property.title }} — PropertyPulse{% endblock %}
+{% block content %}
+<div class="container pp-section-tight">
+
+    <div class="row g-4">
+        <div class="col-12 col-lg-7">
+            <div class="pp-gallery-main">
+                {% with imgs=property.images.all %}
+                {% if imgs %}
+                    <img src="{{ imgs.0.image.url }}" alt="{{ property.title }}" id="pp-main-img">
+                {% else %}
+                    <div class="pp-img-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#16302E" stroke-width="1.2"><path d="M3 11l9-7 9 7M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                {% endif %}
+                {% endwith %}
+            </div>
+            {% if property.images.all|length > 1 %}
+            <div class="pp-gallery-thumbs">
+                {% for img in property.images.all %}
+                    <img src="{{ img.image.url }}" alt="" onclick="document.getElementById('pp-main-img').src=this.src" role="button">
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <span class="pp-card-badge badge-{{ property.barometer_key }}">{{ property.barometer_label }}</span>
+            {% if user.is_authenticated %}
+            <form method="post" action="{% url 'toggle_save_property' property.pk %}" class="float-end">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button type="submit" class="btn btn-outline-primary btn-sm">
+                    {% if is_saved %}&#9829; Saved{% else %}&#9825; Save{% endif %}
+                </button>
+            </form>
+            {% endif %}
+            <h1 class="mt-2" style="font-size:1.7rem;">{{ property.title }}</h1>
+            <p class="pp-muted mb-3">{{ property.locality }}, {{ property.city }} &middot; {{ property.get_category_display }}</p>
+
+            <div class="pp-price-label">Listed price</div>
+            <div class="pp-price" style="font-size:1.7rem;">&#8377;{{ property.listed_price }}</div>
+
+            <div class="pp-ai-panel {% if not property.predicted_price %}pp-ai-pending{% endif %}">
+                <div class="pp-ai-label">AI Estimated Price</div>
+                {% if property.predicted_price %}
+                    <div class="pp-ai-value">&#8377;{{ property.predicted_price }}</div>
+                {% else %}
+                    <div class="pp-ai-value">Price Prediction: Pending Analysis</div>
+                {% endif %}
+            </div>
+
+            {% if property.possible_duplicate_of %}
+            <div class="alert alert-warning">This listing was flagged as a possible duplicate of another property.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h2 class="mb-3" style="font-size:1.4rem;">Property Details</h2>
+        <div class="pp-info-grid">
+            <div class="pp-info-item">
+                <div class="pp-info-label">Area</div>
+                <div class="pp-info-value">{{ property.area_sqft }} sqft</div>
+            </div>
+            <div class="pp-info-item">
+                <div class="pp-info-label">Bedrooms</div>
+                <div class="pp-info-value">{{ property.bedrooms|default:"—" }}</div>
+            </div>
+            <div class="pp-info-item">
+                <div class="pp-info-label">Bathrooms</div>
+                <div class="pp-info-value">{{ property.bathrooms|default:"—" }}</div>
+            </div>
+            <div class="pp-info-item">
+                <div class="pp-info-label">Age</div>
+                <div class="pp-info-value">{{ property.age_years }} yrs</div>
+            </div>
+            <div class="pp-info-item">
+                <div class="pp-info-label">City</div>
+                <div class="pp-info-value">{{ property.city }}</div>
+            </div>
+            <div class="pp-info-item">
+                <div class="pp-info-label">Locality</div>
+                <div class="pp-info-value">{{ property.locality }}</div>
+            </div>
+            <div class="pp-info-item">
+                <div class="pp-info-label">Category</div>
+                <div class="pp-info-value">{{ property.get_category_display }}</div>
+            </div>
+            <div class="pp-info-item">
+                <div class="pp-info-label">Status</div>
+                <div class="pp-info-value">{{ property.get_status_display }}</div>
+            </div>
+        </div>
+
+        {% if property.description %}
+        <h2 class="mt-4 mb-2" style="font-size:1.2rem;">Description</h2>
+        <p>{{ property.description }}</p>
+        {% endif %}
+    </div>
+</div>
+
+{% if request.user.is_authenticated and request.user.pk != property.seller_id %}
+<div class="mt-4"><a class="btn btn-primary" href="{% url 'chat_start' property.pk %}">Message seller / arrange a visit</a></div>
+{% elif not request.user.is_authenticated %}
+<div class="mt-4"><a class="btn btn-primary" href="{% url 'login' %}?next={{ request.path|urlencode }}">Sign in to message the seller</a></div>
+{% endif %}
+{% endblock %}

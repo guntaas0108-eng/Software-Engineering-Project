@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Payments Admin | PropertyPulse{% endblock %}
+{% block content %}
+<section class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <div><p class="text-uppercase small mb-1">PropertyPulse · Admin</p><h1 class="h2 mb-1">Operations dashboard</h1><p class="text-muted mb-0">Payment and appointment overview</p></div>
+    <a class="btn btn-outline-secondary" href="{% url 'admin:index' %}">Django admin</a>
+  </div>
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><div class="text-muted small">All payments</div><div class="display-6">{{ total_payments }}</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><div class="text-muted small">Successful</div><div class="display-6">{{ paid_count }}</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><div class="text-muted small">Pending</div><div class="display-6">{{ pending_count }}</div></div></div></div>
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><div class="text-muted small">Failed</div><div class="display-6">{{ failed_count }}</div></div></div></div>
+  </div>
+  <div class="row g-3 mb-4">
+    <div class="col-md-6"><div class="card"><div class="card-body"><div class="text-muted small">Verified revenue</div><div class="h2 mb-0">₹{{ revenue_rupees|floatformat:2 }}</div><small class="text-muted">Sum of payments whose signatures were verified.</small></div></div></div>
+    <div class="col-md-6"><div class="card"><div class="card-body"><div class="text-muted small">Appointments</div><div class="h2 mb-0">{{ confirmed_appointment_count }} <small class="text-muted fs-6">confirmed / {{ appointment_count }} total</small></div></div></div></div>
+  </div>
+  <h2 class="h4 mb-3">Recent payment attempts</h2>
+  <div class="table-responsive"><table class="table table-hover align-middle"><thead><tr><th>Reference</th><th>Buyer</th><th>Property</th><th>Amount</th><th>Status</th><th>Created</th></tr></thead><tbody>
+  {% for payment in recent_payments %}<tr><td><code>{{ payment.public_id|truncatechars:14 }}</code></td><td>{{ payment.buyer.username }}</td><td>{{ payment.appointment.conversation.property.title }}</td><td>₹{{ payment.amount_rupees|floatformat:2 }}</td><td><span class="badge {% if payment.status == 'PAID' %}text-bg-success{% elif payment.status == 'FAILED' %}text-bg-danger{% else %}text-bg-secondary{% endif %}">{{ payment.get_status_display }}</span></td><td>{{ payment.created_at|date:"d M Y, H:i" }}</td></tr>
+  {% empty %}<tr><td colspan="6" class="text-center text-muted py-4">No payment attempts yet.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endblock %}

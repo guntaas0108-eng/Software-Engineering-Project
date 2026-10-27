@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Properties — PropertyPulse{% endblock %}
+{% block content %}
+<div class="container pp-section-tight">
+    <h1 class="mb-4" style="font-size:1.9rem;">Property Listings</h1>
+
+    <div class="pp-search-card" style="margin-top:0;">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-12 col-md-4">
+                <label class="pp-label">Title or locality</label>
+                <input type="text" name="q" value="{{ filters.q }}" class="form-control" placeholder="Search title or locality">
+            </div>
+            <div class="col-6 col-md-2">
+                <label class="pp-label">Category</label>
+                <select name="category" class="form-select">
+                    <option value="">All types</option>
+                    {% for value, label in categories %}
+                        <option value="{{ value }}" {% if filters.category == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-6 col-md-2">
+                <label class="pp-label">Min price</label>
+                <input type="number" name="min_price" value="{{ filters.min_price }}" class="form-control" placeholder="&#8377; Min">
+            </div>
+            <div class="col-6 col-md-2">
+                <label class="pp-label">Max price</label>
+                <input type="number" name="max_price" value="{{ filters.max_price }}" class="form-control" placeholder="&#8377; Max">
+            </div>
+            <div class="col-6 col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row mt-4">
+        {% for property in properties %}
+            {% include "properties/_property_card.html" %}
+        {% empty %}
+            <div class="col-12">
+                <div class="pp-empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#16302E" stroke-width="1.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+                    <h3>No properties match your search</h3>
+                    <p><a href="{% url 'property_list' %}">Clear filters</a> or <a href="{% url 'submit_property' %}">list one yourself</a>.</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Chat · {{ conversation.property.title }}{% endblock %}
+{% block content %}
+<section class="container py-4 py-lg-5">
+  <a href="{% url 'chat_inbox' %}" class="text-decoration-none">← All messages</a>
+  <div class="row g-4 mt-1">
+    <div class="col-lg-8"><div class="card overflow-hidden"><div class="card-header py-3"><div class="d-flex justify-content-between gap-3 align-items-center"><div><h1 class="h5 mb-1">{{ conversation.property.title }}</h1><p class="small text-muted mb-0">{{ conversation.property.locality }}, {{ conversation.property.city }} · {% if request.user.pk == conversation.buyer_id %}Seller: {{ conversation.seller.username }}{% else %}Buyer: {{ conversation.buyer.username }}{% endif %}</p></div><span class="badge text-bg-light">{{ conversation.property.barometer_label }}</span></div></div>
+    <div class="card-body" id="chat-messages" style="height: 390px; overflow-y:auto; background:#f7f8f6;">
+      {% for item in chat_messages %}<div class="d-flex mb-3 {% if item.sender_id == request.user.pk %}justify-content-end{% endif %}" data-message-id="{{ item.pk }}"><div class="p-3 rounded-3 {% if item.sender_id == request.user.pk %}bg-primary text-white{% else %}bg-white border{% endif %}" style="max-width:82%;"><div class="small fw-bold mb-1">{{ item.sender.username }} <span class="fw-normal opacity-75">· {{ item.created_at|date:"M j, H:i" }}</span></div><div style="white-space:pre-wrap;overflow-wrap:anywhere;">{{ item.body }}</div></div></div>{% empty %}<div class="text-center text-muted py-5" id="empty-chat">No messages yet. Say hello to get things moving.</div>{% endfor %}
+    </div><div class="card-footer bg-white"><form method="post" id="message-form" class="d-flex gap-2">{% csrf_token %}<div class="flex-grow-1">{{ form.body }}{% if form.body.errors %}<div class="text-danger small">{{ form.body.errors|join:", " }}</div>{% endif %}</div><button class="btn btn-primary align-self-end" type="submit">Send</button></form><div class="small text-muted mt-2" id="live-status">Live chat connects when served through ASGI with Django Channels.</div></div></div></div>
+    <aside class="col-lg-4"><div class="card mb-4"><div class="card-body"><p class="small text-uppercase fw-bold text-muted">Site visit</p><h2 class="h5">Appointments</h2>
+      {% for appointment in appointments %}<div class="border rounded-3 p-3 mb-3"><div class="fw-semibold">{{ appointment.scheduled_for|date:"D, M j, Y · H:i" }}</div><span class="badge {% if appointment.status == 'CONFIRMED' %}text-bg-success{% elif appointment.status == 'DECLINED' or appointment.status == 'CANCELLED' %}text-bg-secondary{% else %}text-bg-warning{% endif %}">{{ appointment.get_status_display }}</span>{% if appointment.note %}<p class="small text-muted mt-2 mb-1">{{ appointment.note }}</p>{% endif %}{% if appointment.time_to_appointment_minutes != None %}<p class="small mt-2 mb-0">Time to confirmation: {{ appointment.time_to_appointment_minutes }} min</p>{% endif %}
+      {% if appointment.status == 'REQUESTED' and request.user.pk == conversation.seller_id %}<div class="d-flex gap-2 mt-3"><form method="post" action="{% url 'appointment_update' appointment.pk 'confirm' %}">{% csrf_token %}<button class="btn btn-sm btn-success">Confirm</button></form><form method="post" action="{% url 'appointment_update' appointment.pk 'decline' %}">{% csrf_token %}<button class="btn btn-sm btn-outline-secondary">Decline</button></form></div>{% endif %}
+      {% if appointment.status == 'REQUESTED' or appointment.status == 'CONFIRMED' %}<form class="mt-2" method="post" action="{% url 'appointment_update' appointment.pk 'cancel' %}">{% csrf_token %}<button class="btn btn-sm btn-link text-danger p-0">Cancel appointment</button></form>{% endif %}</div>{% empty %}<p class="text-muted small">No site visits requested yet.</p>{% endfor %}
+      {% if request.user.pk == conversation.buyer_id %}<hr><h3 class="h6">Request a site visit</h3><form method="post" action="{% url 'appointment_request' conversation.pk %}">{% csrf_token %}<div class="mb-3"><label class="form-label" for="id_scheduled_for">Date and time</label>{{ appointment_form.scheduled_for }}{% if appointment_form.scheduled_for.errors %}<div class="text-danger small">{{ appointment_form.scheduled_for.errors|join:", " }}</div>{% endif %}</div><div class="mb-3"><label class="form-label" for="id_note">Note (optional)</label>{{ appointment_form.note }}</div><button class="btn btn-primary w-100">Request appointment</button></form>{% endif %}
+    </div></div><div class="card"><div class="card-body"><p class="small text-uppercase fw-bold text-muted">Property</p><h3 class="h6">{{ conversation.property.title }}</h3><p class="text-muted small">{{ conversation.property.locality }}, {{ conversation.property.city }}</p><p class="mb-1">Listed price: ₹{{ conversation.property.listed_price|floatformat:0 }}</p><p class="mb-0">Estimated price: {% if conversation.property.predicted_price %}₹{{ conversation.property.predicted_price|floatformat:0 }}{% else %}Pending analysis{% endif %}</p><a class="btn btn-outline-primary btn-sm mt-3" href="{% url 'property_detail' conversation.property.pk %}">View listing</a></div></div></aside>
+  </div>
+</section>
+{% if request.user.is_authenticated %}<script>
+(function () {
+  const box = document.getElementById('chat-messages');
+  const status = document.getElementById('live-status');
+  const form = document.getElementById('message-form');
+  const input = document.getElementById('id_body');
+  const conversationId = {{ conversation.pk }};
+  const currentUserId = {{ request.user.pk }};
+  const messagesUrl = `{% url 'chat_messages_since' conversation.pk %}`;
+  const csrf = form.querySelector('input[name="csrfmiddlewaretoken"]').value;
+  let socket = null;
+  let lastId = 0;
+  let polling = false;
+
+  box.querySelectorAll('[data-message-id]').forEach((node) => {
+    lastId = Math.max(lastId, Number(node.dataset.messageId || 0));
+  });
+  box.scrollTop = box.scrollHeight;
+
+  function appendMessage(data) {
+    if (!data || !data.id || box.querySelector(`[data-message-id="${data.id}"]`)) return;
+    const empty = document.getElementById('empty-chat');
+    if (empty) empty.remove();
+    const own = Number(data.sender_id) === Number(currentUserId);
+    const row = document.createElement('div');
+    row.dataset.messageId = data.id;
+    row.className = 'd-flex mb-3 ' + (own ? 'justify-content-end' : '');
+    const bubble = document.createElement('div');
+    bubble.className = 'p-3 rounded-3 ' + (own ? 'bg-primary text-white' : 'bg-white border');
+    bubble.style.maxWidth = '82%';
+    const who = document.createElement('div');
+    who.className = 'small fw-bold mb-1';
+    who.textContent = data.sender + ' · ' + new Date(data.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    const body = document.createElement('div');
+    body.style.whiteSpace = 'pre-wrap';
+    body.style.overflowWrap = 'anywhere';
+    body.textContent = data.body;
+    bubble.append(who, body);
+    row.append(bubble);
+    box.append(row);
+    lastId = Math.max(lastId, Number(data.id));
+    box.scrollTop = box.scrollHeight;
+  }
+
+  async function pollMessages() {
+    if (polling) return;
+    polling = true;
+    try {
+      const response = await fetch(`${messagesUrl}?after=${lastId}`, {
+        credentials: 'same-origin', headers: {'X-Requested-With': 'XMLHttpRequest'}
+      });
+      if (!response.ok) throw new Error(`Message sync failed (${response.status})`);
+      const payload = await response.json();
+      payload.messages.forEach(appendMessage);
+      if (!socket || socket.readyState !== WebSocket.OPEN) {
+        status.textContent = 'Chat synced automatically (fallback mode).';
+      }
+    } catch (error) {
+      status.textContent = 'Chat sync temporarily unavailable. Check your connection.';
+    } finally {
+      polling = false;
+    }
+  }
+
+  function connectSocket() {
+    const protocol = location.protocol === 'https:' ? 'wss' : 'ws';
+    try {
+      socket = new WebSocket(`${protocol}://${location.host}/ws/chat/${conversationId}/`);
+      socket.onopen = () => { status.textContent = 'Live chat connected.'; pollMessages(); };
+      socket.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === 'error') { status.textContent = data.message; return; }
+          appendMessage(data);
+        } catch (_) { status.textContent = 'Received an invalid chat update.'; }
+      };
+      socket.onerror = () => { status.textContent = 'Live connection unavailable; automatic sync remains enabled.'; };
+      socket.onclose = () => { status.textContent = 'Live connection closed; automatic sync remains enabled.'; };
+    } catch (_) {
+      status.textContent = 'Live connection unavailable; automatic sync remains enabled.';
+    }
+  }
+
+  form.addEventListener('submit', async function (event) {
+    const body = input.value.trim();
+    if (!body) { event.preventDefault(); return; }
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      event.preventDefault();
+      socket.send(JSON.stringify({body}));
+      input.value = '';
+      input.focus();
+      return;
+    }
+    // If WebSocket is down, use the normal Django POST fallback. Polling will
+    // pick up the new message in this and the other participant's browser.
+  });
+
+  connectSocket();
+  pollMessages();
+  window.setInterval(pollMessages, 2000);
+})();
+</script>{% endif %}
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load property_extras %}
+{% block title %}Edit Listing — PropertyPulse{% endblock %}
+{% block content %}
+<div class="container pp-section-tight" style="max-width:760px;">
+    <h1 class="mb-1" style="font-size:1.9rem;">Edit: {{ property.title }}</h1>
+    <p class="pp-muted mb-4">Your estimated fair price is recalculated automatically when you save.</p>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+
+        <div class="pp-form-section">
+            <h2>Property Information</h2>
+            <div class="mb-3">
+                <label for="{{ form.title.id_for_label }}" class="pp-label">Title</label>
+                {{ form.title|with_error_class }}
+                {% if form.title.errors %}<div class="text-danger small mt-1">{{ form.title.errors|first }}</div>{% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.category.id_for_label }}" class="pp-label">Category</label>
+                {{ form.category|with_error_class }}
+            </div>
+            <div class="mb-0">
+                <label for="{{ form.description.id_for_label }}" class="pp-label">Description</label>
+                {{ form.description|with_error_class }}
+            </div>
+        </div>
+
+        <div class="pp-form-section">
+            <h2>Location</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="{{ form.city.id_for_label }}" class="pp-label">City</label>
+                    {{ form.city|with_error_class }}
+                    {% if form.city.errors %}<div class="text-danger small mt-1">{{ form.city.errors|first }}</div>{% endif %}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.locality.id_for_label }}" class="pp-label">Locality</label>
+                    {{ form.locality|with_error_class }}
+                    {% if form.locality.errors %}<div class="text-danger small mt-1">{{ form.locality.errors|first }}</div>{% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="pp-form-section">
+            <h2>Property Specifications</h2>
+            <div class="row g-3">
+                <div class="col-6 col-md-3">
+                    <label for="{{ form.area_sqft.id_for_label }}" class="pp-label">Area (sqft)</label>
+                    {{ form.area_sqft|with_error_class }}
+                    {% if form.area_sqft.errors %}<div class="text-danger small mt-1">{{ form.area_sqft.errors|first }}</div>{% endif %}
+                </div>
+                <div class="col-6 col-md-3">
+                    <label for="{{ form.bedrooms.id_for_label }}" class="pp-label">Bedrooms</label>
+                    {{ form.bedrooms|with_error_class }}
+                </div>
+                <div class="col-6 col-md-3">
+                    <label for="{{ form.bathrooms.id_for_label }}" class="pp-label">Bathrooms</label>
+                    {{ form.bathrooms|with_error_class }}
+                </div>
+                <div class="col-6 col-md-3">
+                    <label for="{{ form.age_years.id_for_label }}" class="pp-label">Age (years)</label>
+                    {{ form.age_years|with_error_class }}
+                </div>
+            </div>
+        </div>
+
+        <div class="pp-form-section">
+            <h2>Pricing</h2>
+            <div class="mb-0">
+                <label for="{{ form.listed_price.id_for_label }}" class="pp-label">Listed Price (&#8377;)</label>
+                {{ form.listed_price|with_error_class }}
+                {% if form.listed_price.errors %}<div class="text-danger small mt-1">{{ form.listed_price.errors|first }}</div>{% endif %}
+            </div>
+        </div>
+
+        <div class="pp-form-section">
+            <h2>Images</h2>
+            <label class="pp-label">Add more photos</label>
+            <input type="file" name="images" multiple class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="{% url 'property_detail' property.pk %}" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

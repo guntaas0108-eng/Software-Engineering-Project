@@ -1,0 +1,59 @@
+{% load static %}
+<div class="col-12 col-md-6 col-lg-4 mb-4">
+    <div class="pp-property-card">
+        <div class="pp-card-media">
+            {% with img=property.images.first %}
+            {% if img %}
+                <img src="{{ img.image.url }}" alt="{{ property.title }}">
+            {% else %}
+                <div class="pp-img-placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#16302E" stroke-width="1.4">
+                        <path d="M3 11l9-7 9 7M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            {% endif %}
+            {% endwith %}
+            {% if user.is_authenticated %}
+            <div class="pp-card-save">
+                <form method="post" action="{% url 'toggle_save_property' property.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    <button type="submit" class="btn {% if property.pk in saved_ids %}pp-saved{% endif %}" title="{% if property.pk in saved_ids %}Remove from saved{% else %}Save this property{% endif %}">
+                        {% if property.pk in saved_ids %}&#9829;{% else %}&#9825;{% endif %}
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        <div class="pp-card-body">
+            <span class="pp-card-badge badge-{{ property.barometer_key }}">{{ property.barometer_label }}</span>
+            <div class="pp-card-title">{{ property.title }}</div>
+            <div class="pp-card-loc">{{ property.locality }}, {{ property.city }} &middot; {{ property.get_category_display }}</div>
+            <div class="pp-card-facts">
+                <span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h6M4 4v6M4 4l6 6M20 20h-6m6 0v-6m0 6l-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    {{ property.area_sqft }} sqft
+                </span>
+                {% if property.bedrooms %}
+                <span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 18v-7a2 2 0 012-2h14a2 2 0 012 2v7M3 18h18M3 18v2M21 18v2M6 9V6a1 1 0 011-1h3a1 1 0 011 1v3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    {{ property.bedrooms }} BHK
+                </span>
+                {% endif %}
+                {% if property.bathrooms %}
+                <span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h16v3a4 4 0 01-4 4H8a4 4 0 01-4-4v-3zM7 12V6a2 2 0 012-2h1M4 19v1M20 19v1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    {{ property.bathrooms }}
+                </span>
+                {% endif %}
+            </div>
+            <div class="pp-card-footer">
+                <div>
+                    <div class="pp-price-label">Listed price</div>
+                    <div class="pp-price">&#8377;{{ property.listed_price }}</div>
+                </div>
+                <a href="{% url 'property_detail' property.pk %}" class="btn btn-outline-primary btn-sm">View Details</a>
+            </div>
+        </div>
+    </div>
+</div>

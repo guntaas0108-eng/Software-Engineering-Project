@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Delete Listing — PropertyPulse{% endblock %}
+{% block content %}
+<div class="container pp-section-tight" style="max-width:520px;">
+    <div class="pp-form-section">
+        <h2 style="border-bottom:none; padding-bottom:0;">Delete "{{ property.title }}"?</h2>
+        <p class="pp-muted">This can't be undone.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, delete it</button>
+            <a href="{% url 'property_detail' property.pk %}" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

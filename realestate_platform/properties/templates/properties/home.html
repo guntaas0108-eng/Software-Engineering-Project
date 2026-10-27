@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}PropertyPulse — Curated Luxury Real Estate &amp; Private Estates{% endblock %}
+{% block content %}
+
+<section class="pp-hero hero">
+    <div class="container position-relative text-center py-4">
+        <div class="eyebrow">Curated luxury real estate</div>
+        <h1 class="hero-title mx-auto">Homes with a <em>pulse</em> of their own</h1>
+        <p class="pp-hero-sub mx-auto">Discover villas, penthouses and private estates, hand-selected for those who expect more from an address.</p>
+        <div class="cta mt-3 mb-2">
+            <a class="btn btn-primary gold me-2" href="{% url 'property_list' %}">Explore Properties</a>
+            <a class="btn btn-outline-primary line" href="{% url 'submit_property' %}">List an Estate</a>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="pp-search-card">
+        <form method="get" action="{% url 'property_list' %}" class="row g-3 align-items-end">
+            <div class="col-12 col-md-4">
+                <label class="pp-label">Estate or Locality</label>
+                <input type="text" name="q" class="form-control" placeholder="e.g. Model Town, Ludhiana">
+            </div>
+            <div class="col-6 col-md-2">
+                <label class="pp-label">Category</label>
+                <select name="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for value, label in categories %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-6 col-md-2">
+                <label class="pp-label">Min Price</label>
+                <input type="number" name="min_price" class="form-control" placeholder="&#8377; Min">
+            </div>
+            <div class="col-6 col-md-2">
+                <label class="pp-label">Max Price</label>
+                <input type="number" name="max_price" class="form-control" placeholder="&#8377; Max">
+            </div>
+            <div class="col-6 col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<section class="pp-section py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <div class="eyebrow mb-1" style="font-size:0.68rem; letter-spacing:0.3em; color:var(--gold);">Featured Residences</div>
+                <h2 class="mb-0" style="font-size:2rem;">Explore Distinguished Estates</h2>
+            </div>
+            <a href="{% url 'property_list' %}" class="pp-muted" style="letter-spacing:0.15em; text-transform:uppercase; font-size:0.75rem;">View All Residences &rarr;</a>
+        </div>
+        <div class="row">
+            {% for property in featured %}
+                {% include "properties/_property_card.html" %}
+            {% empty %}
+                <div class="col-12">
+                    <div class="pp-empty-state">
+                        <h3>No Estates Listed Yet</h3>
+                        <p>Be the first to <a href="{% url 'submit_property' %}">list a premier estate</a> on PropertyPulse.</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="pp-section-tight pb-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <div class="eyebrow mb-1" style="font-size:0.68rem; letter-spacing:0.3em; color:var(--gold);">Distinction &amp; Trust</div>
+            <h2 style="font-size:2rem;">Why PropertyPulse?</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="pp-feature-card">
+                    <div class="pp-feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3>AI Valuation</h3>
+                    <p>Every estate is analyzed with an instant AI price estimate, establishing fair market value with algorithmic clarity.</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="pp-feature-card">
+                    <div class="pp-feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <h3>Verified Uniqueness</h3>
+                    <p>Proprietary duplicate detection filters ensure every residence is authentic, preventing duplicate listings.</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="pp-feature-card">
+                    <div class="pp-feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+                    <h3>Private Portfolio</h3>
+                    <p>Bookmark exceptional villas and penthouses to curate your personal acquisition shortlist.</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="pp-feature-card">
+                    <div class="pp-feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+                    </div>
+                    <h3>Refined Search</h3>
+                    <p>Filter seamlessly by architectural category, prime locality, and target valuation threshold.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

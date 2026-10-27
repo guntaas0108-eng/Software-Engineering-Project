@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Saved Properties — PropertyPulse{% endblock %}
+{% block content %}
+<div class="container pp-section-tight">
+    <h1 class="mb-4" style="font-size:1.9rem;">Your Saved Properties</h1>
+    <div class="row">
+        {% for property in properties %}
+            {% include "properties/_property_card.html" %}
+        {% empty %}
+            <div class="col-12">
+                <div class="pp-empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#16302E" stroke-width="1.4"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <h3>Nothing saved yet</h3>
+                    <p>Tap the heart on any listing to keep track of it here.</p>
+                    <a href="{% url 'property_list' %}" class="btn btn-primary mt-2">Browse Listings</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
