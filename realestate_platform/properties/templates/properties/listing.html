@@ -41,7 +41,7 @@
                 <div class="pp-empty-state">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#16302E" stroke-width="1.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
                     <h3>No properties match your search</h3>
-                    <p><a href="{% url 'property_list' %}">Clear filters</a> or <a href="{% url 'submit_property' %}">list one yourself</a>.</p>
+                    <p><a href="{% url 'property_list' %}">Clear filters</a>{% if is_seller %} or <a href="{% url 'submit_property' %}">list one yourself</a>{% endif %}.</p>
                 </div>
             </div>
         {% endfor %}

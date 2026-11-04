@@ -101,10 +101,12 @@
                         <span id="nav-msg-badge" class="badge rounded-pill bg-danger d-none" style="font-size:0.65rem; padding:2px 6px;">0</span>
                     </a>
 
-                    <!-- List Estate Link -->
-                    <a class="nav-link {% if request.resolver_match.url_name == 'submit_property' %}active{% endif %}" href="{% url 'submit_property' %}" style="font-size:0.75rem;">
+                    <!-- List Estate Link (EXCLUSIVELY FOR REGISTERED SELLERS) -->
+                    {% if is_seller %}
+                    <a class="nav-link {% if request.resolver_match.url_name == 'submit_property' %}active{% endif %}" href="{% url 'submit_property' %}" style="font-size:0.75rem; color:var(--gold-lt);">
                         + List Estate
                     </a>
+                    {% endif %}
 
                     <!-- User Account Dropdown (Cleans navbar, keeps all features in 1 click) -->
                     <div class="nav-item dropdown">
@@ -115,17 +117,22 @@
                             {% if is_platform_admin %}
                                 <li><h6 class="dropdown-header" style="color:var(--gold-lt);">&#128737; Platform Jurisdiction</h6></li>
                                 <li><a class="dropdown-item fw-semibold" href="{% url 'platform_admin' %}" style="color:var(--gold-lt) !important;">&#128737; Admin Command Center</a></li>
+                                <li><a class="dropdown-item" href="{% url 'chat_inbox' %}">&#9993; All Inquiries &amp; Messages</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            {% elif is_seller %}
+                                <li><h6 class="dropdown-header">Proprietor / Seller</h6></li>
+                                <li><a class="dropdown-item" href="{% url 'my_listings' %}">&#127963; My Listings</a></li>
+                                <li><a class="dropdown-item" href="{% url 'submit_property' %}">+ List New Estate</a></li>
+                                <li><a class="dropdown-item" href="{% url 'seller_analytics' %}">&#128200; Proprietor Analytics</a></li>
+                                <li><a class="dropdown-item fw-semibold" href="{% url 'chat_inbox' %}" style="color:var(--gold-lt) !important;">&#9993; Inquiries &amp; Site Visits &rarr;</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            {% else %}
+                                <li><h6 class="dropdown-header">Investor / Buyer</h6></li>
+                                <li><a class="dropdown-item" href="{% url 'buyer_dashboard' %}">&#9825; Saved Residences</a></li>
+                                <li><a class="dropdown-item" href="{% url 'my_transactions' %}">&#128176; Escrow Ledger</a></li>
+                                <li><a class="dropdown-item fw-semibold" href="{% url 'chat_inbox' %}" style="color:var(--gold-lt) !important;">&#9993; All Inquiries &rarr;</a></li>
                                 <li><hr class="dropdown-divider"></li>
                             {% endif %}
-                            <li><h6 class="dropdown-header">Proprietor / Seller</h6></li>
-                            <li><a class="dropdown-item" href="{% url 'my_listings' %}">&#127963; My Listings</a></li>
-                            <li><a class="dropdown-item" href="{% url 'seller_analytics' %}">&#128200; Proprietor Analytics</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><h6 class="dropdown-header">Investor / Buyer</h6></li>
-                            <li><a class="dropdown-item" href="{% url 'buyer_dashboard' %}">&#9825; Saved Residences</a></li>
-                            <li><a class="dropdown-item" href="{% url 'my_transactions' %}">&#128176; Escrow Ledger</a></li>
-                            <li><a class="dropdown-item fw-semibold" href="{% url 'chat_inbox' %}" style="color:var(--gold-lt) !important;">&#9993; All Inquiries &rarr;</a></li>
-                            <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="post" action="{% url 'logout' %}" class="px-3 py-1">
                                     {% csrf_token %}

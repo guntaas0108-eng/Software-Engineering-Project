@@ -9,7 +9,13 @@
         <p class="pp-hero-sub mx-auto">Discover villas, penthouses and private estates, hand-selected for those who expect more from an address.</p>
         <div class="cta mt-3 mb-2">
             <a class="btn btn-primary gold me-2" href="{% url 'property_list' %}">Explore Properties</a>
-            <a class="btn btn-outline-primary line" href="{% url 'submit_property' %}">List an Estate</a>
+            {% if is_seller %}
+                <a class="btn btn-outline-primary line" href="{% url 'submit_property' %}">List an Estate</a>
+            {% elif is_platform_admin %}
+                <a class="btn btn-outline-warning line" href="{% url 'platform_admin' %}">Admin Command</a>
+            {% else %}
+                <a class="btn btn-outline-primary line" href="{% url 'estate_advisor' %}">Estate Advisory</a>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -61,7 +67,7 @@
                 <div class="col-12">
                     <div class="pp-empty-state">
                         <h3>No Estates Listed Yet</h3>
-                        <p>Be the first to <a href="{% url 'submit_property' %}">list a premier estate</a> on PropertyPulse.</p>
+                        <p>{% if is_seller %}Be the first to <a href="{% url 'submit_property' %}">list a premier estate</a> on PropertyPulse.{% else %}New premier estates will be cataloged shortly.{% endif %}</p>
                     </div>
                 </div>
             {% endfor %}

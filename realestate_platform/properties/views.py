@@ -11,6 +11,7 @@ from .models import Property, PropertyImage, SavedProperty
 from .forms import PropertyForm
 from .duplicate_check import find_possible_duplicates
 from ml_predictor.predictor import PricePredictor
+from accounts.models import UserProfile
 
 predictor = PricePredictor()
 
@@ -44,6 +45,17 @@ def home(request):
 
 @login_required
 def submit_property(request):
+    is_seller = (
+        hasattr(request.user, "profile")
+        and request.user.profile.role == UserProfile.Role.SELLER
+    )
+    if not is_seller:
+        messages.error(
+            request,
+            "Access Restricted: Listing an estate is reserved exclusively for registered Estate Proprietors / Sellers."
+        )
+        return redirect("property_list")
+
     if request.method == "POST":
         form = PropertyForm(request.POST)
         if form.is_valid():
@@ -141,6 +153,16 @@ def property_detail(request, pk):
 @login_required
 def my_listings(request):
     """Sprint 2 (Person 2): seller dashboard — every listing owned by this user, any status."""
+    is_seller = (
+        hasattr(request.user, "profile")
+        and request.user.profile.role == UserProfile.Role.SELLER
+    )
+    if not is_seller:
+        messages.error(
+            request,
+            "Access Restricted: Proprietor Listings dashboard is reserved exclusively for Sellers."
+        )
+        return redirect("property_list")
     properties = Property.objects.filter(seller=request.user)
     return render(request, "properties/my_listings.html", {"properties": properties})
 
@@ -256,6 +278,16 @@ def mortgage_calculator(request):
 @login_required
 def seller_analytics(request):
     """Proprietor analytics dashboard tracking portfolio valuation, inquiries, and saves."""
+    is_seller = (
+        hasattr(request.user, "profile")
+        and request.user.profile.role == UserProfile.Role.SELLER
+    )
+    if not is_seller:
+        messages.error(
+            request,
+            "Access Restricted: Proprietor Analytics is reserved exclusively for Sellers."
+        )
+        return redirect("property_list")
     my_props = Property.objects.filter(seller=request.user).prefetch_related("images", "conversations", "saved_by")
     total_valuation = sum(p.listed_price for p in my_props)
     total_inquiries = sum(p.conversations.count() for p in my_props)
