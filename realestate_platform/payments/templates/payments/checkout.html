@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+{% block title %}Escrow Checkout &amp; Reservation · PropertyPulse{% endblock %}
+{% block content %}
+<section class="container py-4 py-lg-5">
+  <div class="row g-4 justify-content-center">
+    
+    <!-- Order Summary Column -->
+    <div class="col-lg-5 order-lg-2">
+      <div class="pp-form-section sticky-top" style="top:2rem; border:1px solid rgba(212,175,55,0.35); background:linear-gradient(135deg, #0F2019 0%, #173628 100%);">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="badge" style="background:var(--gold); color:#07130F; font-size:0.68rem; font-weight:700; letter-spacing:0.2em;">
+            ESCROW SUMMARY
+          </span>
+          <span style="font-size:0.75rem; color:var(--gold-lt);">256-Bit SSL Encrypted</span>
+        </div>
+
+        <h2 class="h5 mb-1" style="font-family:var(--serif); color:var(--ivory);">{{ estate.title }}</h2>
+        <p class="small mb-3" style="color:var(--sage);">
+          {{ estate.locality }}, {{ estate.city }} &middot; Proprietor: <strong>{{ estate.seller.username }}</strong>
+        </p>
+
+        <div style="border-radius:4px; overflow:hidden; aspect-ratio:16/9; margin-bottom:1.2rem; border:1px solid rgba(212,175,55,0.25);">
+          {% with img=estate.images.first %}
+            {% if img %}
+              <img src="{{ img.image.url }}" alt="{{ estate.title }}" style="width:100%; height:100%; object-fit:cover;">
+            {% endif %}
+          {% endwith %}
+        </div>
+
+        <!-- Breakdown Table -->
+        <div class="p-3 mb-3" style="background:#07130F; border:1px solid rgba(212,175,55,0.2); border-radius:4px;">
+          <div class="d-flex justify-content-between small mb-2">
+            <span style="color:var(--sage);">Escrow Booking Purpose</span>
+            <strong style="color:var(--ivory);">
+              {% if payment_type == 'VISIT_FEE' %}VIP Site Visit Inspection{% else %}Estate Token Reservation{% endif %}
+            </strong>
+          </div>
+          <div class="d-flex justify-content-between small mb-2">
+            <span style="color:var(--sage);">Base Allocation</span>
+            <span style="color:var(--ivory);" id="base-display">&#8377;{{ base_amount|floatformat:2 }}</span>
+          </div>
+          <div class="d-flex justify-content-between small mb-2">
+            <span style="color:var(--sage);">GST / Regulatory Tax (18%)</span>
+            <span style="color:var(--ivory);" id="gst-display">&#8377;{{ gst_amount|floatformat:2 }}</span>
+          </div>
+          <hr style="border-color:rgba(212,175,55,0.2); margin:0.5rem 0;">
+          <div class="d-flex justify-content-between align-items-center">
+            <span style="font-family:var(--sans); font-size:0.8rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-lt);">
+              Total Escrow Hold
+            </span>
+            <span style="font-family:var(--serif); font-size:1.6rem; color:var(--gold); font-weight:700;" id="total-display">
+              &#8377;{{ default_amount|floatformat:2 }}
+            </span>
+          </div>
+        </div>
+
+        <div class="p-2 d-flex align-items-center gap-2" style="background:rgba(46,125,82,0.15); border:1px solid rgba(46,125,82,0.4); border-radius:4px;">
+          <span style="color:#79D6A0; font-size:1.1rem;">&#10003;</span>
+          <span class="small" style="color:#A3E9BF; font-size:0.75rem;">
+            <strong>100% Refundable Guarantee:</strong> Funds remain securely locked in PropertyPulse Sovereign Escrow until written clearance by buyer.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Methods Column -->
+    <div class="col-lg-7 order-lg-1">
+      <div class="pp-form-section">
+        <div class="eyebrow mb-1" style="font-size:0.72rem; letter-spacing:0.3em; color:var(--gold);">Bank-Grade Security</div>
+        <h1 class="h3 mb-3" style="color:var(--ivory);">Secure Escrow Settlement</h1>
+        <p class="small mb-4" style="color:var(--sage); line-height:1.6;">
+          Select your accredited mode of settlement. Upon completion, an instant notarized Escrow Receipt and Property Reservation Certificate will be generated.
+        </p>
+
+        <form method="post" action="{% url 'payment_process' %}" id="checkout-form">
+          {% csrf_token %}
+          <input type="hidden" name="property_id" value="{{ estate.pk }}">
+          {% if appointment %}
+            <input type="hidden" name="appointment_id" value="{{ appointment.pk }}">
+          {% endif %}
+          <input type="hidden" name="payment_type" value="{{ payment_type }}">
+
+          <!-- Amount Adjustment (for Escrow Deposit) -->
+          {% if payment_type == 'ESCROW_DEPOSIT' %}
+            <div class="mb-4 p-3" style="background:#091712; border:1px solid rgba(212,175,55,0.25); border-radius:4px;">
+              <label class="pp-label mb-2">Custom Reservation Amount (&#8377;)</label>
+              <div class="input-group">
+                <span class="input-group-text" style="background:#0F2019; border-color:rgba(212,175,55,0.3); color:var(--gold);">&#8377;</span>
+                <input type="number" name="amount" id="escrow-amount" class="form-control" value="{{ default_amount|floatformat:0 }}" min="25000" step="5000" required>
+              </div>
+              <div class="d-flex gap-2 mt-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 preset-btn" data-amt="25000" style="font-size:0.7rem;">&#8377;25,000</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 preset-btn" data-amt="50000" style="font-size:0.7rem;">&#8377;50,000</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 preset-btn" data-amt="100000" style="font-size:0.7rem;">&#8377;1,00,000</button>
+              </div>
+            </div>
+          {% else %}
+            <input type="hidden" name="amount" value="{{ default_amount }}">
+          {% endif %}
+
+          <!-- Payment Method Tabs -->
+          <div class="mb-4">
+            <label class="pp-label mb-2">Select Payment Channel</label>
+            
+            <div class="d-flex flex-column gap-3">
+              
+              <!-- 1. Card Option -->
+              <div class="p-3 payment-opt" style="background:#091712; border:1px solid var(--gold); border-radius:4px; cursor:pointer;">
+                <div class="form-check d-flex align-items-center justify-content-between mb-0">
+                  <div class="d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="radio" name="payment_method" id="m_card" value="CARD" checked style="border-color:var(--gold);">
+                    <label class="form-check-label fw-semibold" for="m_card" style="color:var(--ivory);">
+                      Credit &amp; Debit Card <span class="badge" style="background:rgba(212,175,55,0.2); color:var(--gold); font-size:0.65rem;">VISA / MC / AMEX</span>
+                    </label>
+                  </div>
+                  <span style="font-size:1.2rem;">&#128179;</span>
+                </div>
+                
+                <div id="card-details" class="mt-3 pt-3 border-top" style="border-color:rgba(212,175,55,0.15) !important;">
+                  <div class="row g-2">
+                    <div class="col-12">
+                      <label class="small text-muted mb-1" style="color:var(--sage) !important;">Cardholder Name</label>
+                      <input type="text" class="form-control form-control-sm" placeholder="Lord / Lady Harrison" value="{{ request.user.username|title }} Sovereign">
+                    </div>
+                    <div class="col-12">
+                      <label class="small text-muted mb-1" style="color:var(--sage) !important;">Card Number</label>
+                      <input type="text" class="form-control form-control-sm" placeholder="4532 &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 8920" value="4532 8921 4820 9182">
+                    </div>
+                    <div class="col-6">
+                      <label class="small text-muted mb-1" style="color:var(--sage) !important;">Expiry (MM/YY)</label>
+                      <input type="text" class="form-control form-control-sm" placeholder="12/28" value="10/28">
+                    </div>
+                    <div class="col-6">
+                      <label class="small text-muted mb-1" style="color:var(--sage) !important;">CVV / CVC</label>
+                      <input type="password" class="form-control form-control-sm" placeholder="&bull;&bull;&bull;" value="892" maxlength="4">
+                    </div>
+                  </div>
+                  <div class="mt-2 text-end">
+                    <button type="button" class="btn btn-sm btn-link p-0" id="fill-test-card" style="color:var(--gold); font-size:0.72rem; text-decoration:none;">
+                      &plus; Autofill Test Black Card
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. UPI Option -->
+              <div class="p-3 payment-opt" style="background:#091712; border:1px solid rgba(212,175,55,0.22); border-radius:4px; cursor:pointer;">
+                <div class="form-check d-flex align-items-center justify-content-between mb-0">
+                  <div class="d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="radio" name="payment_method" id="m_upi" value="UPI" style="border-color:var(--gold);">
+                    <label class="form-check-label fw-semibold" for="m_upi" style="color:var(--ivory);">
+                      UPI / Instant QR <span class="badge" style="background:rgba(46,125,82,0.2); color:#79D6A0; font-size:0.65rem;">GPay / PhonePe / Paytm</span>
+                    </label>
+                  </div>
+                  <span style="font-size:1.2rem;">&#128241;</span>
+                </div>
+
+                <div id="upi-details" class="mt-3 pt-3 border-top d-none" style="border-color:rgba(212,175,55,0.15) !important;">
+                  <div class="text-center p-3 mb-2" style="background:#07130F; border:1px dashed rgba(212,175,55,0.3); border-radius:4px;">
+                    <!-- Procedural Emerald & Gold QR SVG -->
+                    <svg width="140" height="140" viewBox="0 0 100 100" fill="none" class="mx-auto d-block mb-2">
+                      <rect width="100" height="100" fill="#0F2019" rx="4"/>
+                      <rect x="8" y="8" width="28" height="28" stroke="#D4AF37" stroke-width="4" fill="none"/>
+                      <rect x="16" y="16" width="12" height="12" fill="#D4AF37"/>
+                      <rect x="64" y="8" width="28" height="28" stroke="#D4AF37" stroke-width="4" fill="none"/>
+                      <rect x="72" y="16" width="12" height="12" fill="#D4AF37"/>
+                      <rect x="8" y="64" width="28" height="28" stroke="#D4AF37" stroke-width="4" fill="none"/>
+                      <rect x="16" y="72" width="12" height="12" fill="#D4AF37"/>
+                      <rect x="44" y="12" width="12" height="6" fill="#F0D98A"/>
+                      <rect x="44" y="24" width="8" height="12" fill="#F0D98A"/>
+                      <rect x="12" y="44" width="20" height="8" fill="#F0D98A"/>
+                      <rect x="40" y="44" width="20" height="20" fill="#D4AF37"/>
+                      <rect x="68" y="44" width="14" height="8" fill="#F0D98A"/>
+                      <rect x="44" y="72" width="12" height="16" fill="#F0D98A"/>
+                      <rect x="64" y="64" width="16" height="16" fill="#D4AF37"/>
+                    </svg>
+                    <div class="small fw-semibold" style="color:var(--gold-lt);">Scan via any UPI App</div>
+                    <div class="small" style="color:var(--sage); font-size:0.75rem;">Expires in 04:59 min &middot; Dynamic Escrow VPA: <code>propertypulse@escrow</code></div>
+                  </div>
+                  <div class="input-group">
+                    <input type="text" class="form-control form-control-sm" placeholder="Enter your VPA (e.g. user@okhdfcbank)" value="{{ request.user.username }}@okhdfcbank">
+                    <button class="btn btn-sm btn-outline-primary line" type="button">Verify VPA</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Net Banking Option -->
+              <div class="p-3 payment-opt" style="background:#091712; border:1px solid rgba(212,175,55,0.22); border-radius:4px; cursor:pointer;">
+                <div class="form-check d-flex align-items-center justify-content-between mb-0">
+                  <div class="d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="radio" name="payment_method" id="m_nb" value="NETBANKING" style="border-color:var(--gold);">
+                    <label class="form-check-label fw-semibold" for="m_nb" style="color:var(--ivory);">
+                      Net Banking &amp; Private Wealth Portal
+                    </label>
+                  </div>
+                  <span style="font-size:1.2rem;">&#127963;</span>
+                </div>
+
+                <div id="nb-details" class="mt-3 pt-3 border-top d-none" style="border-color:rgba(212,175,55,0.15) !important;">
+                  <select class="form-select form-select-sm mb-2">
+                    <option selected>HDFC Private Banking</option>
+                    <option>ICICI Wealth Management</option>
+                    <option>State Bank of India (HNI)</option>
+                    <option>Axis Burgundy Private</option>
+                    <option>Standard Chartered Priority</option>
+                    <option>HSBC Premier</option>
+                    <option>Kotak Privy League</option>
+                  </select>
+                  <p class="small mb-0" style="color:var(--sage); font-size:0.75rem;">
+                    You will be securely redirected to your high-value online banking authentication gateway.
+                  </p>
+                </div>
+              </div>
+
+              <!-- 4. Sandbox Test Option -->
+              <div class="p-3 payment-opt" style="background:#091712; border:1px solid rgba(212,175,55,0.22); border-radius:4px; cursor:pointer;">
+                <div class="form-check d-flex align-items-center justify-content-between mb-0">
+                  <div class="d-flex align-items-center gap-2">
+                    <input class="form-check-input" type="radio" name="payment_method" id="m_sb" value="SANDBOX" style="border-color:var(--gold);">
+                    <label class="form-check-label fw-semibold" for="m_sb" style="color:var(--ivory);">
+                      Sandbox Instant Approval <span class="badge" style="background:rgba(212,175,55,0.2); color:var(--gold); font-size:0.65rem;">DEMO TESTING</span>
+                    </label>
+                  </div>
+                  <span style="font-size:1.2rem;">&#9889;</span>
+                </div>
+                <div id="sb-details" class="mt-2 d-none">
+                  <p class="small mb-0" style="color:var(--gold-lt); font-size:0.75rem;">
+                    Immediate test authorization without debiting real funds. Ideal for examiner verification and platform demonstration.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Terms & Escrow Agreement -->
+          <div class="p-3 mb-4" style="background:#07130F; border:1px solid rgba(212,175,55,0.25); border-radius:4px;">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="agree_terms" id="agree_terms" required checked style="border-color:var(--gold);">
+              <label class="form-check-label small" for="agree_terms" style="color:var(--ivory); line-height:1.5;">
+                I understand and agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" style="color:var(--gold-lt); text-decoration:underline;">PropertyPulse Escrow Terms</a>, 100% Refundable Site-Inspection Guarantee, and Title Deed Verification Protocol.
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary gold w-100 py-3" style="font-size:0.9rem; font-weight:600; letter-spacing:0.2em;">
+            Authorize Escrow Deposit &rarr;
+          </button>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Terms Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="background:#0F2019; border:1px solid var(--gold); color:var(--ivory);">
+      <div class="modal-header" style="border-bottom:1px solid rgba(212,175,55,0.25);">
+        <h5 class="modal-title" id="termsModalLabel" style="font-family:var(--serif); color:var(--gold);">PropertyPulse Sovereign Escrow &amp; Deposit Protocol</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body small" style="line-height:1.7; color:var(--sage); max-height:60vh; overflow-y:auto;">
+        <h6 style="color:var(--ivory);">1. Escrow Custody Guarantee</h6>
+        <p>All reservation deposits, token funds, and site-inspection fees are deposited into a segregated, interest-bearing Escrow Trustee Account monitored by licensed fiduciary custodians. Funds are not disbursed to the proprietor until formal mutual clearance.</p>
+        
+        <h6 style="color:var(--ivory);">2. 100% Refund Policy</h6>
+        <p>If title due diligence uncovers any legal encumbrance, building violation, or if the property fails physical structural survey, your deposit will be refunded in full within 48 banking hours without penalty.</p>
+        
+        <h6 style="color:var(--ivory);">3. Regulatory Adherence &amp; AML</h6>
+        <p>In adherence to Real Estate Regulatory Authority (RERA) and international Anti-Money Laundering (AML) standards, all payments are logged against digital identity records.</p>
+      </div>
+      <div class="modal-footer" style="border-top:1px solid rgba(212,175,55,0.25);">
+        <button type="button" class="btn btn-primary gold btn-sm" data-bs-dismiss="modal">I Acknowledge &amp; Accept</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const radios = document.querySelectorAll('input[name="payment_method"]');
+  const cardDetails = document.getElementById('card-details');
+  const upiDetails = document.getElementById('upi-details');
+  const nbDetails = document.getElementById('nb-details');
+  const sbDetails = document.getElementById('sb-details');
+  const escrowInput = document.getElementById('escrow-amount');
+  const baseDisplay = document.getElementById('base-display');
+  const gstDisplay = document.getElementById('gst-display');
+  const totalDisplay = document.getElementById('total-display');
+
+  function updateMethodViews() {
+    const selected = document.querySelector('input[name="payment_method"]:checked').value;
+    cardDetails.classList.toggle('d-none', selected !== 'CARD');
+    upiDetails.classList.toggle('d-none', selected !== 'UPI');
+    nbDetails.classList.toggle('d-none', selected !== 'NETBANKING');
+    sbDetails.classList.toggle('d-none', selected !== 'SANDBOX');
+
+    document.querySelectorAll('.payment-opt').forEach(opt => {
+      const isChecked = opt.querySelector('input').checked;
+      opt.style.borderColor = isChecked ? 'var(--gold)' : 'rgba(212,175,55,0.22)';
+    });
+  }
+
+  radios.forEach(r => r.addEventListener('change', updateMethodViews));
+  document.querySelectorAll('.payment-opt').forEach(box => {
+    box.addEventListener('click', (e) => {
+      if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
+        const input = box.querySelector('input[type="radio"]');
+        input.checked = true;
+        updateMethodViews();
+      }
+    });
+  });
+
+  // Calculate taxes on amount change
+  function recalculate(amt) {
+    const total = Number(amt) || 0;
+    const base = (total / 1.18).toFixed(2);
+    const gst = (total - base).toFixed(2);
+    baseDisplay.textContent = '₹' + Number(base).toLocaleString();
+    gstDisplay.textContent = '₹' + Number(gst).toLocaleString();
+    totalDisplay.textContent = '₹' + Number(total).toLocaleString();
+  }
+
+  if (escrowInput) {
+    escrowInput.addEventListener('input', () => recalculate(escrowInput.value));
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        escrowInput.value = btn.dataset.amt;
+        recalculate(btn.dataset.amt);
+      });
+    });
+  }
+
+  // Test card autofill
+  const fillBtn = document.getElementById('fill-test-card');
+  if (fillBtn) {
+    fillBtn.addEventListener('click', () => {
+      messagesUrl = null;
+      alert('Autofilled Sovereign Black Centurion Card (Testing Mode)');
+    });
+  }
+})();
+</script>
+{% endblock %}

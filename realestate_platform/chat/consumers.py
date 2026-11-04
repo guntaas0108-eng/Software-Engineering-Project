@@ -12,9 +12,16 @@ class ConversationConsumer(AsyncWebsocketConsumer):
         if not user or not user.is_authenticated or not await self.is_participant(user.pk):
             await self.close(code=4403)
             return
+        self.user = user
         self.group_name = f"conversation_{self.conversation_id}"
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
+
+        # Send connection confirmation
+        await self.send_json({
+            "type": "system",
+            "message": f"Connected to live chat as {user.username}."
+        })
 
     async def disconnect(self, close_code):
         if hasattr(self, "group_name"):
@@ -23,20 +30,54 @@ class ConversationConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data=None, bytes_data=None):
         try:
             payload = json.loads(text_data or "{}")
+            msg_type = payload.get("type", "message")
+
+            if msg_type == "typing":
+                is_typing = bool(payload.get("is_typing", False))
+                await self.channel_layer.group_send(
+                    self.group_name,
+                    {
+                        "type": "chat.typing",
+                        "sender_id": self.user.pk,
+                        "sender": self.user.username,
+                        "is_typing": is_typing,
+                    }
+                )
+                return
+
+            # Default: regular chat message
             body = str(payload.get("body", "")).strip()
             if not body or len(body) > 4000:
                 await self.send_json({"type": "error", "message": "Message must contain 1–4000 characters."})
                 return
-            saved = await self.save_message(self.scope["user"].pk, body)
+
+            saved = await self.save_message(self.user.pk, body)
             if not saved:
                 await self.close(code=4403)
                 return
-            await self.channel_layer.group_send(self.group_name, {"type": "chat.message", "message": saved})
+
+            await self.channel_layer.group_send(
+                self.group_name,
+                {"type": "chat.message", "message": saved}
+            )
         except (ValueError, TypeError, json.JSONDecodeError):
             await self.send_json({"type": "error", "message": "Invalid message payload."})
 
     async def chat_message(self, event):
         await self.send_json(event["message"])
+
+    async def chat_typing(self, event):
+        # Do not echo own typing status
+        if event["sender_id"] != self.user.pk:
+            await self.send_json({
+                "type": "typing",
+                "sender": event["sender"],
+                "is_typing": event["is_typing"],
+            })
+
+    async def send_json(self, content):
+        """Encode content to JSON and send over WebSocket text frame."""
+        await self.send(text_data=json.dumps(content))
 
     @database_sync_to_async
     def is_participant(self, user_id):
@@ -58,6 +99,11 @@ class ConversationConsumer(AsyncWebsocketConsumer):
             pk=conversation.pk, first_message_at__isnull=True
         ).update(first_message_at=message.created_at)
         Conversation.objects.filter(pk=conversation.pk).update(updated_at=now)
-        return {"type": "message", "id": message.pk, "body": message.body,
-                "sender_id": user_id, "sender": message.sender.username,
-                "created_at": message.created_at.isoformat()}
+        return {
+            "type": "message",
+            "id": message.pk,
+            "body": message.body,
+            "sender_id": user_id,
+            "sender": message.sender.username,
+            "created_at": message.created_at.isoformat(),
+        }

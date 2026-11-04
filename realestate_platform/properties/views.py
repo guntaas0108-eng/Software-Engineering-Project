@@ -213,3 +213,57 @@ def toggle_save_property(request, pk):
 
     next_url = request.POST.get("next") or reverse("property_detail", args=[pk])
     return redirect(next_url)
+
+
+def compare_properties(request):
+    """Side-by-side architectural and financial comparison of up to 3 estates."""
+    all_properties = Property.objects.filter(status=Property.Status.ACTIVE).order_by("title")
+    p1_id = request.GET.get("p1")
+    p2_id = request.GET.get("p2")
+    p3_id = request.GET.get("p3")
+
+    # Defaults to first two if none selected
+    if not p1_id and not p2_id and all_properties.count() >= 2:
+        p1_id = all_properties[0].pk
+        p2_id = all_properties[1].pk
+
+    selected_ids = [pid for pid in [p1_id, p2_id, p3_id] if pid]
+    compared_properties = Property.objects.filter(pk__in=selected_ids).prefetch_related("images")
+
+    return render(request, "properties/compare.html", {
+        "all_properties": all_properties,
+        "compared_properties": compared_properties,
+        "p1_id": int(p1_id) if p1_id else None,
+        "p2_id": int(p2_id) if p2_id else None,
+        "p3_id": int(p3_id) if p3_id else None,
+    })
+
+
+def mortgage_calculator(request):
+    """Interactive financing & EMI computation tool for luxury estates."""
+    estates = Property.objects.filter(status=Property.Status.ACTIVE).order_by("-listed_price")[:10]
+    selected_id = request.GET.get("estate_id")
+    selected_estate = None
+    if selected_id:
+        selected_estate = Property.objects.filter(pk=selected_id).first()
+
+    return render(request, "properties/mortgage_calculator.html", {
+        "estates": estates,
+        "selected_estate": selected_estate,
+    })
+
+
+@login_required
+def seller_analytics(request):
+    """Proprietor analytics dashboard tracking portfolio valuation, inquiries, and saves."""
+    my_props = Property.objects.filter(seller=request.user).prefetch_related("images", "conversations", "saved_by")
+    total_valuation = sum(p.listed_price for p in my_props)
+    total_inquiries = sum(p.conversations.count() for p in my_props)
+    total_saves = sum(p.saved_by.count() for p in my_props)
+
+    return render(request, "properties/seller_analytics.html", {
+        "properties": my_props,
+        "total_valuation": total_valuation,
+        "total_inquiries": total_inquiries,
+        "total_saves": total_saves,
+    })

@@ -6,8 +6,11 @@ from django.db.models import Q
 from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+import json
+
 from .forms import AppointmentForm, MessageForm
 from .models import Appointment, AppointmentEvent, Conversation, Message
+from .chatbot_engine import generate_buyer_bot_response, generate_seller_bot_response, get_user_notifications
 
 
 def _participant_conversation(user, pk):
@@ -99,7 +102,8 @@ def messages_since(request, pk):
 def request_appointment(request, conversation_id):
     conversation = _participant_conversation(request.user, conversation_id)
     if request.user.pk != conversation.buyer_id:
-        raise Http404
+        messages.error(request, "Only the buyer can request an appointment.")
+        return redirect("chat_thread", pk=conversation.pk)
     if request.method != "POST":
         return redirect("chat_thread", pk=conversation.pk)
     form = AppointmentForm(request.POST)
@@ -107,18 +111,15 @@ def request_appointment(request, conversation_id):
         appointment = form.save(commit=False)
         appointment.conversation = conversation
         appointment.requested_by = request.user
-        try:
-            appointment.full_clean()
-            appointment.save()
-            AppointmentEvent.objects.create(
-                appointment=appointment, actor=request.user, new_status=appointment.status,
-                note="Appointment requested",
-            )
-            messages.success(request, "Site-visit request sent to the seller.")
-        except ValidationError as exc:
-            messages.error(request, "; ".join(exc.messages))
+        appointment.save()
+        AppointmentEvent.objects.create(
+            appointment=appointment, actor=request.user,
+            old_status=Appointment.Status.REQUESTED, new_status=Appointment.Status.REQUESTED,
+            note="Appointment requested by buyer",
+        )
+        messages.success(request, "Appointment request sent to seller.")
     else:
-        messages.error(request, "Please choose a valid future date and time.")
+        messages.error(request, "Could not request appointment. Please verify the date and time.")
     return redirect("chat_thread", pk=conversation.pk)
 
 
@@ -128,24 +129,28 @@ def update_appointment(request, pk, action):
         Appointment.objects.select_related("conversation", "conversation__property"), pk=pk
     )
     conversation = appointment.conversation
-    if not conversation.includes(request.user) or request.method != "POST":
+    if not conversation.includes(request.user):
         raise Http404
-    if action in ("confirm", "decline") and request.user.pk != conversation.seller_id:
-        raise Http404
-    if action == "cancel" and request.user.pk not in (conversation.buyer_id, conversation.seller_id):
-        raise Http404
-    allowed = {
-        "confirm": (Appointment.Status.REQUESTED, Appointment.Status.CONFIRMED),
-        "decline": (Appointment.Status.REQUESTED, Appointment.Status.DECLINED),
-        "cancel": ((Appointment.Status.REQUESTED, Appointment.Status.CONFIRMED), Appointment.Status.CANCELLED),
-    }
-    if action not in allowed:
-        raise Http404
-    old_status, new_status = allowed[action]
-    if appointment.status not in ((old_status,) if isinstance(old_status, str) else old_status):
-        messages.error(request, "This appointment can no longer be changed with that action.")
+    if request.method != "POST":
         return redirect("chat_thread", pk=conversation.pk)
     previous_status = appointment.status
+    if action == "confirm":
+        if request.user.pk != conversation.seller_id:
+            messages.error(request, "Only the seller can confirm appointments.")
+            return redirect("chat_thread", pk=conversation.pk)
+        if previous_status != Appointment.Status.REQUESTED:
+            messages.error(request, "Only requested appointments can be confirmed.")
+            return redirect("chat_thread", pk=conversation.pk)
+        new_status = Appointment.Status.CONFIRMED
+    elif action == "decline":
+        if request.user.pk != conversation.seller_id:
+            messages.error(request, "Only the seller can decline appointments.")
+            return redirect("chat_thread", pk=conversation.pk)
+        new_status = Appointment.Status.DECLINED
+    elif action == "cancel":
+        new_status = Appointment.Status.CANCELLED
+    else:
+        raise Http404
     appointment.status = new_status
     if new_status == Appointment.Status.CONFIRMED:
         appointment.confirmed_at = timezone.now()
@@ -174,4 +179,62 @@ def appointment_metrics(request):
     return render(request, "chat/appointment_metrics.html", {
         "confirmed_appointments": confirmed, "measured_count": len(durations),
         "median_minutes": median, "all_count": Appointment.objects.count(),
+    })
+
+
+from django.views.decorators.csrf import csrf_exempt
+
+# ==================== AI CHATBOT & NOTIFICATIONS API ====================
+
+@csrf_exempt
+def api_chatbot(request):
+    """
+    Dual AI Chatbot API:
+    - Mode 'buyer': Estate Concierge AI
+    - Mode 'seller': Portfolio Strategist AI
+    """
+    if request.method != "POST":
+        return JsonResponse({"error": "POST method required"}, status=405)
+
+    try:
+        data = json.loads(request.body or "{}")
+        user_message = data.get("message", "").strip()
+        mode = data.get("mode", "buyer").lower()
+    except Exception:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    if not user_message:
+        return JsonResponse({"error": "Empty message"}, status=400)
+
+    # Determine user role or requested mode
+    if mode == "seller":
+        reply = generate_seller_bot_response(user_message, request.user)
+    else:
+        reply = generate_buyer_bot_response(user_message, request.user)
+
+    alerts = get_user_notifications(request.user) if request.user.is_authenticated else []
+
+    return JsonResponse({
+        "mode": mode,
+        "reply": reply,
+        "notifications": alerts,
+    })
+
+
+def api_notifications(request):
+    """Fetches real-time notification alerts and unread count."""
+    alerts = get_user_notifications(request.user) if request.user.is_authenticated else []
+    return JsonResponse({
+        "count": len(alerts),
+        "alerts": alerts,
+    })
+
+
+def advisor_view(request):
+    """Dedicated full-screen AI Advisory & Intelligence Center."""
+    is_seller = request.user.is_authenticated and request.user.properties.exists()
+    default_mode = "seller" if is_seller else "buyer"
+    return render(request, "chat/advisor.html", {
+        "default_mode": default_mode,
+        "alerts": get_user_notifications(request.user) if request.user.is_authenticated else []
     })

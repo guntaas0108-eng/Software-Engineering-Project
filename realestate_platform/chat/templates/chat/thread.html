@@ -1,36 +1,267 @@
 {% extends "base.html" %}
-{% block title %}Chat · {{ conversation.property.title }}{% endblock %}
+{% block title %}Estate Negotiation · {{ conversation.property.title }} · PropertyPulse{% endblock %}
 {% block content %}
 <section class="container py-4 py-lg-5">
-  <a href="{% url 'chat_inbox' %}" class="text-decoration-none">← All messages</a>
-  <div class="row g-4 mt-1">
-    <div class="col-lg-8"><div class="card overflow-hidden"><div class="card-header py-3"><div class="d-flex justify-content-between gap-3 align-items-center"><div><h1 class="h5 mb-1">{{ conversation.property.title }}</h1><p class="small text-muted mb-0">{{ conversation.property.locality }}, {{ conversation.property.city }} · {% if request.user.pk == conversation.buyer_id %}Seller: {{ conversation.seller.username }}{% else %}Buyer: {{ conversation.buyer.username }}{% endif %}</p></div><span class="badge text-bg-light">{{ conversation.property.barometer_label }}</span></div></div>
-    <div class="card-body" id="chat-messages" style="height: 390px; overflow-y:auto; background:#f7f8f6;">
-      {% for item in chat_messages %}<div class="d-flex mb-3 {% if item.sender_id == request.user.pk %}justify-content-end{% endif %}" data-message-id="{{ item.pk }}"><div class="p-3 rounded-3 {% if item.sender_id == request.user.pk %}bg-primary text-white{% else %}bg-white border{% endif %}" style="max-width:82%;"><div class="small fw-bold mb-1">{{ item.sender.username }} <span class="fw-normal opacity-75">· {{ item.created_at|date:"M j, H:i" }}</span></div><div style="white-space:pre-wrap;overflow-wrap:anywhere;">{{ item.body }}</div></div></div>{% empty %}<div class="text-center text-muted py-5" id="empty-chat">No messages yet. Say hello to get things moving.</div>{% endfor %}
-    </div><div class="card-footer bg-white"><form method="post" id="message-form" class="d-flex gap-2">{% csrf_token %}<div class="flex-grow-1">{{ form.body }}{% if form.body.errors %}<div class="text-danger small">{{ form.body.errors|join:", " }}</div>{% endif %}</div><button class="btn btn-primary align-self-end" type="submit">Send</button></form><div class="small text-muted mt-2" id="live-status">Live chat connects when served through ASGI with Django Channels.</div></div></div></div>
-    <aside class="col-lg-4"><div class="card mb-4"><div class="card-body"><p class="small text-uppercase fw-bold text-muted">Site visit</p><h2 class="h5">Appointments</h2>
-      {% for appointment in appointments %}<div class="border rounded-3 p-3 mb-3"><div class="fw-semibold">{{ appointment.scheduled_for|date:"D, M j, Y · H:i" }}</div><span class="badge {% if appointment.status == 'CONFIRMED' %}text-bg-success{% elif appointment.status == 'DECLINED' or appointment.status == 'CANCELLED' %}text-bg-secondary{% else %}text-bg-warning{% endif %}">{{ appointment.get_status_display }}</span>{% if appointment.note %}<p class="small text-muted mt-2 mb-1">{{ appointment.note }}</p>{% endif %}{% if appointment.time_to_appointment_minutes != None %}<p class="small mt-2 mb-0">Time to confirmation: {{ appointment.time_to_appointment_minutes }} min</p>{% endif %}
-      {% if appointment.status == 'REQUESTED' and request.user.pk == conversation.seller_id %}<div class="d-flex gap-2 mt-3"><form method="post" action="{% url 'appointment_update' appointment.pk 'confirm' %}">{% csrf_token %}<button class="btn btn-sm btn-success">Confirm</button></form><form method="post" action="{% url 'appointment_update' appointment.pk 'decline' %}">{% csrf_token %}<button class="btn btn-sm btn-outline-secondary">Decline</button></form></div>{% endif %}
-      {% if appointment.status == 'REQUESTED' or appointment.status == 'CONFIRMED' %}<form class="mt-2" method="post" action="{% url 'appointment_update' appointment.pk 'cancel' %}">{% csrf_token %}<button class="btn btn-sm btn-link text-danger p-0">Cancel appointment</button></form>{% endif %}</div>{% empty %}<p class="text-muted small">No site visits requested yet.</p>{% endfor %}
-      {% if request.user.pk == conversation.buyer_id %}<hr><h3 class="h6">Request a site visit</h3><form method="post" action="{% url 'appointment_request' conversation.pk %}">{% csrf_token %}<div class="mb-3"><label class="form-label" for="id_scheduled_for">Date and time</label>{{ appointment_form.scheduled_for }}{% if appointment_form.scheduled_for.errors %}<div class="text-danger small">{{ appointment_form.scheduled_for.errors|join:", " }}</div>{% endif %}</div><div class="mb-3"><label class="form-label" for="id_note">Note (optional)</label>{{ appointment_form.note }}</div><button class="btn btn-primary w-100">Request appointment</button></form>{% endif %}
-    </div></div><div class="card"><div class="card-body"><p class="small text-uppercase fw-bold text-muted">Property</p><h3 class="h6">{{ conversation.property.title }}</h3><p class="text-muted small">{{ conversation.property.locality }}, {{ conversation.property.city }}</p><p class="mb-1">Listed price: ₹{{ conversation.property.listed_price|floatformat:0 }}</p><p class="mb-0">Estimated price: {% if conversation.property.predicted_price %}₹{{ conversation.property.predicted_price|floatformat:0 }}{% else %}Pending analysis{% endif %}</p><a class="btn btn-outline-primary btn-sm mt-3" href="{% url 'property_detail' conversation.property.pk %}">View listing</a></div></div></aside>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="{% url 'chat_inbox' %}" class="btn btn-outline-secondary btn-sm">
+      &larr; Back to Messages
+    </a>
+    <div class="d-flex align-items-center gap-2">
+      <span class="badge badge-{{ conversation.property.barometer_key }}">{{ conversation.property.barometer_label }}</span>
+      <span id="socket-badge" class="badge" style="background:rgba(212,175,55,0.15); color:var(--gold); border:1px solid rgba(212,175,55,0.4);">
+        <span class="spinner-grow spinner-grow-sm me-1" style="width:7px; height:7px;" role="status"></span> Connecting...
+      </span>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Main Chat Column -->
+    <div class="col-lg-8">
+      <div class="card pp-form-section p-0 overflow-hidden mb-0" style="border:1px solid rgba(212,175,55,0.25);">
+        <!-- Chat Header -->
+        <div class="p-3 d-flex justify-content-between align-items-center" style="background:#091712; border-bottom:1px solid rgba(212,175,55,0.2);">
+          <div class="d-flex align-items-center gap-3">
+            <div style="width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg, var(--gold), #7E651E); display:grid; place-items:center; font-family:var(--serif); font-weight:700; color:#07130F; font-size:1.2rem;">
+              {% if request.user.pk == conversation.buyer_id %}
+                {{ conversation.seller.username|first|upper }}
+              {% else %}
+                {{ conversation.buyer.username|first|upper }}
+              {% endif %}
+            </div>
+            <div>
+              <h1 class="h6 mb-0" style="color:var(--ivory); font-family:var(--sans); font-weight:600; letter-spacing:0.05em;">
+                {% if request.user.pk == conversation.buyer_id %}
+                  {{ conversation.seller.username }} <span class="badge" style="background:rgba(212,175,55,0.2); color:var(--gold-lt); font-size:0.65rem; letter-spacing:0.15em;">SELLER</span>
+                {% else %}
+                  {{ conversation.buyer.username }} <span class="badge" style="background:rgba(157,181,165,0.2); color:var(--sage-lt); font-size:0.65rem; letter-spacing:0.15em;">BUYER</span>
+                {% endif %}
+              </h1>
+              <p class="small mb-0" style="color:var(--sage);">
+                Regarding: <strong style="color:var(--ivory);">{{ conversation.property.title }}</strong> &middot; {{ conversation.property.locality }}
+              </p>
+            </div>
+          </div>
+          <div class="d-none d-sm-block text-end">
+            <div style="font-family:var(--serif); font-size:1.15rem; color:var(--gold); font-weight:600;">
+              &#8377;{{ conversation.property.listed_price|floatformat:0 }}
+            </div>
+            <div style="font-size:0.7rem; color:var(--sage); letter-spacing:0.1em; text-transform:uppercase;">Listed Valuation</div>
+          </div>
+        </div>
+
+        <!-- Chat Messages Scroll Container -->
+        <div id="chat-messages" style="height: 420px; overflow-y:auto; padding:1.5rem; background:#07130F; display:flex; flex-direction:column; gap:1rem;">
+          {% for item in chat_messages %}
+            <div class="d-flex {% if item.sender_id == request.user.pk %}justify-content-end{% else %}justify-content-start{% endif %}" data-message-id="{{ item.pk }}">
+              <div style="max-width:80%; border-radius:6px; padding:0.85rem 1.1rem; {% if item.sender_id == request.user.pk %}background:linear-gradient(135deg, #1C382C 0%, #132820 100%); border:1px solid rgba(212,175,55,0.4); color:var(--ivory);{% else %}background:#0F2019; border:1px solid rgba(157,181,165,0.25); color:var(--ivory);{% endif %} box-shadow:0 4px 12px rgba(0,0,0,0.3);">
+                <div class="d-flex justify-content-between align-items-center mb-1 gap-3" style="font-size:0.72rem; letter-spacing:0.1em;">
+                  <strong style="color:{% if item.sender_id == request.user.pk %}var(--gold-lt){% else %}var(--sage-lt){% endif %};">
+                    {{ item.sender.username }}
+                    {% if item.sender_id == conversation.seller_id %}(Seller){% else %}(Buyer){% endif %}
+                  </strong>
+                  <span style="color:var(--sage); opacity:0.8;">{{ item.created_at|date:"M j, H:i" }}</span>
+                </div>
+                <div style="white-space:pre-wrap; word-break:break-word; font-size:0.94rem; line-height:1.55;">{{ item.body }}</div>
+              </div>
+            </div>
+          {% empty %}
+            <div class="text-center py-5 my-auto" id="empty-chat" style="color:var(--sage);">
+              <div style="font-size:2.2rem; opacity:0.4; margin-bottom:0.5rem;">&#9993;</div>
+              <p class="mb-1" style="font-family:var(--serif); font-size:1.2rem; color:var(--ivory);">No messages exchanged yet</p>
+              <p class="small mb-0">Inquire about floor plans, title deed verification, or request a private estate walk-through below.</p>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Typing Indicator -->
+        <div id="typing-indicator" class="px-3 py-1 d-none" style="background:#091712; font-size:0.75rem; color:var(--gold); border-top:1px dashed rgba(212,175,55,0.2);">
+          <span class="spinner-grow spinner-grow-sm me-1" style="width:6px; height:6px;"></span>
+          <span id="typing-text">Partner is typing...</span>
+        </div>
+
+        <!-- Quick Suggestions Chips -->
+        <div class="p-2 d-flex gap-2 flex-wrap" style="background:#0B1A14; border-top:1px solid rgba(212,175,55,0.15); overflow-x:auto;">
+          <button type="button" class="btn btn-sm btn-outline-secondary quick-chip py-1 px-2" style="font-size:0.7rem; letter-spacing:0.05em;" data-text="Is the property currently vacant and ready for immediate possession?">Vacant &amp; Ready?</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary quick-chip py-1 px-2" style="font-size:0.7rem; letter-spacing:0.05em;" data-text="Are all clear title deeds, encumbrance certificates, and approvals available?">Title Clearance?</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary quick-chip py-1 px-2" style="font-size:0.7rem; letter-spacing:0.05em;" data-text="Can we schedule a private VIP escorted walkthrough this weekend?">Schedule VIP Tour?</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary quick-chip py-1 px-2" style="font-size:0.7rem; letter-spacing:0.05em;" data-text="What is the token escrow deposit required to reserve this estate?">Token Deposit?</button>
+        </div>
+
+        <!-- Input Bar -->
+        <div class="p-3" style="background:#0D1F18; border-top:1px solid rgba(212,175,55,0.2);">
+          <form method="post" id="message-form" class="d-flex gap-2 align-items-end">
+            {% csrf_token %}
+            <div class="flex-grow-1">
+              <textarea name="body" id="id_body" rows="2" class="form-control" placeholder="Type your message to {{ conversation.seller.username }}..." required style="resize:none; background:#07130F; border:1px solid rgba(212,175,55,0.3); color:var(--ivory);"></textarea>
+            </div>
+            <button class="btn btn-primary gold px-4 py-2" type="submit" id="send-btn" style="height:54px;">
+              Send &rarr;
+            </button>
+          </form>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="small" id="live-status" style="font-size:0.72rem; color:var(--sage);">
+              Encrypted live channel active via WebSocket.
+            </span>
+            <span class="small" style="font-size:0.72rem; color:var(--sage);">
+              Press <kbd style="background:#07130F; border:1px solid rgba(212,175,55,0.4); color:var(--gold);">Enter</kbd> to send
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar: Appointments & Property Escrow Action -->
+    <aside class="col-lg-4">
+      <!-- Escrow / Deposit Quick Action -->
+      <div class="pp-form-section mb-4" style="border:1px solid var(--gold); background:linear-gradient(135deg, #0F2019 0%, #19382A 100%);">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="badge" style="background:var(--gold); color:#07130F; font-size:0.65rem; letter-spacing:0.18em; font-weight:700;">OFFICIAL ESCROW</span>
+          <span style="font-size:0.75rem; color:var(--gold-lt);">Secure Token</span>
+        </div>
+        <h3 class="h6 mb-2" style="font-family:var(--serif); font-size:1.25rem; color:var(--ivory);">Reserve This Estate</h3>
+        <p class="small mb-3" style="color:var(--sage); line-height:1.5;">
+          Place a 100% refundable token deposit or book an authorized VIP site inspection with our Escrow Guarantee.
+        </p>
+        <div class="d-grid gap-2">
+          <a href="{% url 'payment_checkout_property' conversation.property.pk %}" class="btn btn-primary gold btn-sm py-2">
+            Proceed to Escrow Deposit &rarr;
+          </a>
+          <a href="{% url 'property_detail' conversation.property.pk %}" class="btn btn-outline-secondary btn-sm py-2">
+            View Full Architectural Dossier
+          </a>
+        </div>
+      </div>
+
+      <!-- Site Visits / Appointments Card -->
+      <div class="pp-form-section mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h6 mb-0" style="font-family:var(--sans); letter-spacing:0.15em; text-transform:uppercase; font-size:0.8rem; color:var(--gold);">
+            Private Site Visits
+          </h2>
+          <span class="badge" style="background:rgba(212,175,55,0.15); color:var(--gold); font-size:0.7rem;">
+            {{ appointments|length }} Requested
+          </span>
+        </div>
+
+        {% for appointment in appointments %}
+          <div class="p-3 mb-3" style="background:#091712; border:1px solid rgba(212,175,55,0.22); border-radius:4px;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div class="fw-semibold" style="font-size:0.9rem; color:var(--ivory);">
+                {{ appointment.scheduled_for|date:"D, M j, Y &middot; H:i" }}
+              </div>
+              <span class="badge {% if appointment.status == 'CONFIRMED' %}badge-great{% elif appointment.status == 'DECLINED' or appointment.status == 'CANCELLED' %}badge-above{% else %}badge-fair{% endif %}">
+                {{ appointment.get_status_display }}
+              </span>
+            </div>
+            {% if appointment.note %}
+              <p class="small mb-2" style="color:var(--sage);">{{ appointment.note }}</p>
+            {% endif %}
+
+            <!-- Actions for Seller -->
+            {% if appointment.status == 'REQUESTED' and request.user.pk == conversation.seller_id %}
+              <div class="d-flex gap-2 mt-2">
+                <form method="post" action="{% url 'appointment_update' appointment.pk 'confirm' %}" class="flex-grow-1">
+                  {% csrf_token %}
+                  <button class="btn btn-sm btn-primary gold w-100 py-1" style="font-size:0.7rem;">Confirm Visit</button>
+                </form>
+                <form method="post" action="{% url 'appointment_update' appointment.pk 'decline' %}" class="flex-grow-1">
+                  {% csrf_token %}
+                  <button class="btn btn-sm btn-outline-secondary w-100 py-1" style="font-size:0.7rem;">Decline</button>
+                </form>
+              </div>
+            {% endif %}
+
+            <!-- Payment for Confirmed Visit (Buyer) -->
+            {% if appointment.status == 'CONFIRMED' and request.user.pk == conversation.buyer_id %}
+              <div class="mt-2 pt-2 border-top" style="border-color:rgba(212,175,55,0.15) !important;">
+                <a href="{% url 'payment_checkout_appointment' appointment.pk %}" class="btn btn-sm btn-primary gold w-100 py-1" style="font-size:0.72rem;">
+                  Pay Confirmed Booking Fee (&#8377;500)
+                </a>
+              </div>
+            {% endif %}
+
+            <!-- Cancel link -->
+            {% if appointment.status == 'REQUESTED' or appointment.status == 'CONFIRMED' %}
+              <form class="mt-2 text-end" method="post" action="{% url 'appointment_update' appointment.pk 'cancel' %}">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-link p-0" style="color:var(--pp-above); font-size:0.72rem; text-decoration:none;">
+                  Cancel Appointment
+                </button>
+              </form>
+            {% endif %}
+          </div>
+        {% empty %}
+          <p class="small mb-0" style="color:var(--sage);">No site visits arranged yet.</p>
+        {% endfor %}
+
+        <!-- Buyer Request Form -->
+        {% if request.user.pk == conversation.buyer_id %}
+          <hr style="border-color:rgba(212,175,55,0.2);">
+          <h3 class="h6 mb-3" style="font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--ivory);">
+            Schedule Inspection
+          </h3>
+          <form method="post" action="{% url 'appointment_request' conversation.pk %}">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="pp-label" for="id_scheduled_for">Preferred Date &amp; Time</label>
+              {{ appointment_form.scheduled_for }}
+              {% if appointment_form.scheduled_for.errors %}
+                <div class="text-danger small mt-1">{{ appointment_form.scheduled_for.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              <label class="pp-label" for="id_note">Private Note / Security Clearance</label>
+              {{ appointment_form.note }}
+            </div>
+            <button class="btn btn-outline-primary line w-100 btn-sm py-2" type="submit">
+              Submit Request to Seller
+            </button>
+          </form>
+        {% endif %}
+      </div>
+    </aside>
   </div>
 </section>
-{% if request.user.is_authenticated %}<script>
+
+{% if request.user.is_authenticated %}
+<script>
 (function () {
   const box = document.getElementById('chat-messages');
-  const status = document.getElementById('live-status');
+  const statusEl = document.getElementById('live-status');
+  const badgeEl = document.getElementById('socket-badge');
   const form = document.getElementById('message-form');
   const input = document.getElementById('id_body');
+  const typingEl = document.getElementById('typing-indicator');
+  const typingText = document.getElementById('typing-text');
   const conversationId = {{ conversation.pk }};
   const currentUserId = {{ request.user.pk }};
-  const messagesUrl = `{% url 'chat_messages_since' conversation.pk %}`;
-  const csrf = form.querySelector('input[name="csrfmiddlewaretoken"]').value;
+  const messagesUrl = "{% url 'chat_messages_since' conversation.pk %}";
+
   let socket = null;
   let lastId = 0;
   let polling = false;
+  let typingTimeout = null;
 
-  box.querySelectorAll('[data-message-id]').forEach((node) => {
+  // Sound chime synthesizer via Web Audio API (no external file needed)
+  function playNotificationChime() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15); // A5
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.3);
+    } catch(e) {}
+  }
+
+  // Track highest message ID present in DOM
+  box.querySelectorAll('[data-message-id]').forEach(node => {
     lastId = Math.max(lastId, Number(node.dataset.messageId || 0));
   });
   box.scrollTop = box.scrollHeight;
@@ -39,83 +270,181 @@
     if (!data || !data.id || box.querySelector(`[data-message-id="${data.id}"]`)) return;
     const empty = document.getElementById('empty-chat');
     if (empty) empty.remove();
+
     const own = Number(data.sender_id) === Number(currentUserId);
+    if (!own) {
+      playNotificationChime();
+    }
+
     const row = document.createElement('div');
     row.dataset.messageId = data.id;
-    row.className = 'd-flex mb-3 ' + (own ? 'justify-content-end' : '');
+    row.className = 'd-flex ' + (own ? 'justify-content-end' : 'justify-content-start');
+
     const bubble = document.createElement('div');
-    bubble.className = 'p-3 rounded-3 ' + (own ? 'bg-primary text-white' : 'bg-white border');
-    bubble.style.maxWidth = '82%';
-    const who = document.createElement('div');
-    who.className = 'small fw-bold mb-1';
-    who.textContent = data.sender + ' · ' + new Date(data.created_at).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    bubble.style.maxWidth = '80%';
+    bubble.style.borderRadius = '6px';
+    bubble.style.padding = '0.85rem 1.1rem';
+    bubble.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+
+    if (own) {
+      bubble.style.background = 'linear-gradient(135deg, #1C382C 0%, #132820 100%)';
+      bubble.style.border = '1px solid rgba(212,175,55,0.4)';
+      bubble.style.color = 'var(--ivory)';
+    } else {
+      bubble.style.background = '#0F2019';
+      bubble.style.border = '1px solid rgba(157,181,165,0.25)';
+      bubble.style.color = 'var(--ivory)';
+    }
+
+    const timeStr = new Date(data.created_at).toLocaleTimeString([], {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+
+    const header = document.createElement('div');
+    header.className = 'd-flex justify-content-between align-items-center mb-1 gap-3';
+    header.style.fontSize = '0.72rem';
+    header.style.letterSpacing = '0.1em';
+
+    const who = document.createElement('strong');
+    who.style.color = own ? 'var(--gold-lt)' : 'var(--sage-lt)';
+    who.textContent = data.sender;
+
+    const time = document.createElement('span');
+    time.style.color = 'var(--sage)';
+    time.style.opacity = '0.8';
+    time.textContent = timeStr;
+
+    header.append(who, time);
+
     const body = document.createElement('div');
     body.style.whiteSpace = 'pre-wrap';
-    body.style.overflowWrap = 'anywhere';
+    body.style.wordBreak = 'break-word';
+    body.style.fontSize = '0.94rem';
+    body.style.lineHeight = '1.55';
     body.textContent = data.body;
-    bubble.append(who, body);
+
+    bubble.append(header, body);
     row.append(bubble);
     box.append(row);
+
     lastId = Math.max(lastId, Number(data.id));
     box.scrollTop = box.scrollHeight;
   }
 
+  // Polling fallback
   async function pollMessages() {
     if (polling) return;
     polling = true;
     try {
       const response = await fetch(`${messagesUrl}?after=${lastId}`, {
-        credentials: 'same-origin', headers: {'X-Requested-With': 'XMLHttpRequest'}
+        credentials: 'same-origin',
+        headers: {'X-Requested-With': 'XMLHttpRequest'}
       });
-      if (!response.ok) throw new Error(`Message sync failed (${response.status})`);
-      const payload = await response.json();
-      payload.messages.forEach(appendMessage);
-      if (!socket || socket.readyState !== WebSocket.OPEN) {
-        status.textContent = 'Chat synced automatically (fallback mode).';
+      if (response.ok) {
+        const payload = await response.json();
+        if (payload.messages && payload.messages.length) {
+          payload.messages.forEach(appendMessage);
+        }
       }
-    } catch (error) {
-      status.textContent = 'Chat sync temporarily unavailable. Check your connection.';
+    } catch (e) {
     } finally {
       polling = false;
     }
   }
 
+  // WebSocket Connection
   function connectSocket() {
     const protocol = location.protocol === 'https:' ? 'wss' : 'ws';
+    const wsUrl = `${protocol}://${location.host}/ws/chat/${conversationId}/`;
     try {
-      socket = new WebSocket(`${protocol}://${location.host}/ws/chat/${conversationId}/`);
-      socket.onopen = () => { status.textContent = 'Live chat connected.'; pollMessages(); };
+      socket = new WebSocket(wsUrl);
+
+      socket.onopen = () => {
+        badgeEl.innerHTML = '<span style="color:#79D6A0;">&#9679;</span> Live Connected';
+        statusEl.textContent = 'Live encrypted WebSocket channel active.';
+        pollMessages();
+      };
+
       socket.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
-          if (data.type === 'error') { status.textContent = data.message; return; }
-          appendMessage(data);
-        } catch (_) { status.textContent = 'Received an invalid chat update.'; }
+          if (data.type === 'typing') {
+            if (data.is_typing) {
+              typingText.textContent = `${data.sender} is typing...`;
+              typingEl.classList.remove('d-none');
+            } else {
+              typingEl.classList.add('d-none');
+            }
+          } else if (data.type === 'message') {
+            typingEl.classList.add('d-none');
+            appendMessage(data);
+          } else if (data.type === 'system') {
+            statusEl.textContent = data.message;
+          }
+        } catch (_) {}
       };
-      socket.onerror = () => { status.textContent = 'Live connection unavailable; automatic sync remains enabled.'; };
-      socket.onclose = () => { status.textContent = 'Live connection closed; automatic sync remains enabled.'; };
-    } catch (_) {
-      status.textContent = 'Live connection unavailable; automatic sync remains enabled.';
+
+      socket.onerror = () => {
+        badgeEl.innerHTML = '<span style="color:var(--gold);">&#9679;</span> Polling Sync';
+        statusEl.textContent = 'Auto-sync active (fallback channel).';
+      };
+
+      socket.onclose = () => {
+        badgeEl.innerHTML = '<span style="color:var(--gold);">&#9679;</span> Reconnecting...';
+        setTimeout(connectSocket, 3000);
+      };
+    } catch (e) {
+      badgeEl.innerHTML = '<span style="color:var(--gold);">&#9679;</span> Polling Sync';
     }
   }
 
-  form.addEventListener('submit', async function (event) {
+  // Quick suggestion chips
+  document.querySelectorAll('.quick-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      input.value = chip.dataset.text;
+      input.focus();
+    });
+  });
+
+  // Typing event emission
+  input.addEventListener('input', () => {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({type: 'typing', is_typing: true}));
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          socket.send(JSON.stringify({type: 'typing', is_typing: false}));
+        }
+      }, 1500);
+    }
+  });
+
+  // Enter to send (Shift+Enter for newline)
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      form.dispatchEvent(new Event('submit', {cancelable: true}));
+    }
+  });
+
+  // Submit handling
+  form.addEventListener('submit', function (event) {
     const body = input.value.trim();
-    if (!body) { event.preventDefault(); return; }
+    if (!body) {
+      event.preventDefault();
+      return;
+    }
     if (socket && socket.readyState === WebSocket.OPEN) {
       event.preventDefault();
-      socket.send(JSON.stringify({body}));
+      socket.send(JSON.stringify({type: 'message', body: body}));
       input.value = '';
       input.focus();
       return;
     }
-    // If WebSocket is down, use the normal Django POST fallback. Polling will
-    // pick up the new message in this and the other participant's browser.
+    // Fallback normal Django form post
   });
 
   connectSocket();
-  pollMessages();
-  window.setInterval(pollMessages, 2000);
+  window.setInterval(pollMessages, 3000);
 })();
-</script>{% endif %}
+</script>
+{% endif %}
 {% endblock %}

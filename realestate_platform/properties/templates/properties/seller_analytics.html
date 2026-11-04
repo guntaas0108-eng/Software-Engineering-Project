@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Proprietor Portfolio Analytics · PropertyPulse{% endblock %}
+{% block content %}
+<section class="container py-4 py-lg-5">
+  <div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+      <div class="eyebrow mb-1" style="font-size:0.72rem; letter-spacing:0.3em; color:var(--gold);">Proprietor Intelligence</div>
+      <h1 class="h2 mb-1" style="color:var(--ivory);">Portfolio Performance &amp; Analytics</h1>
+      <p class="small mb-0" style="color:var(--sage);">Real-time metrics, buyer inquiry velocity, and AI valuation alignment.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a href="{% url 'estate_advisor' %}" class="btn btn-outline-primary line btn-sm">
+        Ask Portfolio Strategist AI &rarr;
+      </a>
+      <a href="{% url 'submit_property' %}" class="btn btn-primary gold btn-sm">
+        List New Estate &rarr;
+      </a>
+    </div>
+  </div>
+
+  <!-- Metric Overview Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="pp-stat-card">
+        <div class="pp-stat-label">Total Portfolio Asset Valuation</div>
+        <div class="pp-stat-value" style="color:var(--gold);">&#8377;{{ total_valuation|floatformat:0 }}</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="pp-stat-card">
+        <div class="pp-stat-label">Active Private Inquiries</div>
+        <div class="pp-stat-value" style="color:#79D6A0;">{{ total_inquiries }}</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="pp-stat-card">
+        <div class="pp-stat-label">Investor Portfolio Saves</div>
+        <div class="pp-stat-value" style="color:var(--gold-lt);">{{ total_saves }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Listing Performance Table -->
+  <div class="pp-form-section p-0 overflow-hidden">
+    <div class="p-3 d-flex justify-content-between align-items-center" style="background:#091712; border-bottom:1px solid rgba(212,175,55,0.2);">
+      <h2 class="h6 mb-0" style="font-family:var(--sans); letter-spacing:0.15em; text-transform:uppercase; color:var(--ivory); font-size:0.85rem;">
+        Estate Asset Inventory
+      </h2>
+      <span class="small" style="color:var(--sage);">{{ properties|length }} Registered Estates</span>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table mb-0" style="color:var(--ivory);">
+        <thead style="background:#07130F;">
+          <tr>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Estate Property</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Category</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Asking Price</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">AI Barometer</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Inquiries</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Saves</th>
+            <th class="text-end" style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for property in properties %}
+            <tr>
+              <td class="align-middle">
+                <div class="d-flex align-items-center gap-3">
+                  <div style="width:58px; height:44px; border-radius:4px; overflow:hidden; flex-shrink:0; border:1px solid rgba(212,175,55,0.3); background:#07130F;">
+                    {% with img=property.images.first %}
+                      {% if img %}
+                        <img src="{{ img.image.url }}" alt="{{ property.title }}" style="width:100%; height:100%; object-fit:cover;">
+                      {% endif %}
+                    {% endwith %}
+                  </div>
+                  <div>
+                    <strong style="color:var(--ivory); font-size:0.95rem;">{{ property.title }}</strong><br>
+                    <span class="small" style="color:var(--sage);">{{ property.locality }}, {{ property.city }} &middot; {{ property.area_sqft }} sqft</span>
+                  </div>
+                </div>
+              </td>
+              <td class="align-middle">
+                <span class="small" style="color:var(--ivory);">{{ property.get_category_display }}</span>
+              </td>
+              <td class="align-middle fw-semibold" style="color:var(--gold); font-family:var(--serif); font-size:1.15rem;">
+                &#8377;{{ property.listed_price|floatformat:0 }}
+              </td>
+              <td class="align-middle">
+                <span class="badge badge-{{ property.barometer_key }}">
+                  {{ property.barometer_label }}
+                </span>
+                <div class="small mt-1" style="color:var(--sage); font-size:0.7rem;">Est: &#8377;{{ property.predicted_price|floatformat:0 }}</div>
+              </td>
+              <td class="align-middle">
+                <span class="badge" style="background:rgba(212,175,55,0.15); color:var(--gold);">
+                  {{ property.conversations.count }} Inquiries
+                </span>
+              </td>
+              <td class="align-middle">
+                <span style="color:var(--sage);">{{ property.saved_by.count }}</span>
+              </td>
+              <td class="text-end align-middle">
+                <div class="d-flex gap-1 justify-content-end">
+                  <a href="{% url 'property_detail' property.pk %}" class="btn btn-outline-secondary btn-sm py-1 px-2" style="font-size:0.7rem;">
+                    View
+                  </a>
+                  <a href="{% url 'edit_property' property.pk %}" class="btn btn-outline-primary line btn-sm py-1 px-2" style="font-size:0.7rem;">
+                    Edit
+                  </a>
+                </div>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="7" class="text-center py-5" style="color:var(--sage);">
+                No properties registered under your proprietor account yet.<br>
+                <a href="{% url 'submit_property' %}" class="btn btn-primary gold btn-sm mt-3">List an Estate &rarr;</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

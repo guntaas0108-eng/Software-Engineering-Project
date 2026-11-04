@@ -1,9 +1,25 @@
 {% extends "base.html" %}
-{% block title %}{{ property.title }} — PropertyPulse{% endblock %}
+{% block title %}{{ property.title }} · PropertyPulse Luxury Estates{% endblock %}
 {% block content %}
 <div class="container pp-section-tight">
 
+    <!-- Top Breadcrumb & Action bar -->
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <a href="{% url 'property_list' %}" class="btn btn-outline-secondary btn-sm">
+            &larr; Back to Residences
+        </a>
+        <div class="d-flex gap-2">
+            <a href="{% url 'compare_properties' %}?p1={{ property.pk }}" class="btn btn-outline-primary line btn-sm">
+                &#9878; Compare Estate
+            </a>
+            <a href="{% url 'mortgage_calculator' %}?estate_id={{ property.pk }}" class="btn btn-outline-primary line btn-sm">
+                &#128181; Financing EMI
+            </a>
+        </div>
+    </div>
+
     <div class="row g-4">
+        <!-- Gallery Column -->
         <div class="col-12 col-lg-7">
             <div class="pp-gallery-main">
                 {% with imgs=property.images.all %}
@@ -11,7 +27,7 @@
                     <img src="{{ imgs.0.image.url }}" alt="{{ property.title }}" id="pp-main-img">
                 {% else %}
                     <div class="pp-img-placeholder">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#16302E" stroke-width="1.2"><path d="M3 11l9-7 9 7M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.2"><path d="M3 11l9-7 9 7M5 10v9a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1v-9" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </div>
                 {% endif %}
                 {% endwith %}
@@ -19,91 +35,133 @@
             {% if property.images.all|length > 1 %}
             <div class="pp-gallery-thumbs">
                 {% for img in property.images.all %}
-                    <img src="{{ img.image.url }}" alt="" onclick="document.getElementById('pp-main-img').src=this.src" role="button">
+                    <img src="{{ img.image.url }}" alt="{{ property.title }}" onclick="document.getElementById('pp-main-img').src=this.src" role="button">
                 {% endfor %}
             </div>
             {% endif %}
+
+            <!-- Description -->
+            <div class="mt-4">
+                <div class="eyebrow mb-1" style="font-size:0.7rem; letter-spacing:0.3em; color:var(--gold);">Architectural Overview</div>
+                <h2 class="mb-3" style="font-family:var(--serif); font-size:1.6rem; color:var(--ivory);">Estate Narrative</h2>
+                <p style="color:var(--sage); line-height:1.75; font-size:0.98rem;">{{ property.description }}</p>
+            </div>
+
+            <!-- Architectural Specs Grid -->
+            <div class="mt-4">
+                <h3 class="mb-3" style="font-size:1.15rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ivory);">Property Specifications</h3>
+                <div class="pp-info-grid">
+                    <div class="pp-info-item">
+                        <div class="pp-info-label">Built-up Area</div>
+                        <div class="pp-info-value">{{ property.area_sqft }} sqft</div>
+                    </div>
+                    <div class="pp-info-item">
+                        <div class="pp-info-label">Bedrooms</div>
+                        <div class="pp-info-value">{{ property.bedrooms|default:"Commercial" }}</div>
+                    </div>
+                    <div class="pp-info-item">
+                        <div class="pp-info-label">Bathrooms</div>
+                        <div class="pp-info-value">{{ property.bathrooms|default:"—" }}</div>
+                    </div>
+                    <div class="pp-info-item">
+                        <div class="pp-info-label">Vintage / Age</div>
+                        <div class="pp-info-value">{{ property.age_years }} Years</div>
+                    </div>
+                    <div class="pp-info-item">
+                        <div class="pp-info-label">Enclave Locality</div>
+                        <div class="pp-info-value">{{ property.locality }}</div>
+                    </div>
+                    <div class="pp-info-item">
+                        <div class="pp-info-label">City Jurisdiction</div>
+                        <div class="pp-info-value">{{ property.city }}</div>
+                    </div>
+                    <div class="pp-info-item">
+                        <div class="pp-info-label">Asset Category</div>
+                        <div class="pp-info-value">{{ property.get_category_display }}</div>
+                    </div>
+                    <div class="pp-info-item">
+                        <div class="pp-info-label">Custody Status</div>
+                        <div class="pp-info-value">{{ property.get_status_display }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <!-- Sticky Action & Valuation Box -->
         <div class="col-12 col-lg-5">
-            <span class="pp-card-badge badge-{{ property.barometer_key }}">{{ property.barometer_label }}</span>
-            {% if user.is_authenticated %}
-            <form method="post" action="{% url 'toggle_save_property' property.pk %}" class="float-end">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                <button type="submit" class="btn btn-outline-primary btn-sm">
-                    {% if is_saved %}&#9829; Saved{% else %}&#9825; Save{% endif %}
-                </button>
-            </form>
-            {% endif %}
-            <h1 class="mt-2" style="font-size:1.7rem;">{{ property.title }}</h1>
-            <p class="pp-muted mb-3">{{ property.locality }}, {{ property.city }} &middot; {{ property.get_category_display }}</p>
+            <div class="pp-form-section sticky-top" style="top:2rem;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="pp-card-badge badge-{{ property.barometer_key }} mb-0">{{ property.barometer_label }}</span>
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'toggle_save_property' property.pk %}" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <button type="submit" class="btn btn-outline-primary btn-sm py-1 px-3">
+                            {% if is_saved %}&#9829; Saved{% else %}&#9825; Save Estate{% endif %}
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
 
-            <div class="pp-price-label">Listed price</div>
-            <div class="pp-price" style="font-size:1.7rem;">&#8377;{{ property.listed_price }}</div>
+                <h1 class="mt-2 mb-1" style="font-size:1.85rem; font-family:var(--serif);">{{ property.title }}</h1>
+                <p class="pp-muted mb-3">{{ property.locality }}, {{ property.city }} &middot; Proprietor: <strong>{{ property.seller.username }}</strong></p>
 
-            <div class="pp-ai-panel {% if not property.predicted_price %}pp-ai-pending{% endif %}">
-                <div class="pp-ai-label">AI Estimated Price</div>
-                {% if property.predicted_price %}
-                    <div class="pp-ai-value">&#8377;{{ property.predicted_price }}</div>
-                {% else %}
-                    <div class="pp-ai-value">Price Prediction: Pending Analysis</div>
+                <div class="p-3 mb-3" style="background:#07130F; border:1px solid rgba(212,175,55,0.25); border-radius:4px;">
+                    <div class="pp-price-label">Official Listed Valuation</div>
+                    <div class="pp-price" style="font-size:2.2rem;">&#8377;{{ property.listed_price|floatformat:0 }}</div>
+                </div>
+
+                <!-- AI Valuation Panel -->
+                <div class="pp-ai-panel {% if not property.predicted_price %}pp-ai-pending{% endif %}">
+                    <div class="pp-ai-label">PropertyPulse AI Market Valuation</div>
+                    {% if property.predicted_price %}
+                        <div class="pp-ai-value">&#8377;{{ property.predicted_price|floatformat:0 }}</div>
+                    {% else %}
+                        <div class="pp-ai-value">Price Prediction: Pending Analysis</div>
+                    {% endif %}
+                </div>
+
+                {% if property.possible_duplicate_of %}
+                <div class="alert alert-warning small py-2 mb-3">
+                    Verified Duplicate Filter: Flagged for mutual address verification.
+                </div>
                 {% endif %}
-            </div>
 
-            {% if property.possible_duplicate_of %}
-            <div class="alert alert-warning">This listing was flagged as a possible duplicate of another property.</div>
-            {% endif %}
-        </div>
-    </div>
+                <!-- Primary Action Buttons -->
+                <div class="d-grid gap-2 mt-4">
+                    {% if request.user.is_authenticated and request.user.pk != property.seller_id %}
+                        <a class="btn btn-primary gold py-3 fw-bold" href="{% url 'payment_checkout_property' property.pk %}" style="letter-spacing:0.2em;">
+                            Place Escrow Token Deposit &rarr;
+                        </a>
+                        <a class="btn btn-outline-primary line py-2" href="{% url 'chat_start' property.pk %}">
+                            Direct Message / Schedule VIP Inspection
+                        </a>
+                    {% elif not request.user.is_authenticated %}
+                        <a class="btn btn-primary gold py-3" href="{% url 'login' %}?next={{ request.path|urlencode }}">
+                            Sign In to Reserve / Inquire &rarr;
+                        </a>
+                    {% else %}
+                        <div class="p-2 text-center small" style="background:#07130F; border:1px solid rgba(212,175,55,0.2); color:var(--gold-lt);">
+                            You are the registered proprietor of this estate.
+                        </div>
+                        <a href="{% url 'edit_property' property.pk %}" class="btn btn-outline-primary line py-2">
+                            Edit Listing Dossier
+                        </a>
+                    {% endif %}
+                </div>
 
-    <div class="mt-5">
-        <h2 class="mb-3" style="font-size:1.4rem;">Property Details</h2>
-        <div class="pp-info-grid">
-            <div class="pp-info-item">
-                <div class="pp-info-label">Area</div>
-                <div class="pp-info-value">{{ property.area_sqft }} sqft</div>
-            </div>
-            <div class="pp-info-item">
-                <div class="pp-info-label">Bedrooms</div>
-                <div class="pp-info-value">{{ property.bedrooms|default:"—" }}</div>
-            </div>
-            <div class="pp-info-item">
-                <div class="pp-info-label">Bathrooms</div>
-                <div class="pp-info-value">{{ property.bathrooms|default:"—" }}</div>
-            </div>
-            <div class="pp-info-item">
-                <div class="pp-info-label">Age</div>
-                <div class="pp-info-value">{{ property.age_years }} yrs</div>
-            </div>
-            <div class="pp-info-item">
-                <div class="pp-info-label">City</div>
-                <div class="pp-info-value">{{ property.city }}</div>
-            </div>
-            <div class="pp-info-item">
-                <div class="pp-info-label">Locality</div>
-                <div class="pp-info-value">{{ property.locality }}</div>
-            </div>
-            <div class="pp-info-item">
-                <div class="pp-info-label">Category</div>
-                <div class="pp-info-value">{{ property.get_category_display }}</div>
-            </div>
-            <div class="pp-info-item">
-                <div class="pp-info-label">Status</div>
-                <div class="pp-info-value">{{ property.get_status_display }}</div>
+                <!-- Sovereign Escrow Guarantee Seal -->
+                <div class="p-3 mt-4" style="background:rgba(212,175,55,0.06); border:1px solid rgba(212,175,55,0.2); border-radius:4px;">
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <span style="color:var(--gold); font-size:1.1rem;">&#10003;</span>
+                        <strong style="color:var(--ivory); font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;">PropertyPulse Escrow Protection</strong>
+                    </div>
+                    <p class="small mb-0" style="color:var(--sage); font-size:0.75rem; line-height:1.5;">
+                        All site tours and reservation deposits are protected by our 100% Refundable Escrow Guarantee under fiduciary trust law.
+                    </p>
+                </div>
             </div>
         </div>
-
-        {% if property.description %}
-        <h2 class="mt-4 mb-2" style="font-size:1.2rem;">Description</h2>
-        <p>{{ property.description }}</p>
-        {% endif %}
     </div>
 </div>
-
-{% if request.user.is_authenticated and request.user.pk != property.seller_id %}
-<div class="mt-4"><a class="btn btn-primary" href="{% url 'chat_start' property.pk %}">Message seller / arrange a visit</a></div>
-{% elif not request.user.is_authenticated %}
-<div class="mt-4"><a class="btn btn-primary" href="{% url 'login' %}?next={{ request.path|urlencode }}">Sign in to message the seller</a></div>
-{% endif %}
 {% endblock %}

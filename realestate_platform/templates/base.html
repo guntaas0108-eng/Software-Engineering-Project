@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}PropertyPulse — Curated Luxury Real Estate{% endblock %}</title>
+    <title>{% block title %}PropertyPulse — Curated Luxury Real Estate &amp; Private Estates{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'css/style.css' %}?v=emerald-gold-v2" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}?v=emerald-gold-v3" rel="stylesheet">
     <script>
       (function(){
         try {
@@ -66,24 +66,34 @@
 <!-- ============ END INTRO ============ -->
 
 <header class="site-header">
-<nav class="navbar navbar-expand-lg navbar-dark pp-navbar mb-0">
+<nav class="navbar navbar-expand-xl navbar-dark pp-navbar mb-0">
     <div class="container">
         <a class="navbar-brand logo" href="{% url 'home' %}">Property<i>Pulse</i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ppNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="ppNav">
-            <div class="navbar-nav ms-lg-4">
+            <div class="navbar-nav ms-lg-3">
                 <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
                 <a class="nav-link {% if request.resolver_match.url_name == 'property_list' %}active{% endif %}" href="{% url 'property_list' %}">Residences</a>
-                <a class="nav-link {% if request.resolver_match.url_name == 'submit_property' %}active{% endif %}" href="{% url 'submit_property' %}">List an Estate</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'compare_properties' %}active{% endif %}" href="{% url 'compare_properties' %}">Compare</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'mortgage_calculator' %}active{% endif %}" href="{% url 'mortgage_calculator' %}">Financing</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'estate_advisor' %}active{% endif %}" href="{% url 'estate_advisor' %}">
+                  AI Advisor <span class="badge" style="background:var(--gold); color:#07130F; font-size:0.6rem; padding:2px 5px;">NEW</span>
+                </a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'submit_property' %}active{% endif %}" href="{% url 'submit_property' %}">List Estate</a>
             </div>
-            <div class="navbar-nav ms-auto align-items-lg-center">
+            <div class="navbar-nav ms-auto align-items-xl-center">
                 {% if user.is_authenticated %}
                     <a class="nav-link {% if request.resolver_match.url_name == 'my_listings' %}active{% endif %}" href="{% url 'my_listings' %}">My Listings</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'seller_analytics' %}active{% endif %}" href="{% url 'seller_analytics' %}">Analytics</a>
                     <a class="nav-link {% if request.resolver_match.url_name == 'buyer_dashboard' %}active{% endif %}" href="{% url 'buyer_dashboard' %}">Saved</a>
-                    <a class="nav-link {% if request.resolver_match.url_name == 'chat_inbox' %}active{% endif %}" href="{% url 'chat_inbox' %}">Messages</a>
-                    <span class="nav-link pp-user-chip d-none d-lg-inline">{{ user.username }}</span>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'my_transactions' %}active{% endif %}" href="{% url 'my_transactions' %}">Escrow Ledger</a>
+                    <a class="nav-link position-relative {% if request.resolver_match.url_name == 'chat_inbox' or request.resolver_match.url_name == 'chat_thread' %}active{% endif %}" href="{% url 'chat_inbox' %}">
+                      Messages
+                      <span id="nav-msg-badge" class="badge rounded-pill bg-danger d-none" style="font-size:0.6rem; position:relative; top:-2px;">0</span>
+                    </a>
+                    <span class="nav-link pp-user-chip d-none d-xl-inline">{{ user.username }}</span>
                     <form method="post" action="{% url 'logout' %}" class="d-inline">
                         {% csrf_token %}
                         <button type="submit" class="nav-link btn btn-link pp-logout-link">Sign Out</button>
@@ -97,6 +107,9 @@
     </div>
 </nav>
 </header>
+
+<!-- Alert Toasts Container -->
+<div id="toast-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1080;"></div>
 
 {% if messages %}
 <div class="container pt-3">
@@ -112,94 +125,323 @@
 
 <footer class="pp-footer text-center">
     <div class="container">
-        <p class="logo mb-2" style="font-size: 1.3rem;">Property<i>Pulse</i></p>
-        <p class="pp-footer-sub mb-0">&copy; 2026 PropertyPulse &middot; Private Estates &amp; Luxury Residences &middot; AI-Assisted Valuation</p>
+        <p class="logo mb-2" style="font-size: 1.4rem;">Property<i>Pulse</i></p>
+        <p class="pp-footer-sub mb-2">&copy; 2026 PropertyPulse &middot; Private Estates &amp; Luxury Residences &middot; AI-Assisted Valuation &amp; Sovereign Escrow</p>
+        <div class="d-flex justify-content-center gap-3 small flex-wrap" style="color:var(--sage); font-size:0.75rem;">
+          <a href="{% url 'compare_properties' %}">Compare Estates</a>
+          <span>&middot;</span>
+          <a href="{% url 'mortgage_calculator' %}">Financing Calculator</a>
+          <span>&middot;</span>
+          <a href="{% url 'estate_advisor' %}">AI Advisory</a>
+          <span>&middot;</span>
+          <a href="{% url 'property_list' %}">All Residences</a>
+        </div>
     </div>
 </footer>
 
 <button class="replay" id="replay" type="button" title="Replay the PropertyPulse cinematic intro">Replay intro</button>
 
+<!-- ============ FLOATING AI ADVISOR WIDGET ============ -->
+<div id="floating-ai-advisor" class="position-fixed" style="bottom:22px; right:22px; z-index:1040;">
+  <!-- Toggle Medallion Button -->
+  <button id="ai-widget-toggle" type="button" class="btn btn-primary gold rounded-pill d-flex align-items-center gap-2 shadow-lg px-3 py-2" style="border:1px solid #F0D98A;">
+    <span style="font-size:1.15rem;">&#129302;</span>
+    <span class="d-none d-sm-inline fw-semibold" style="letter-spacing:0.1em; font-size:0.75rem;">AI Advisor</span>
+    <span id="ai-widget-alert-badge" class="badge rounded-pill bg-danger d-none" style="font-size:0.6rem;">0</span>
+  </button>
+
+  <!-- Popup Widget Box -->
+  <div id="ai-widget-box" class="card pp-form-section p-0 overflow-hidden shadow-lg d-none" style="position:absolute; bottom:52px; right:0; width:min(380px, 92vw); height:520px; border:1px solid var(--gold); background:#0A1D15; border-radius:8px;">
+    
+    <!-- Widget Header -->
+    <div class="p-3 d-flex justify-content-between align-items-center" style="background:#091712; border-bottom:1px solid rgba(212,175,55,0.25);">
+      <div class="d-flex align-items-center gap-2">
+        <span style="color:var(--gold); font-size:1.1rem;">&#129302;</span>
+        <div>
+          <div class="fw-semibold small" id="widget-bot-name" style="color:var(--ivory); font-size:0.85rem;">Estate Concierge AI</div>
+          <div class="small" style="color:var(--sage); font-size:0.68rem;">Live Database Connected</div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-1">
+        <button type="button" class="btn btn-sm btn-link p-1 text-white text-decoration-none" id="widget-mode-toggle" title="Switch between Buyer & Seller bot" style="font-size:0.7rem; color:var(--gold-lt) !important;">
+          Switch Mode
+        </button>
+        <button type="button" class="btn-close btn-close-white p-1" id="widget-close-btn" style="font-size:0.75rem;"></button>
+      </div>
+    </div>
+
+    <!-- Mode Badge Banner -->
+    <div class="px-3 py-1 d-flex justify-content-between align-items-center" style="background:#07130F; border-bottom:1px solid rgba(212,175,55,0.15); font-size:0.7rem;">
+      <span style="color:var(--sage);">Active Role:</span>
+      <span class="badge" id="widget-role-badge" style="background:rgba(212,175,55,0.2); color:var(--gold-lt); font-size:0.65rem;">BUYER CONCIERGE</span>
+    </div>
+
+    <!-- Message Scroll Box -->
+    <div id="widget-chat-messages" style="flex-grow:1; overflow-y:auto; padding:1rem; background:#07130F; display:flex; flex-direction:column; gap:0.75rem;">
+      <div class="d-flex justify-content-start">
+        <div class="p-2" style="max-width:88%; background:#0F2019; border:1px solid rgba(212,175,55,0.2); border-radius:6px; color:var(--ivory); font-size:0.82rem; line-height:1.5;">
+          Hello! I am your <strong>PropertyPulse AI Advisor</strong>. Ask me to find estates with private pools, calculate loan EMIs, or review active notifications!
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Chips -->
+    <div class="p-2 d-flex gap-1 flex-wrap" id="widget-chips" style="background:#091712; border-top:1px solid rgba(212,175,55,0.15); max-height:65px; overflow-y:auto;">
+      <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Which estates are Great Deals?">Great Deals</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Estates with infinity pool">Pool Estates</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Calculate EMI for 15 Cr loan">EMI 15 Cr</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Check my messages and alerts">My Alerts</button>
+    </div>
+
+    <!-- Input Box -->
+    <div class="p-2" style="background:#0D1F18; border-top:1px solid rgba(212,175,55,0.2);">
+      <form id="widget-chat-form" class="d-flex gap-2">
+        <input type="text" id="widget-chat-input" class="form-control form-control-sm" placeholder="Ask advisor..." style="background:#07130F; border-color:rgba(212,175,55,0.3); color:var(--ivory); font-size:0.8rem;" required>
+        <button class="btn btn-primary gold btn-sm px-3" type="submit" id="widget-send-btn">&rarr;</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 (() => {
+  // Intro Logic
   const intro = document.getElementById('intro');
-  if (!intro) return;
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const KEY = 'pp-intro-seen';
-  const seen = () => { try { return sessionStorage.getItem(KEY); } catch (e) { return null; } };
-  const mark = () => { try { sessionStorage.setItem(KEY, '1'); } catch (e) {} };
+  if (intro) {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const KEY = 'pp-intro-seen';
+    const seen = () => { try { return sessionStorage.getItem(KEY); } catch (e) { return null; } };
+    const mark = () => { try { sessionStorage.setItem(KEY, '1'); } catch (e) {} };
 
-  const split = (id, text, start) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.innerHTML = '';
-    [...text].forEach((c, i) => {
-      const s = document.createElement('span');
-      s.className = 'ch';
-      s.style.setProperty('--n', start + i);
-      s.textContent = c;
-      el.appendChild(s);
-    });
-  };
-  split('w1', 'Property', 0);
-  split('w2', 'Pulse', 8);
+    const split = (id, text, start) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.innerHTML = '';
+      [...text].forEach((c, i) => {
+        const s = document.createElement('span');
+        s.className = 'ch';
+        s.style.setProperty('--n', start + i);
+        s.textContent = c;
+        el.appendChild(s);
+      });
+    };
+    split('w1', 'Property', 0);
+    split('w2', 'Pulse', 8);
 
-  const wins = document.getElementById('wins');
-  if (wins) {
-    document.querySelectorAll('#bldgs .b').forEach((b, k) => {
-      const x = +b.getAttribute('x'), y = +b.getAttribute('y'), w = +b.getAttribute('width'), h = +b.getAttribute('height');
-      const cols = Math.max(2, Math.floor((w - 8) / 11)), rows = Math.floor((h - 10) / 14);
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          if (((r * 7 + c * 3 + k) % 3) === 0) continue;
-          const e = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-          e.setAttribute('class', 'w');
-          e.setAttribute('width', 4);
-          e.setAttribute('height', 6);
-          e.setAttribute('x', x + 6 + c * ((w - 12 - 4) / Math.max(1, cols - 1)));
-          e.setAttribute('y', y + 8 + r * 14);
-          e.style.setProperty('--d', (2.6 + ((r * 5 + c * 7 + k * 3) % 11) * .22) + 's');
-          wins.appendChild(e);
+    const wins = document.getElementById('wins');
+    if (wins) {
+      document.querySelectorAll('#bldgs .b').forEach((b, k) => {
+        const x = +b.getAttribute('x'), y = +b.getAttribute('y'), w = +b.getAttribute('width'), h = +b.getAttribute('height');
+        const cols = Math.max(2, Math.floor((w - 8) / 11)), rows = Math.floor((h - 10) / 14);
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            if (((r * 7 + c * 3 + k) % 3) === 0) continue;
+            const e = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            e.setAttribute('class', 'w');
+            e.setAttribute('width', 4);
+            e.setAttribute('height', 6);
+            e.setAttribute('x', x + 6 + c * ((w - 12 - 4) / Math.max(1, cols - 1)));
+            e.setAttribute('y', y + 8 + r * 14);
+            e.style.setProperty('--d', (2.6 + ((r * 5 + c * 7 + k * 3) % 11) * .22) + 's');
+            wins.appendChild(e);
+          }
         }
+      });
+    }
+
+    let t1, t2;
+    function finish() {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      mark();
+      intro.classList.add('gone');
+      document.body.classList.remove('locked');
+      document.body.classList.add('ready');
+    }
+
+    const isForceIntro = new URLSearchParams(location.search).has('intro');
+    if ((seen() && !isForceIntro) || reduce) {
+      finish();
+    } else {
+      document.body.classList.add('locked');
+      t2 = setTimeout(() => document.body.classList.add('ready'), 5600);
+      t1 = setTimeout(finish, 6300);
+      const skipBtn = document.getElementById('skip');
+      if (skipBtn) skipBtn.addEventListener('click', finish);
+      addEventListener('keydown', e => { if (e.key === 'Escape' || e.key === 'Enter') finish(); });
+    }
+
+    const replayBtn = document.getElementById('replay');
+    if (replayBtn) {
+      replayBtn.addEventListener('click', () => {
+        try { sessionStorage.removeItem(KEY); } catch (e) {}
+        if (location.search.includes('intro')) {
+          location.reload();
+        } else {
+          const url = new URL(location.href);
+          url.searchParams.set('intro', '1');
+          location.href = url.toString();
+        }
+      });
+    }
+  }
+
+  // ================= FLOATING AI ADVISOR WIDGET =================
+  let widgetMode = "buyer";
+  const widgetBox = document.getElementById('ai-widget-box');
+  const widgetToggle = document.getElementById('ai-widget-toggle');
+  const widgetClose = document.getElementById('widget-close-btn');
+  const widgetModeToggle = document.getElementById('widget-mode-toggle');
+  const widgetBotName = document.getElementById('widget-bot-name');
+  const widgetRoleBadge = document.getElementById('widget-role-badge');
+  const widgetChatMessages = document.getElementById('widget-chat-messages');
+  const widgetInput = document.getElementById('widget-chat-input');
+  const widgetForm = document.getElementById('widget-chat-form');
+  const widgetBadge = document.getElementById('ai-widget-alert-badge');
+  const navMsgBadge = document.getElementById('nav-msg-badge');
+
+  if (widgetToggle) {
+    widgetToggle.addEventListener('click', () => {
+      widgetBox.classList.toggle('d-none');
+      if (!widgetBox.classList.contains('d-none')) {
+        widgetInput.focus();
       }
     });
   }
 
-  let t1, t2;
-  function finish() {
-    clearTimeout(t1);
-    clearTimeout(t2);
-    mark();
-    intro.classList.add('gone');
-    document.body.classList.remove('locked');
-    document.body.classList.add('ready');
+  if (widgetClose) {
+    widgetClose.addEventListener('click', () => {
+      widgetBox.classList.add('d-none');
+    });
   }
 
-  const isForceIntro = new URLSearchParams(location.search).has('intro');
-  if ((seen() && !isForceIntro) || reduce) {
-    finish();
-  } else {
-    document.body.classList.add('locked');
-    t2 = setTimeout(() => document.body.classList.add('ready'), 5600);
-    t1 = setTimeout(finish, 6300);
-    const skipBtn = document.getElementById('skip');
-    if (skipBtn) skipBtn.addEventListener('click', finish);
-    addEventListener('keydown', e => { if (e.key === 'Escape' || e.key === 'Enter') finish(); });
-  }
-
-  const replayBtn = document.getElementById('replay');
-  if (replayBtn) {
-    replayBtn.addEventListener('click', () => {
-      try { sessionStorage.removeItem(KEY); } catch (e) {}
-      if (location.search.includes('intro')) {
-        location.reload();
+  if (widgetModeToggle) {
+    widgetModeToggle.addEventListener('click', () => {
+      widgetMode = widgetMode === 'buyer' ? 'seller' : 'buyer';
+      if (widgetMode === 'seller') {
+        widgetBotName.textContent = 'Portfolio Strategist AI';
+        widgetRoleBadge.textContent = 'SELLER STRATEGIST';
+        widgetRoleBadge.style.color = '#79D6A0';
+        appendWidgetBot("Switched to **Portfolio Strategist AI**. Ask me how to optimize your listing prices, attract high-net-worth buyers, or review property inquiries.");
       } else {
-        const url = new URL(location.href);
-        url.searchParams.set('intro', '1');
-        location.href = url.toString();
+        widgetBotName.textContent = 'Estate Concierge AI';
+        widgetRoleBadge.textContent = 'BUYER CONCIERGE';
+        widgetRoleBadge.style.color = 'var(--gold-lt)';
+        appendWidgetBot("Switched to **Estate Concierge AI**. Ask me for recommendations, pool villas, mortgage calculations, or private inspection booking.");
       }
     });
   }
+
+  document.querySelectorAll('.w-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      widgetInput.value = chip.dataset.msg;
+      widgetForm.dispatchEvent(new Event('submit', {cancelable:true}));
+    });
+  });
+
+  function appendWidgetUser(txt) {
+    const row = document.createElement('div');
+    row.className = 'd-flex justify-content-end';
+    row.innerHTML = `<div class="p-2" style="max-width:85%; background:linear-gradient(135deg, #1C382C, #132820); border:1px solid rgba(212,175,55,0.4); border-radius:6px; color:var(--ivory); font-size:0.8rem;">${txt}</div>`;
+    widgetChatMessages.appendChild(row);
+    widgetChatMessages.scrollTop = widgetChatMessages.scrollHeight;
+  }
+
+  function appendWidgetBot(txt) {
+    const row = document.createElement('div');
+    row.className = 'd-flex justify-content-start';
+    const formatted = txt
+      .replace(/^### (.*$)/gim, '<strong style="color:var(--gold);">$1</strong><br>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--gold-lt);">$1</strong>')
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" style="color:var(--gold); text-decoration:underline;">$1</a>')
+      .replace(/\n\n/g, '<br><br>')
+      .replace(/\n- /g, '<br>&bull; ');
+    row.innerHTML = `<div class="p-2" style="max-width:88%; background:#0F2019; border:1px solid rgba(212,175,55,0.2); border-radius:6px; color:var(--ivory); font-size:0.8rem; line-height:1.5;">${formatted}</div>`;
+    widgetChatMessages.appendChild(row);
+    widgetChatMessages.scrollTop = widgetChatMessages.scrollHeight;
+  }
+
+  if (widgetForm) {
+    widgetForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const q = widgetInput.value.trim();
+      if (!q) return;
+      appendWidgetUser(q);
+      widgetInput.value = '';
+
+      try {
+        const res = await fetch('/chat/api/chatbot/', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}'},
+          body: JSON.stringify({message: q, mode: widgetMode})
+        });
+        const data = await res.json();
+        appendWidgetBot(data.reply || 'Advisory channel busy. Please retry.');
+      } catch(e) {
+        appendWidgetBot('Network connection error.');
+      }
+    });
+  }
+
+  // ================= NOTIFICATION POLLING & TOASTS =================
+  let seenAlertCount = 0;
+  async function checkNotifications() {
+    try {
+      const r = await fetch('/chat/api/notifications/');
+      if (r.ok) {
+        const data = await r.json();
+        const count = data.count || 0;
+        if (count > 0) {
+          if (navMsgBadge) {
+            navMsgBadge.textContent = count;
+            navMsgBadge.classList.remove('d-none');
+          }
+          if (widgetBadge) {
+            widgetBadge.textContent = count;
+            widgetBadge.classList.remove('d-none');
+          }
+          // If new alert appeared, show toast
+          if (count > seenAlertCount && data.alerts && data.alerts.length > 0) {
+            const first = data.alerts[0];
+            showToast(first.title, first.body, first.link);
+          }
+        } else {
+          if (navMsgBadge) navMsgBadge.classList.add('d-none');
+          if (widgetBadge) widgetBadge.classList.add('d-none');
+        }
+        seenAlertCount = count;
+      }
+    } catch(e) {}
+  }
+
+  function showToast(title, body, link) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast align-items-center text-white border-0 show mb-2';
+    toast.style.background = '#0F2019';
+    toast.style.border = '1px solid var(--gold)';
+    toast.style.boxShadow = '0 8px 24px rgba(0,0,0,0.5)';
+    toast.innerHTML = `
+      <div class="d-flex">
+        <div class="toast-body small">
+          <strong style="color:var(--gold);">${title}</strong><br>
+          <span style="color:var(--ivory); font-size:0.78rem;">${body}</span>
+          ${link ? `<div class="mt-1"><a href="${link}" style="color:var(--gold-lt); text-decoration:underline; font-size:0.75rem;">View in Channel &rarr;</a></div>` : ''}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    `;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 7000);
+  }
+
+  {% if user.is_authenticated %}
+    checkNotifications();
+    setInterval(checkNotifications, 10000);
+  {% endif %}
 })();
 </script>
 </body>

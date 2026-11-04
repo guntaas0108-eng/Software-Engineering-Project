@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% block title %}Luxury Mortgage &amp; Financing Calculator · PropertyPulse{% endblock %}
+{% block content %}
+<section class="container py-4 py-lg-5">
+  <div class="row g-4 justify-content-center">
+    
+    <div class="col-lg-5">
+      <div class="pp-form-section">
+        <div class="eyebrow mb-1" style="font-size:0.72rem; letter-spacing:0.3em; color:var(--gold);">Sovereign Wealth Financing</div>
+        <h1 class="h3 mb-3" style="color:var(--ivory);">Estate Mortgage Calculator</h1>
+        <p class="small mb-4" style="color:var(--sage); line-height:1.6;">
+          Compute structured monthly debt service, amortization schedules, and down payment requirements for luxury residential and commercial acquisitions.
+        </p>
+
+        <!-- Fast Estate Preset Selector -->
+        <div class="mb-4 p-3" style="background:#091712; border:1px solid rgba(212,175,55,0.25); border-radius:4px;">
+          <label class="pp-label mb-2">Select from Registered Estates</label>
+          <select id="estate-preset-select" class="form-select form-select-sm">
+            <option value="">Choose an estate to autofill valuation...</option>
+            {% for e in estates %}
+              <option value="{{ e.listed_price|floatformat:0 }}" {% if selected_estate and selected_estate.pk == e.pk %}selected{% endif %}>
+                {{ e.title }} (₹{{ e.listed_price|floatformat:0 }})
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <form id="calc-form">
+          <!-- Property Value -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between">
+              <label class="pp-label">Estate Valuation (&#8377;)</label>
+              <span class="small fw-semibold" style="color:var(--gold);" id="val-display">&#8377;20,00,00,000</span>
+            </div>
+            <input type="range" class="form-range" id="prop-value" min="10000000" max="500000000" step="5000000" value="{% if selected_estate %}{{ selected_estate.listed_price|floatformat:0 }}{% else %}200000000{% endif %}">
+          </div>
+
+          <!-- Down Payment % -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between">
+              <label class="pp-label">Down Payment (<span id="down-pct-label">25</span>%)</label>
+              <span class="small fw-semibold" style="color:var(--gold);" id="down-display">&#8377;5,00,00,000</span>
+            </div>
+            <input type="range" class="form-range" id="down-pct" min="10" max="60" step="5" value="25">
+          </div>
+
+          <!-- Loan Tenure (Years) -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between">
+              <label class="pp-label">Tenure (<span id="tenure-label">15</span> Years)</label>
+              <span class="small" style="color:var(--sage);" id="months-label">180 Months</span>
+            </div>
+            <input type="range" class="form-range" id="tenure-years" min="5" max="30" step="1" value="15">
+          </div>
+
+          <!-- Interest Rate % -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between">
+              <label class="pp-label">Benchmark Interest Rate (<span id="rate-label">8.50</span>% p.a.)</label>
+              <span class="small" style="color:var(--sage);">Prime HNI Tier</span>
+            </div>
+            <input type="range" class="form-range" id="interest-rate" min="6.0" max="14.0" step="0.25" value="8.50">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Output Column -->
+    <div class="col-lg-7">
+      <div class="pp-form-section" style="background:linear-gradient(135deg, #0F2019 0%, #153426 100%); border:1px solid var(--gold);">
+        <div class="eyebrow mb-1" style="font-size:0.72rem; letter-spacing:0.3em; color:var(--gold);">Monthly Debt Service</div>
+        <h2 class="h6 mb-2" style="font-family:var(--serif); font-size:1.15rem; color:var(--ivory);">Estimated Repayment</h2>
+
+        <!-- Big Highlight EMI -->
+        <div class="p-4 mb-4 text-center" style="background:#07130F; border:1px solid rgba(212,175,55,0.3); border-radius:4px;">
+          <div class="small text-uppercase mb-1" style="letter-spacing:0.2em; color:var(--sage); font-size:0.75rem;">
+            Monthly Structured EMI
+          </div>
+          <div style="font-family:var(--serif); font-size:clamp(2.4rem, 5vw, 3.4rem); color:var(--gold); font-weight:700; line-height:1;" id="emi-display">
+            &#8377;14,77,143
+          </div>
+          <div class="small mt-2" style="color:var(--sage);">
+            Calculated at 8.50% p.a. reducing balance over 15 years
+          </div>
+        </div>
+
+        <!-- Breakdown Grid -->
+        <div class="row g-3 mb-4">
+          <div class="col-sm-4">
+            <div class="p-3" style="background:#07130F; border:1px solid rgba(212,175,55,0.2); border-radius:4px; height:100%;">
+              <div class="small" style="color:var(--sage); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;">Principal Loan</div>
+              <div class="fw-semibold mt-1" style="color:var(--ivory); font-size:1.15rem;" id="principal-display">&#8377;15,00,00,000</div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="p-3" style="background:#07130F; border:1px solid rgba(212,175,55,0.2); border-radius:4px; height:100%;">
+              <div class="small" style="color:var(--sage); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;">Total Interest</div>
+              <div class="fw-semibold mt-1" style="color:var(--gold-lt); font-size:1.15rem;" id="interest-display">&#8377;11,58,85,740</div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="p-3" style="background:#07130F; border:1px solid rgba(212,175,55,0.2); border-radius:4px; height:100%;">
+              <div class="small" style="color:var(--sage); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;">Total Outlay</div>
+              <div class="fw-semibold mt-1" style="color:var(--ivory); font-size:1.15rem;" id="total-outlay-display">&#8377;26,58,85,740</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Bar Ratio -->
+        <div class="mb-4">
+          <div class="d-flex justify-content-between small mb-1" style="color:var(--sage); font-size:0.75rem;">
+            <span>Principal: <strong style="color:var(--gold);" id="bar-p-label">56%</strong></span>
+            <span>Total Interest: <strong style="color:var(--sage-lt);" id="bar-i-label">44%</strong></span>
+          </div>
+          <div class="progress" style="height:10px; background:#07130F; border:1px solid rgba(212,175,55,0.2); border-radius:2px;">
+            <div class="progress-bar" id="bar-p" style="background:var(--gold); width:56%;"></div>
+            <div class="progress-bar" id="bar-i" style="background:var(--sage); width:44%;"></div>
+          </div>
+        </div>
+
+        <!-- Call to action -->
+        <div class="d-flex gap-2 flex-wrap">
+          <a href="{% url 'property_list' %}" class="btn btn-primary gold flex-grow-1 py-2">
+            Explore Qualifying Estates &rarr;
+          </a>
+          <a href="{% url 'estate_advisor' %}" class="btn btn-outline-primary line flex-grow-1 py-2">
+            Ask Estate Concierge AI
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function() {
+  const propValInput = document.getElementById('prop-value');
+  const downPctInput = document.getElementById('down-pct');
+  const tenureInput = document.getElementById('tenure-years');
+  const rateInput = document.getElementById('interest-rate');
+  const presetSelect = document.getElementById('estate-preset-select');
+
+  const valDisplay = document.getElementById('val-display');
+  const downDisplay = document.getElementById('down-display');
+  const downPctLabel = document.getElementById('down-pct-label');
+  const tenureLabel = document.getElementById('tenure-label');
+  const monthsLabel = document.getElementById('months-label');
+  const rateLabel = document.getElementById('rate-label');
+
+  const emiDisplay = document.getElementById('emi-display');
+  const principalDisplay = document.getElementById('principal-display');
+  const interestDisplay = document.getElementById('interest-display');
+  const totalOutlayDisplay = document.getElementById('total-outlay-display');
+  const barP = document.getElementById('bar-p');
+  const barI = document.getElementById('bar-i');
+  const barPLabel = document.getElementById('bar-p-label');
+  const barILabel = document.getElementById('bar-i-label');
+
+  function calculate() {
+    const val = Number(propValInput.value);
+    const downPct = Number(downPctInput.value);
+    const down = val * (downPct / 100);
+    const principal = val - down;
+    const years = Number(tenureInput.value);
+    const months = years * 12;
+    const annualRate = Number(rateInput.value);
+    const r = (annualRate / 100) / 12;
+
+    valDisplay.textContent = '₹' + val.toLocaleString();
+    downDisplay.textContent = '₹' + down.toLocaleString();
+    downPctLabel.textContent = downPct;
+    tenureLabel.textContent = years;
+    monthsLabel.textContent = months + ' Months';
+    rateLabel.textContent = annualRate.toFixed(2);
+
+    let emi = 0;
+    if (r > 0) {
+      emi = principal * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
+    } else {
+      emi = principal / months;
+    }
+
+    const totalPaid = emi * months;
+    const totalInterest = Math.max(0, totalPaid - principal);
+
+    emiDisplay.textContent = '₹' + Math.round(emi).toLocaleString();
+    principalDisplay.textContent = '₹' + Math.round(principal).toLocaleString();
+    interestDisplay.textContent = '₹' + Math.round(totalInterest).toLocaleString();
+    totalOutlayDisplay.textContent = '₹' + Math.round(totalPaid).toLocaleString();
+
+    const pRatio = Math.round((principal / totalPaid) * 100) || 50;
+    const iRatio = 100 - pRatio;
+    barP.style.width = pRatio + '%';
+    barI.style.width = iRatio + '%';
+    barPLabel.textContent = pRatio + '%';
+    barILabel.textContent = iRatio + '%';
+  }
+
+  [propValInput, downPctInput, tenureInput, rateInput].forEach(el => el.addEventListener('input', calculate));
+
+  if (presetSelect) {
+    presetSelect.addEventListener('change', () => {
+      if (presetSelect.value) {
+        propValInput.value = presetSelect.value;
+        calculate();
+      }
+    });
+  }
+
+  calculate();
+})();
+</script>
+{% endblock %}

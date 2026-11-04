@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% block title %}Estate AI Advisor &amp; Portfolio Intelligence · PropertyPulse{% endblock %}
+{% block content %}
+<section class="container py-4 py-lg-5">
+  <div class="row g-4 justify-content-center">
+    
+    <!-- Left Column: Bot Selector & Intelligence Stats -->
+    <div class="col-lg-4">
+      <div class="pp-form-section mb-4">
+        <div class="eyebrow mb-1" style="font-size:0.7rem; letter-spacing:0.3em; color:var(--gold);">Algorithmic Guidance</div>
+        <h1 class="h4 mb-3" style="color:var(--ivory);">Estate Intelligence</h1>
+        <p class="small mb-3" style="color:var(--sage); line-height:1.6;">
+          Switch between your specialized <strong>Buyer Concierge</strong> and <strong>Seller Strategist</strong>.
+        </p>
+
+        <!-- Mode Toggle -->
+        <div class="d-flex p-1 mb-3" style="background:#07130F; border:1px solid rgba(212,175,55,0.3); border-radius:4px;">
+          <button type="button" class="btn btn-sm flex-grow-1 mode-switch-btn {% if default_mode == 'buyer' %}btn-primary gold{% else %}btn-link text-white text-decoration-none{% endif %}" data-mode="buyer" id="btn-mode-buyer" style="font-size:0.75rem; padding:0.4rem 0.6rem;">
+            Buyer Concierge
+          </button>
+          <button type="button" class="btn btn-sm flex-grow-1 mode-switch-btn {% if default_mode == 'seller' %}btn-primary gold{% else %}btn-link text-white text-decoration-none{% endif %}" data-mode="seller" id="btn-mode-seller" style="font-size:0.75rem; padding:0.4rem 0.6rem;">
+            Seller Strategist
+          </button>
+        </div>
+
+        <div class="p-3 mb-3" style="background:#091712; border:1px solid rgba(212,175,55,0.2); border-radius:4px;">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <span style="color:var(--gold); font-size:1.2rem;">&#9733;</span>
+            <div class="fw-semibold small" id="active-bot-title" style="color:var(--ivory);">
+              {% if default_mode == 'seller' %}Portfolio Strategist AI{% else %}Estate Concierge AI{% endif %}
+            </div>
+          </div>
+          <p class="small mb-0" id="active-bot-desc" style="color:var(--sage); font-size:0.8rem; line-height:1.5;">
+            {% if default_mode == 'seller' %}
+              Assisting proprietors with market valuation calibration, staging advisory, and high-net-worth investor engagement.
+            {% else %}
+              Guiding discerning buyers through architectural discovery, automated mortgage calculation, and site visit coordination.
+            {% endif %}
+          </p>
+        </div>
+
+        <!-- Notification Alerts Box -->
+        {% if alerts %}
+          <div class="p-3" style="background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.3); border-radius:4px;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="small fw-semibold" style="color:var(--gold-lt); font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase;">
+                Active Notifications
+              </span>
+              <span class="badge" style="background:var(--gold); color:#07130F; font-size:0.65rem;">{{ alerts|length }}</span>
+            </div>
+            {% for alert in alerts %}
+              <div class="mb-2 pb-2 {% if not forloop.last %}border-bottom{% endif %}" style="border-color:rgba(212,175,55,0.15) !important;">
+                <div class="d-flex justify-content-between align-items-center">
+                  <strong style="color:var(--ivory); font-size:0.78rem;">{{ alert.title }}</strong>
+                  <span style="color:var(--sage); font-size:0.68rem;">{{ alert.time }}</span>
+                </div>
+                <div class="small" style="color:var(--sage); font-size:0.75rem;">{{ alert.body }}</div>
+                <a href="{{ alert.link }}" class="small" style="color:var(--gold); font-size:0.72rem; text-decoration:underline;">View &rarr;</a>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Right Column: Interactive Chat Interface -->
+    <div class="col-lg-8">
+      <div class="pp-form-section p-0 overflow-hidden" style="border:1px solid rgba(212,175,55,0.3); height:640px; display:flex; flex-direction:column;">
+        
+        <!-- Header -->
+        <div class="p-3 d-flex justify-content-between align-items-center" style="background:#091712; border-bottom:1px solid rgba(212,175,55,0.2);">
+          <div class="d-flex align-items-center gap-3">
+            <div style="width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg, var(--gold), #8A6E24); display:grid; place-items:center; font-size:1.2rem; color:#07130F;">
+              &#129302;
+            </div>
+            <div>
+              <div class="fw-semibold" id="chat-header-title" style="color:var(--ivory); font-family:var(--sans); font-size:0.95rem;">
+                {% if default_mode == 'seller' %}Portfolio Strategist AI{% else %}Estate Concierge AI{% endif %}
+              </div>
+              <div class="small" style="color:var(--sage); font-size:0.75rem;">
+                <span style="color:#79D6A0;">&#9679;</span> Real-Time Database Synchronized &middot; 15 Active Estates
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline-secondary btn-sm py-1 px-2" id="clear-chat-btn" style="font-size:0.7rem;">
+            Clear Dialogue
+          </button>
+        </div>
+
+        <!-- Conversation Scroll Box -->
+        <div id="ai-chat-box" style="flex-grow:1; overflow-y:auto; padding:1.5rem; background:#07130F; display:flex; flex-direction:column; gap:1rem;">
+          <!-- Welcome Message -->
+          <div class="d-flex justify-content-start">
+            <div class="p-3" style="max-width:85%; background:#0F2019; border:1px solid rgba(212,175,55,0.25); border-radius:6px; color:var(--ivory); line-height:1.6; font-size:0.92rem;" id="ai-welcome-bubble">
+              Welcome to PropertyPulse. I am your <strong>{% if default_mode == 'seller' %}Portfolio Strategist AI{% else %}Private Client Estate Concierge{% endif %}</strong>.<br><br>
+              {% if default_mode == 'seller' %}
+                I can help you calibrate your asking prices against the algorithmic AI barometer, review buyer inquiries, and optimize luxury estate staging.
+              {% else %}
+                Ask me to recommend estates matching your lifestyle criteria, calculate monthly mortgage installments, or check your latest notifications!
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Query Suggestion Chips -->
+        <div class="p-2 d-flex gap-2 flex-wrap" id="prompt-chips" style="background:#0B1A14; border-top:1px solid rgba(212,175,55,0.15); overflow-x:auto;">
+          <!-- Populated by JS based on mode -->
+        </div>
+
+        <!-- Input Bar -->
+        <div class="p-3" style="background:#0D1F18; border-top:1px solid rgba(212,175,55,0.2);">
+          <form id="ai-input-form" class="d-flex gap-2">
+            <input type="text" id="ai-input" class="form-control" placeholder="Ask your advisor anything..." autocomplete="off" required style="background:#07130F; border-color:rgba(212,175,55,0.3); color:var(--ivory);">
+            <button class="btn btn-primary gold px-4" type="submit" id="ai-submit-btn">
+              Ask &rarr;
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function() {
+  let currentMode = "{{ default_mode }}";
+  const box = document.getElementById('ai-chat-box');
+  const input = document.getElementById('ai-input');
+  const form = document.getElementById('ai-input-form');
+  const submitBtn = document.getElementById('ai-submit-btn');
+  const chipsContainer = document.getElementById('prompt-chips');
+  const activeTitle = document.getElementById('active-bot-title');
+  const activeDesc = document.getElementById('active-bot-desc');
+  const headerTitle = document.getElementById('chat-header-title');
+
+  const buyerChips = [
+    "Show me villas with an infinity pool",
+    "Which estates are Great Deals?",
+    "Calculate mortgage EMI for 15 Cr",
+    "Estates in Mumbai & Alibaug",
+    "Check my unread messages"
+  ];
+
+  const sellerChips = [
+    "Analyze my listing prices",
+    "Staging tips for country estates",
+    "Check recent buyer inquiries",
+    "How does the AI barometer evaluate value?"
+  ];
+
+  function renderChips() {
+    chipsContainer.innerHTML = '';
+    const list = currentMode === 'seller' ? sellerChips : buyerChips;
+    list.forEach(text => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-sm btn-outline-secondary py-1 px-2';
+      btn.style.fontSize = '0.72rem';
+      btn.textContent = text;
+      btn.addEventListener('click', () => {
+        input.value = text;
+        form.dispatchEvent(new Event('submit', {cancelable:true}));
+      });
+      chipsContainer.appendChild(btn);
+    });
+  }
+
+  function setMode(mode) {
+    currentMode = mode;
+    const btnBuyer = document.getElementById('btn-mode-buyer');
+    const btnSeller = document.getElementById('btn-mode-seller');
+    if (mode === 'buyer') {
+      btnBuyer.className = 'btn btn-sm flex-grow-1 btn-primary gold';
+      btnSeller.className = 'btn btn-sm flex-grow-1 btn-link text-white text-decoration-none';
+      activeTitle.textContent = 'Estate Concierge AI';
+      headerTitle.textContent = 'Estate Concierge AI';
+      activeDesc.textContent = 'Guiding discerning buyers through architectural discovery, automated mortgage calculation, and site visit coordination.';
+    } else {
+      btnSeller.className = 'btn btn-sm flex-grow-1 btn-primary gold';
+      btnBuyer.className = 'btn btn-sm flex-grow-1 btn-link text-white text-decoration-none';
+      activeTitle.textContent = 'Portfolio Strategist AI';
+      headerTitle.textContent = 'Portfolio Strategist AI';
+      activeDesc.textContent = 'Assisting proprietors with market valuation calibration, staging advisory, and high-net-worth investor engagement.';
+    }
+    renderChips();
+  }
+
+  document.getElementById('btn-mode-buyer').addEventListener('click', () => setMode('buyer'));
+  document.getElementById('btn-mode-seller').addEventListener('click', () => setMode('seller'));
+
+  function appendUserBubble(text) {
+    const row = document.createElement('div');
+    row.className = 'd-flex justify-content-end';
+    row.innerHTML = `<div class="p-3" style="max-width:80%; background:linear-gradient(135deg, #1C382C 0%, #132820 100%); border:1px solid rgba(212,175,55,0.4); border-radius:6px; color:var(--ivory); font-size:0.92rem;">${escapeHtml(text)}</div>`;
+    box.appendChild(row);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function appendBotBubble(markdownText) {
+    const row = document.createElement('div');
+    row.className = 'd-flex justify-content-start';
+    const bubble = document.createElement('div');
+    bubble.className = 'p-3';
+    bubble.style.maxWidth = '85%';
+    bubble.style.background = '#0F2019';
+    bubble.style.border = '1px solid rgba(212,175,55,0.25)';
+    bubble.style.borderRadius = '6px';
+    bubble.style.color = 'var(--ivory)';
+    bubble.style.fontSize = '0.92rem';
+    bubble.style.lineHeight = '1.6';
+    bubble.innerHTML = formatMarkdown(markdownText);
+    row.appendChild(bubble);
+    box.appendChild(row);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function escapeHtml(string) {
+    const div = document.createElement('div');
+    div.textContent = string;
+    return div.innerHTML;
+  }
+
+  function formatMarkdown(text) {
+    return text
+      .replace(/^### (.*$)/gim, '<h3 style="font-size:1.1rem; color:var(--gold); margin-top:0.5rem; margin-bottom:0.4rem;">$1</h3>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--gold-lt);">$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em style="color:var(--sage);">$1</em>')
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" style="color:var(--gold); text-decoration:underline;">$1</a>')
+      .replace(/\n\n/g, '<br><br>')
+      .replace(/\n- /g, '<br>&bull; ');
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const query = input.value.trim();
+    if (!query) return;
+
+    appendUserBubble(query);
+    input.value = '';
+    submitBtn.disabled = true;
+
+    try {
+      const resp = await fetch('/chat/api/chatbot/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ message: query, mode: currentMode })
+      });
+      const data = await resp.json();
+      appendBotBubble(data.reply || 'Apologies, our private network is busy. Please try again.');
+    } catch(err) {
+      appendBotBubble('Network synchronization issue. Please check your connection.');
+    } finally {
+      submitBtn.disabled = false;
+      input.focus();
+    }
+  });
+
+  document.getElementById('clear-chat-btn').addEventListener('click', () => {
+    box.innerHTML = '';
+    appendBotBubble(`Dialogue cleared. How may your ${currentMode === 'seller' ? 'Portfolio Strategist' : 'Estate Concierge'} assist you now?`);
+  });
+
+  renderChips();
+})();
+</script>
+{% endblock %}

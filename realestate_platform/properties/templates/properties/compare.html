@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Compare Luxury Estates · PropertyPulse{% endblock %}
+{% block content %}
+<section class="container py-4 py-lg-5">
+  <div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+      <div class="eyebrow mb-1" style="font-size:0.72rem; letter-spacing:0.3em; color:var(--gold);">Architectural Dossier</div>
+      <h1 class="h2 mb-1" style="color:var(--ivory);">Side-by-Side Estate Comparison</h1>
+      <p class="small mb-0" style="color:var(--sage);">Analyze valuation metrics, square footage, bedrooms, and algorithmic market alignment.</p>
+    </div>
+    <a href="{% url 'property_list' %}" class="btn btn-outline-primary line btn-sm">
+      Browse All Estates &rarr;
+    </a>
+  </div>
+
+  <!-- Selector Form -->
+  <div class="pp-form-section mb-4 p-3" style="background:#091712;">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-md-4">
+        <label class="pp-label">First Estate</label>
+        <select name="p1" class="form-select form-select-sm">
+          <option value="">Select estate...</option>
+          {% for p in all_properties %}
+            <option value="{{ p.pk }}" {% if p.pk == p1_id %}selected{% endif %}>{{ p.title }} (₹{{ p.listed_price|floatformat:0 }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="pp-label">Second Estate</label>
+        <select name="p2" class="form-select form-select-sm">
+          <option value="">Select estate...</option>
+          {% for p in all_properties %}
+            <option value="{{ p.pk }}" {% if p.pk == p2_id %}selected{% endif %}>{{ p.title }} (₹{{ p.listed_price|floatformat:0 }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="pp-label">Third Estate (Optional)</label>
+        <select name="p3" class="form-select form-select-sm">
+          <option value="">Select estate...</option>
+          {% for p in all_properties %}
+            <option value="{{ p.pk }}" {% if p.pk == p3_id %}selected{% endif %}>{{ p.title }} (₹{{ p.listed_price|floatformat:0 }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-primary gold btn-sm w-100 py-1" style="height:35px;">Compare</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Comparison Grid -->
+  {% if compared_properties %}
+    <div class="row g-4">
+      {% for estate in compared_properties %}
+        <div class="col-md-{% if compared_properties|length == 2 %}6{% elif compared_properties|length == 3 %}4{% else %}12{% endif %}">
+          <div class="pp-property-card">
+            <div class="pp-card-media">
+              {% with img=estate.images.first %}
+                {% if img %}
+                  <img src="{{ img.image.url }}" alt="{{ estate.title }}">
+                {% endif %}
+              {% endwith %}
+            </div>
+            <div class="pp-card-body">
+              <span class="pp-card-badge badge-{{ estate.barometer_key }}">{{ estate.barometer_label }}</span>
+              <h2 class="h5 pp-card-title mb-1" style="font-family:var(--serif);">{{ estate.title }}</h2>
+              <div class="pp-card-loc mb-3">{{ estate.locality }}, {{ estate.city }}</div>
+
+              <div class="p-3 mb-3" style="background:#07130F; border:1px solid rgba(212,175,55,0.2); border-radius:4px;">
+                <div class="small" style="color:var(--sage); letter-spacing:0.1em; text-transform:uppercase; font-size:0.68rem;">Listed Price</div>
+                <div style="font-family:var(--serif); font-size:1.6rem; color:var(--gold); font-weight:700;">
+                  &#8377;{{ estate.listed_price|floatformat:0 }}
+                </div>
+                <div class="small mt-1" style="color:var(--sage);">
+                  AI Valuation: <strong style="color:var(--gold-lt);">&#8377;{{ estate.predicted_price|floatformat:0 }}</strong>
+                </div>
+              </div>
+
+              <!-- Specs Table -->
+              <div class="small d-flex flex-column gap-2 mb-3">
+                <div class="d-flex justify-content-between pb-1 border-bottom" style="border-color:rgba(212,175,55,0.15) !important;">
+                  <span style="color:var(--sage);">Area:</span>
+                  <strong style="color:var(--ivory);">{{ estate.area_sqft }} sqft</strong>
+                </div>
+                <div class="d-flex justify-content-between pb-1 border-bottom" style="border-color:rgba(212,175,55,0.15) !important;">
+                  <span style="color:var(--sage);">Rate per sqft:</span>
+                  <strong style="color:var(--gold);">&#8377;{{ estate.listed_price|floatformat:0 }} / sqft</strong>
+                </div>
+                <div class="d-flex justify-content-between pb-1 border-bottom" style="border-color:rgba(212,175,55,0.15) !important;">
+                  <span style="color:var(--sage);">Bedrooms / Suites:</span>
+                  <strong style="color:var(--ivory);">{{ estate.bedrooms|default:"Commercial Layout" }}</strong>
+                </div>
+                <div class="d-flex justify-content-between pb-1 border-bottom" style="border-color:rgba(212,175,55,0.15) !important;">
+                  <span style="color:var(--sage);">Bathrooms:</span>
+                  <strong style="color:var(--ivory);">{{ estate.bathrooms }}</strong>
+                </div>
+                <div class="d-flex justify-content-between pb-1 border-bottom" style="border-color:rgba(212,175,55,0.15) !important;">
+                  <span style="color:var(--sage);">Category:</span>
+                  <strong style="color:var(--ivory);">{{ estate.get_category_display }}</strong>
+                </div>
+                <div class="d-flex justify-content-between pb-1 border-bottom" style="border-color:rgba(212,175,55,0.15) !important;">
+                  <span style="color:var(--sage);">Proprietor:</span>
+                  <strong style="color:var(--ivory);">{{ estate.seller.username }}</strong>
+                </div>
+              </div>
+
+              <div class="d-grid gap-2 mt-auto">
+                <a href="{% url 'property_detail' estate.pk %}" class="btn btn-outline-primary line btn-sm py-2">
+                  View Full Dossier
+                </a>
+                <a href="{% url 'payment_checkout_property' estate.pk %}" class="btn btn-primary gold btn-sm py-2">
+                  Place Escrow Deposit &rarr;
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="pp-empty-state">
+      <p>Select at least two estates above to generate side-by-side architectural metrics.</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

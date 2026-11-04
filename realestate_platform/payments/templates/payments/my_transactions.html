@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Escrow Transactions &amp; Ledger · PropertyPulse{% endblock %}
+{% block content %}
+<section class="container py-4 py-lg-5">
+  <div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+      <div class="eyebrow mb-1" style="font-size:0.72rem; letter-spacing:0.3em; color:var(--gold);">Fiduciary Ledger</div>
+      <h1 class="h2 mb-1" style="color:var(--ivory);">Escrow &amp; Payment History</h1>
+      <p class="small mb-0" style="color:var(--sage);">Record of all reservation token deposits, VIP site visits, and escrow settlements.</p>
+    </div>
+    <a href="{% url 'property_list' %}" class="btn btn-primary gold btn-sm">
+      Reserve an Estate &rarr;
+    </a>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="pp-stat-card">
+        <div class="pp-stat-label">Total Escrow Funds Held (As Buyer)</div>
+        <div class="pp-stat-value" style="color:var(--gold);">&#8377;{{ total_spent|floatformat:0 }}</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="pp-stat-card">
+        <div class="pp-stat-label">Total Deposits Received (On Listings)</div>
+        <div class="pp-stat-value" style="color:#79D6A0;">&#8377;{{ total_received|floatformat:0 }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transactions Table -->
+  <div class="pp-form-section p-0 overflow-hidden">
+    <div class="p-3" style="background:#091712; border-bottom:1px solid rgba(212,175,55,0.2);">
+      <h2 class="h6 mb-0" style="font-family:var(--sans); letter-spacing:0.15em; text-transform:uppercase; color:var(--ivory); font-size:0.85rem;">
+        Complete Audit Record
+      </h2>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table mb-0" style="color:var(--ivory);">
+        <thead style="background:#07130F;">
+          <tr>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Invoice #</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Estate Property</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Purpose</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Method</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Amount</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Status</th>
+            <th class="text-end" style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payment in buyer_payments %}
+            <tr>
+              <td class="align-middle">
+                <code style="color:var(--gold-lt);">{{ payment.invoice_number }}</code><br>
+                <span class="small" style="color:var(--sage); font-size:0.7rem;">{{ payment.paid_at|date:"M j, Y" }}</span>
+              </td>
+              <td class="align-middle">
+                {% if payment.estate %}
+                  <strong style="color:var(--ivory);">{{ payment.estate.title }}</strong><br>
+                  <span class="small" style="color:var(--sage);">{{ payment.estate.locality }}</span>
+                {% else %}
+                  <span style="color:var(--sage);">Site Inspection Coordination</span>
+                {% endif %}
+              </td>
+              <td class="align-middle">
+                <span class="small" style="color:var(--ivory);">{{ payment.get_payment_type_display }}</span>
+              </td>
+              <td class="align-middle">
+                <span class="small" style="color:var(--sage);">{{ payment.get_payment_method_display }}</span>
+              </td>
+              <td class="align-middle fw-semibold" style="color:var(--gold); font-family:var(--serif); font-size:1.15rem;">
+                &#8377;{{ payment.amount_rupees|floatformat:2 }}
+              </td>
+              <td class="align-middle">
+                <span class="badge" style="background:rgba(46,125,82,0.2); border:1px solid #79D6A0; color:#79D6A0; font-size:0.7rem;">
+                  {{ payment.get_status_display }}
+                </span>
+              </td>
+              <td class="text-end align-middle">
+                <a href="{% url 'payment_receipt' payment.public_id %}" class="btn btn-outline-primary line btn-sm py-1 px-2" style="font-size:0.7rem;">
+                  View Deed &rarr;
+                </a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="7" class="text-center py-4" style="color:var(--sage);">
+                No escrow payments recorded yet.
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}
