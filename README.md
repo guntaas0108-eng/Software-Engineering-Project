@@ -41,6 +41,7 @@
 
 The repository maintains full software engineering artifacts compliant with IEEE/course requirements:
 
+- 🌟 [**Comprehensive Platform & Feature Guide (CHANGES_AND_FEATURES_GUIDE.md)**](CHANGES_AND_FEATURES_GUIDE.md): **Complete breakdown of the November 2026 Production Release — Emerald & Gold luxury redesign, strictly segregated Buyer vs. Seller AI assistants, Sovereign Administrator Command Center, Escrow custody rails, and login credentials.**
 - 📕 [**Official Software Requirements Specification (SRS.pdf)**](SRS.pdf) *(or view in [docs/SRS.pdf](docs/SRS.pdf))*: Complete 16-page compiled academic document with cover page, Table of Contents, and high-resolution UML diagrams matching TIET course requirements.
 - 📑 [**Software Requirements Specification (Markdown)**](SRS.md) *(or view in [docs/SRS.md](docs/SRS.md))*: Formal specification covering scope, user classes, functional & non-functional requirements, UML diagrams (Use Case, Class, Activity, Sequence), and mathematical models.
 - 📜 [**Formal LaTeX SRS Source (docs/SRS.tex)**](docs/SRS.tex): Publication-grade LaTeX source ready for formal PDF compilation.
