@@ -1,45 +1,81 @@
 {% extends "base.html" %}
-{% block title %}Estate AI Advisor &amp; Portfolio Intelligence · PropertyPulse{% endblock %}
+{% block title %}{% if role_mode == 'seller' %}Portfolio Strategist AI{% elif role_mode == 'admin' %}Executive Platform AI{% else %}Estate Concierge AI{% endif %} · PropertyPulse{% endblock %}
 {% block content %}
 <section class="container py-4 py-lg-5">
   <div class="row g-4 justify-content-center">
     
-    <!-- Left Column: Bot Selector & Intelligence Stats -->
+    <!-- Left Column: Bot Identity & Real-Time Alerts -->
     <div class="col-lg-4">
       <div class="pp-form-section mb-4">
-        <div class="eyebrow mb-1" style="font-size:0.7rem; letter-spacing:0.3em; color:var(--gold);">Algorithmic Guidance</div>
-        <h1 class="h4 mb-3" style="color:var(--ivory);">Estate Intelligence</h1>
-        <p class="small mb-3" style="color:var(--sage); line-height:1.6;">
-          Switch between your specialized <strong>Buyer Concierge</strong> and <strong>Seller Strategist</strong>.
-        </p>
-
-        <!-- Mode Toggle -->
-        <div class="d-flex p-1 mb-3" style="background:#07130F; border:1px solid rgba(212,175,55,0.3); border-radius:4px;">
-          <button type="button" class="btn btn-sm flex-grow-1 mode-switch-btn {% if default_mode == 'buyer' %}btn-primary gold{% else %}btn-link text-white text-decoration-none{% endif %}" data-mode="buyer" id="btn-mode-buyer" style="font-size:0.75rem; padding:0.4rem 0.6rem;">
-            Buyer Concierge
-          </button>
-          <button type="button" class="btn btn-sm flex-grow-1 mode-switch-btn {% if default_mode == 'seller' %}btn-primary gold{% else %}btn-link text-white text-decoration-none{% endif %}" data-mode="seller" id="btn-mode-seller" style="font-size:0.75rem; padding:0.4rem 0.6rem;">
-            Seller Strategist
-          </button>
-        </div>
-
-        <div class="p-3 mb-3" style="background:#091712; border:1px solid rgba(212,175,55,0.2); border-radius:4px;">
-          <div class="d-flex align-items-center gap-2 mb-2">
-            <span style="color:var(--gold); font-size:1.2rem;">&#9733;</span>
-            <div class="fw-semibold small" id="active-bot-title" style="color:var(--ivory);">
-              {% if default_mode == 'seller' %}Portfolio Strategist AI{% else %}Estate Concierge AI{% endif %}
-            </div>
+        
+        {% if role_mode == 'seller' %}
+          <!-- SELLER EXCLUSIVE IDENTITY -->
+          <div class="eyebrow mb-1" style="font-size:0.7rem; letter-spacing:0.3em; color:#79D6A0;">
+            Proprietor Asset Intelligence
           </div>
-          <p class="small mb-0" id="active-bot-desc" style="color:var(--sage); font-size:0.8rem; line-height:1.5;">
-            {% if default_mode == 'seller' %}
-              Assisting proprietors with market valuation calibration, staging advisory, and high-net-worth investor engagement.
-            {% else %}
-              Guiding discerning buyers through architectural discovery, automated mortgage calculation, and site visit coordination.
-            {% endif %}
-          </p>
-        </div>
+          <h1 class="h4 mb-2" style="color:var(--ivory);">Portfolio Strategist AI</h1>
+          <div class="mb-3">
+            <span class="badge" style="background:rgba(121,214,160,0.15); border:1px solid #79D6A0; color:#79D6A0; font-size:0.7rem; letter-spacing:0.12em;">
+              ESTATE PROPRIETOR INTERFACE
+            </span>
+          </div>
+          <div class="p-3 mb-3" style="background:#091712; border:1px solid rgba(121,214,160,0.3); border-radius:4px;">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span style="color:#79D6A0; font-size:1.2rem;">&#9733;</span>
+              <div class="fw-semibold small" style="color:var(--ivory);">Portfolio Strategist AI</div>
+            </div>
+            <p class="small mb-0" style="color:var(--sage); font-size:0.8rem; line-height:1.5;">
+              Exclusively dedicated to estate proprietors: automated valuation barometer calibration, listing optimization, staging guidance, and high-net-worth inquiry analytics.
+            </p>
+          </div>
 
-        <!-- Notification Alerts Box -->
+        {% elif role_mode == 'admin' %}
+          <!-- ADMIN EXCLUSIVE IDENTITY -->
+          <div class="eyebrow mb-1" style="font-size:0.7rem; letter-spacing:0.3em; color:var(--gold);">
+            Executive System Jurisdiction
+          </div>
+          <h1 class="h4 mb-2" style="color:var(--ivory);">Executive Platform AI</h1>
+          <div class="mb-3">
+            <span class="badge" style="background:rgba(212,175,55,0.2); border:1px solid var(--gold); color:var(--gold-lt); font-size:0.7rem; letter-spacing:0.12em;">
+              PLATFORM ADMINISTRATOR INTERFACE
+            </span>
+          </div>
+          <div class="p-3 mb-3" style="background:#091712; border:1px solid rgba(212,175,55,0.3); border-radius:4px;">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span style="color:var(--gold); font-size:1.2rem;">&#128737;</span>
+              <div class="fw-semibold small" style="color:var(--ivory);">Executive Platform AI</div>
+            </div>
+            <p class="small mb-2" style="color:var(--sage); font-size:0.8rem; line-height:1.5;">
+              Supervising platform health, duplicate listing detection, and escrow custody.
+            </p>
+            <a href="{% url 'platform_admin' %}" class="btn btn-outline-warning btn-sm line w-100 py-1" style="font-size:0.72rem; letter-spacing:0.12em;">
+              Open Command Center &rarr;
+            </a>
+          </div>
+
+        {% else %}
+          <!-- BUYER EXCLUSIVE IDENTITY -->
+          <div class="eyebrow mb-1" style="font-size:0.7rem; letter-spacing:0.3em; color:var(--gold);">
+            Bespoke Acquisition Guidance
+          </div>
+          <h1 class="h4 mb-2" style="color:var(--ivory);">Estate Concierge AI</h1>
+          <div class="mb-3">
+            <span class="badge" style="background:rgba(212,175,55,0.15); border:1px solid var(--gold); color:var(--gold-lt); font-size:0.7rem; letter-spacing:0.12em;">
+              ACCREDITED BUYER INTERFACE
+            </span>
+          </div>
+          <div class="p-3 mb-3" style="background:#091712; border:1px solid rgba(212,175,55,0.25); border-radius:4px;">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span style="color:var(--gold); font-size:1.2rem;">&#9733;</span>
+              <div class="fw-semibold small" style="color:var(--ivory);">Estate Concierge AI</div>
+            </div>
+            <p class="small mb-0" style="color:var(--sage); font-size:0.8rem; line-height:1.5;">
+              Exclusively dedicated to accredited buyers: architectural discovery, pool &amp; view filtering, automated mortgage modeling, and private tour scheduling.
+            </p>
+          </div>
+        {% endif %}
+
+        <!-- Real-Time Alerts Box -->
         {% if alerts %}
           <div class="p-3" style="background:rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.3); border-radius:4px;">
             <div class="d-flex justify-content-between align-items-center mb-2">
@@ -70,12 +106,12 @@
         <!-- Header -->
         <div class="p-3 d-flex justify-content-between align-items-center" style="background:#091712; border-bottom:1px solid rgba(212,175,55,0.2);">
           <div class="d-flex align-items-center gap-3">
-            <div style="width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg, var(--gold), #8A6E24); display:grid; place-items:center; font-size:1.2rem; color:#07130F;">
+            <div style="width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg, {% if role_mode == 'seller' %}#79D6A0, #16402F{% else %}var(--gold), #8A6E24{% endif %}); display:grid; place-items:center; font-size:1.2rem; color:#07130F;">
               &#129302;
             </div>
             <div>
-              <div class="fw-semibold" id="chat-header-title" style="color:var(--ivory); font-family:var(--sans); font-size:0.95rem;">
-                {% if default_mode == 'seller' %}Portfolio Strategist AI{% else %}Estate Concierge AI{% endif %}
+              <div class="fw-semibold" style="color:var(--ivory); font-family:var(--sans); font-size:0.95rem;">
+                {% if role_mode == 'seller' %}Portfolio Strategist AI{% elif role_mode == 'admin' %}Executive Platform AI{% else %}Estate Concierge AI{% endif %}
               </div>
               <div class="small" style="color:var(--sage); font-size:0.75rem;">
                 <span style="color:#79D6A0;">&#9679;</span> Real-Time Database Synchronized &middot; 15 Active Estates
@@ -91,20 +127,39 @@
         <div id="ai-chat-box" style="flex-grow:1; overflow-y:auto; padding:1.5rem; background:#07130F; display:flex; flex-direction:column; gap:1rem;">
           <!-- Welcome Message -->
           <div class="d-flex justify-content-start">
-            <div class="p-3" style="max-width:85%; background:#0F2019; border:1px solid rgba(212,175,55,0.25); border-radius:6px; color:var(--ivory); line-height:1.6; font-size:0.92rem;" id="ai-welcome-bubble">
-              Welcome to PropertyPulse. I am your <strong>{% if default_mode == 'seller' %}Portfolio Strategist AI{% else %}Private Client Estate Concierge{% endif %}</strong>.<br><br>
-              {% if default_mode == 'seller' %}
-                I can help you calibrate your asking prices against the algorithmic AI barometer, review buyer inquiries, and optimize luxury estate staging.
+            <div class="p-3" style="max-width:85%; background:#0F2019; border:1px solid rgba(212,175,55,0.25); border-radius:6px; color:var(--ivory); line-height:1.6; font-size:0.92rem;">
+              {% if role_mode == 'seller' %}
+                Welcome to PropertyPulse. I am your <strong>Portfolio Strategist AI</strong>.<br><br>
+                I can help you calibrate asking prices against the algorithmic AI barometer, review buyer inquiries, and optimize luxury estate staging for high-net-worth investors.
+              {% elif role_mode == 'admin' %}
+                Welcome Administrator. I am your <strong>Executive Platform Oversight AI</strong>.<br><br>
+                Ask me to scan system diagnostics, review flagged duplicate listings, or audit escrow custody holds.
               {% else %}
+                Welcome to PropertyPulse. I am your <strong>Private Client Estate Concierge</strong>.<br><br>
                 Ask me to recommend estates matching your lifestyle criteria, calculate monthly mortgage installments, or check your latest notifications!
               {% endif %}
             </div>
           </div>
         </div>
 
-        <!-- Quick Query Suggestion Chips -->
+        <!-- Quick Query Suggestion Chips (Strictly Role-Specific) -->
         <div class="p-2 d-flex gap-2 flex-wrap" id="prompt-chips" style="background:#0B1A14; border-top:1px solid rgba(212,175,55,0.15); overflow-x:auto;">
-          <!-- Populated by JS based on mode -->
+          {% if role_mode == 'seller' %}
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="Analyze my listing prices">Analyze my listing prices</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="How does the AI barometer evaluate value?">How does the AI barometer evaluate value?</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="Staging tips for country estates">Staging tips for country estates</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="Check recent buyer inquiries">Check recent buyer inquiries</button>
+          {% elif role_mode == 'admin' %}
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="Check platform health and diagnostics">Check platform health and diagnostics</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="Review duplicate listing risks">Review duplicate listing risks</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="Audit escrow balance and custody settlements">Audit escrow balance and custody</button>
+          {% else %}
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="Show me villas with an infinity pool">Villas with an infinity pool</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="Which estates are Great Deals?">Which estates are Great Deals?</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="Calculate mortgage EMI for 15 Cr">Calculate mortgage EMI for 15 Cr</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="Estates in Mumbai &amp; Alibaug">Estates in Mumbai &amp; Alibaug</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2 q-chip" style="font-size:0.72rem;" data-msg="Check my unread messages">Check my unread messages</button>
+          {% endif %}
         </div>
 
         <!-- Input Bar -->
@@ -125,70 +180,18 @@
 
 <script>
 (function() {
-  let currentMode = "{{ default_mode }}";
+  const currentMode = "{{ role_mode }}";
   const box = document.getElementById('ai-chat-box');
   const input = document.getElementById('ai-input');
   const form = document.getElementById('ai-input-form');
   const submitBtn = document.getElementById('ai-submit-btn');
-  const chipsContainer = document.getElementById('prompt-chips');
-  const activeTitle = document.getElementById('active-bot-title');
-  const activeDesc = document.getElementById('active-bot-desc');
-  const headerTitle = document.getElementById('chat-header-title');
 
-  const buyerChips = [
-    "Show me villas with an infinity pool",
-    "Which estates are Great Deals?",
-    "Calculate mortgage EMI for 15 Cr",
-    "Estates in Mumbai & Alibaug",
-    "Check my unread messages"
-  ];
-
-  const sellerChips = [
-    "Analyze my listing prices",
-    "Staging tips for country estates",
-    "Check recent buyer inquiries",
-    "How does the AI barometer evaluate value?"
-  ];
-
-  function renderChips() {
-    chipsContainer.innerHTML = '';
-    const list = currentMode === 'seller' ? sellerChips : buyerChips;
-    list.forEach(text => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'btn btn-sm btn-outline-secondary py-1 px-2';
-      btn.style.fontSize = '0.72rem';
-      btn.textContent = text;
-      btn.addEventListener('click', () => {
-        input.value = text;
-        form.dispatchEvent(new Event('submit', {cancelable:true}));
-      });
-      chipsContainer.appendChild(btn);
+  document.querySelectorAll('.q-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      input.value = btn.dataset.msg;
+      form.dispatchEvent(new Event('submit', {cancelable:true}));
     });
-  }
-
-  function setMode(mode) {
-    currentMode = mode;
-    const btnBuyer = document.getElementById('btn-mode-buyer');
-    const btnSeller = document.getElementById('btn-mode-seller');
-    if (mode === 'buyer') {
-      btnBuyer.className = 'btn btn-sm flex-grow-1 btn-primary gold';
-      btnSeller.className = 'btn btn-sm flex-grow-1 btn-link text-white text-decoration-none';
-      activeTitle.textContent = 'Estate Concierge AI';
-      headerTitle.textContent = 'Estate Concierge AI';
-      activeDesc.textContent = 'Guiding discerning buyers through architectural discovery, automated mortgage calculation, and site visit coordination.';
-    } else {
-      btnSeller.className = 'btn btn-sm flex-grow-1 btn-primary gold';
-      btnBuyer.className = 'btn btn-sm flex-grow-1 btn-link text-white text-decoration-none';
-      activeTitle.textContent = 'Portfolio Strategist AI';
-      headerTitle.textContent = 'Portfolio Strategist AI';
-      activeDesc.textContent = 'Assisting proprietors with market valuation calibration, staging advisory, and high-net-worth investor engagement.';
-    }
-    renderChips();
-  }
-
-  document.getElementById('btn-mode-buyer').addEventListener('click', () => setMode('buyer'));
-  document.getElementById('btn-mode-seller').addEventListener('click', () => setMode('seller'));
+  });
 
   function appendUserBubble(text) {
     const row = document.createElement('div');
@@ -262,10 +265,8 @@
 
   document.getElementById('clear-chat-btn').addEventListener('click', () => {
     box.innerHTML = '';
-    appendBotBubble(`Dialogue cleared. How may your ${currentMode === 'seller' ? 'Portfolio Strategist' : 'Estate Concierge'} assist you now?`);
+    appendBotBubble(`Dialogue cleared. How may your ${currentMode === 'seller' ? 'Portfolio Strategist' : (currentMode === 'admin' ? 'Executive AI' : 'Estate Concierge')} assist you now?`);
   });
-
-  renderChips();
 })();
 </script>
 {% endblock %}

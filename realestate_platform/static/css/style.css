@@ -1317,45 +1317,49 @@ body.theme-light .form-select {
   margin: 0.4rem 0;
 }
 
-/* Floating Messages Quick Access */
-#floating-msg-btn {
-  background: #091712;
-  border: 1px solid var(--gold);
-  color: var(--ivory);
-  border-radius: 99px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 16px rgba(212, 175, 55, 0.18);
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-#floating-msg-btn:hover {
-  background: linear-gradient(135deg, #0F2019, #19382B);
-  border-color: var(--gold-lt);
-  color: var(--gold);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 22px rgba(212, 175, 55, 0.3);
-}
-
-
-/* Unified Floating Actions Dock - Zero Overlap */
-#floating-actions-dock {
+/* Unified Luxury Floating Actions Capsule Dock - Zero Overlap Guaranteed */
+#pp-floating-dock {
   display: flex !important;
   align-items: center !important;
-  gap: 12px !important;
   position: fixed !important;
   bottom: 22px !important;
   right: 22px !important;
   z-index: 1040 !important;
+  background: #081611 !important;
+  border: 1px solid var(--gold) !important;
+  border-radius: 99px !important;
+  padding: 4px !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 18px rgba(212, 175, 55, 0.25) !important;
 }
 
-#floating-actions-dock .btn,
-#floating-actions-dock a {
-  white-space: nowrap !important;
+#pp-floating-dock #floating-msg-btn {
+  background: transparent !important;
+  border: none !important;
+  color: var(--ivory) !important;
+  border-radius: 99px !important;
+  box-shadow: none !important;
+  padding: 6px 14px !important;
   margin: 0 !important;
+  transition: all 0.25s ease !important;
+}
+
+#pp-floating-dock #floating-msg-btn:hover {
+  background: rgba(212, 175, 55, 0.12) !important;
+  color: var(--gold-lt) !important;
+  transform: none !important;
+}
+
+#pp-floating-dock #ai-widget-toggle {
+  margin: 0 !important;
+  padding: 6px 16px !important;
+  border-radius: 99px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
 @media (max-width: 576px) {
-  #floating-actions-dock {
+  #pp-floating-dock {
     bottom: 14px !important;
     right: 14px !important;
-    gap: 8px !important;
+    padding: 3px !important;
   }
 }

@@ -10,7 +10,12 @@ import json
 
 from .forms import AppointmentForm, MessageForm
 from .models import Appointment, AppointmentEvent, Conversation, Message
-from .chatbot_engine import generate_buyer_bot_response, generate_seller_bot_response, get_user_notifications
+from .chatbot_engine import (
+    generate_buyer_bot_response,
+    generate_seller_bot_response,
+    generate_admin_bot_response,
+    get_user_notifications,
+)
 
 
 def _participant_conversation(user, pk):
@@ -189,9 +194,11 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def api_chatbot(request):
     """
-    Dual AI Chatbot API:
-    - Mode 'buyer': Estate Concierge AI
-    - Mode 'seller': Portfolio Strategist AI
+    Strictly Segregated AI Advisory Engine:
+    - Buyers communicate EXCLUSIVELY with Estate Concierge AI.
+    - Sellers communicate EXCLUSIVELY with Portfolio Strategist AI.
+    - Platform Administrators have direct Executive Diagnostic AI.
+    Cross-over between Buyer and Seller AI is strictly prohibited.
     """
     if request.method != "POST":
         return JsonResponse({"error": "POST method required"}, status=405)
@@ -199,20 +206,32 @@ def api_chatbot(request):
     try:
         data = json.loads(request.body or "{}")
         user_message = data.get("message", "").strip()
-        mode = data.get("mode", "buyer").lower()
     except Exception:
         return JsonResponse({"error": "Invalid JSON"}, status=400)
 
     if not user_message:
         return JsonResponse({"error": "Empty message"}, status=400)
 
-    # Determine user role or requested mode
-    if mode == "seller":
-        reply = generate_seller_bot_response(user_message, request.user)
+    user = request.user
+    # Enforce strict bot persona based on authenticated role
+    if user.is_authenticated:
+        if user.is_staff or user.is_superuser or (hasattr(user, "profile") and user.profile.role == "ADMIN"):
+            mode = "admin"
+        elif hasattr(user, "profile") and user.profile.role == "SELLER":
+            mode = "seller"
+        else:
+            mode = "buyer"
     else:
-        reply = generate_buyer_bot_response(user_message, request.user)
+        mode = "buyer"
 
-    alerts = get_user_notifications(request.user) if request.user.is_authenticated else []
+    if mode == "seller":
+        reply = generate_seller_bot_response(user_message, user)
+    elif mode == "admin":
+        reply = generate_admin_bot_response(user_message, user)
+    else:
+        reply = generate_buyer_bot_response(user_message, user)
+
+    alerts = get_user_notifications(user) if user.is_authenticated else []
 
     return JsonResponse({
         "mode": mode,
@@ -231,10 +250,23 @@ def api_notifications(request):
 
 
 def advisor_view(request):
-    """Dedicated full-screen AI Advisory & Intelligence Center."""
-    is_seller = request.user.is_authenticated and request.user.properties.exists()
-    default_mode = "seller" if is_seller else "buyer"
+    """
+    Dedicated full-screen AI Advisory & Intelligence Center.
+    Strictly presents the designated AI agent corresponding to the user's role:
+    Buyers see ONLY Estate Concierge AI; Sellers see ONLY Portfolio Strategist AI.
+    """
+    user = request.user
+    if user.is_authenticated:
+        if user.is_staff or user.is_superuser or (hasattr(user, "profile") and user.profile.role == "ADMIN"):
+            role_mode = "admin"
+        elif hasattr(user, "profile") and user.profile.role == "SELLER":
+            role_mode = "seller"
+        else:
+            role_mode = "buyer"
+    else:
+        role_mode = "buyer"
+
     return render(request, "chat/advisor.html", {
-        "default_mode": default_mode,
-        "alerts": get_user_notifications(request.user) if request.user.is_authenticated else []
+        "role_mode": role_mode,
+        "alerts": get_user_notifications(user) if user.is_authenticated else []
     })

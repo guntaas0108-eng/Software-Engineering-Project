@@ -1,0 +1,337 @@
+{% extends "base.html" %}
+{% block title %}Sovereign Administrator Command Center · PropertyPulse{% endblock %}
+{% block content %}
+<section class="container py-4 py-lg-5">
+  
+  <!-- Admin Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+    <div>
+      <div class="eyebrow mb-1" style="font-size:0.72rem; letter-spacing:0.35em; color:var(--gold);">
+        &#9813; Executive Jurisdiction &middot; Staff Only
+      </div>
+      <h1 class="h2 mb-1" style="color:var(--ivory);">Platform Administrator Command Center</h1>
+      <p class="small mb-0" style="color:var(--sage);">
+        Supervision of algorithmic valuation integrity, escrow fiduciary custody, duplicate dispute resolution, and account verification.
+      </p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <a href="{% url 'admin_run_diagnostics' %}" class="btn btn-primary gold btn-sm d-inline-flex align-items-center gap-1 shadow-sm">
+        <span>&#128302;</span>
+        <span>Run Algorithmic Health Scan</span>
+      </a>
+      <a href="{% url 'property_list' %}" class="btn btn-outline-primary line btn-sm">
+        View Public Marketplace
+      </a>
+      <a href="/admin/" class="btn btn-outline-secondary btn-sm" target="_blank" title="Open Django Core Admin">
+        Django Admin &rarr;
+      </a>
+    </div>
+  </div>
+
+  <!-- Executive KPI Metrics -->
+  <div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+      <div class="pp-stat-card">
+        <div class="pp-stat-label">Platform Gross Estate Value</div>
+        <div class="pp-stat-value" style="color:var(--gold); font-size:1.75rem;">&#8377;{{ total_asset_value|floatformat:0 }}</div>
+        <div class="small mt-1" style="color:var(--sage); font-size:0.7rem;">{{ total_properties }} Active Cataloged Estates</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="pp-stat-card">
+        <div class="pp-stat-label">Escrow Custodial Holds</div>
+        <div class="pp-stat-value" style="color:#79D6A0; font-size:1.75rem;">&#8377;{{ escrow_held_rupees|floatformat:0 }}</div>
+        <div class="small mt-1" style="color:var(--sage); font-size:0.7rem;">Secured in Fiduciary Trust</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="pp-stat-card">
+        <div class="pp-stat-label">Active Private Inquiries</div>
+        <div class="pp-stat-value" style="color:var(--gold-lt); font-size:1.75rem;">{{ total_conversations }}</div>
+        <div class="small mt-1" style="color:var(--sage); font-size:0.7rem;">{{ total_appointments }} Scheduled Site Visits</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="pp-stat-card">
+        <div class="pp-stat-label">Accredited Network</div>
+        <div class="pp-stat-value" style="color:var(--ivory); font-size:1.75rem;">{{ total_users }}</div>
+        <div class="small mt-1" style="color:var(--sage); font-size:0.7rem;">{{ buyers_count }} Buyers &middot; {{ sellers_count }} Proprietors</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROBLEM RESOLUTION SECTION: FLAGGED DUPLICATES -->
+  <div class="pp-form-section mb-4 p-0 overflow-hidden" style="border:1px solid {% if flagged_duplicates %}#C04D38{% else %}rgba(212,175,55,0.25){% endif %};">
+    <div class="p-3 d-flex justify-content-between align-items-center" style="background:#091712; border-bottom:1px solid rgba(212,175,55,0.2);">
+      <div class="d-flex align-items-center gap-2">
+        <span style="color:#C04D38; font-size:1.1rem;">&#9888;</span>
+        <h2 class="h6 mb-0" style="font-family:var(--sans); letter-spacing:0.15em; text-transform:uppercase; color:var(--ivory); font-size:0.85rem;">
+          Dispute Station: Flagged Duplicate Listings
+        </h2>
+      </div>
+      <span class="badge {% if flagged_duplicates %}bg-danger{% else %}bg-secondary{% endif %}">
+        {{ flagged_duplicates.count }} Flagged
+      </span>
+    </div>
+
+    {% if flagged_duplicates %}
+      <div class="table-responsive">
+        <table class="table mb-0" style="color:var(--ivory);">
+          <thead style="background:#07130F;">
+            <tr>
+              <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Flagged Listing</th>
+              <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Suspected Original</th>
+              <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Proprietor</th>
+              <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Valuation</th>
+              <th class="text-end" style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Admin Resolution Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in flagged_duplicates %}
+              <tr>
+                <td class="align-middle">
+                  <strong style="color:var(--ivory);">{{ p.title }}</strong><br>
+                  <span class="small" style="color:var(--sage);">{{ p.locality }}, {{ p.city }}</span>
+                </td>
+                <td class="align-middle">
+                  {% if p.possible_duplicate_of %}
+                    <span style="color:#FFA494;">#{{ p.possible_duplicate_of.pk }} &middot; {{ p.possible_duplicate_of.title }}</span>
+                  {% else %}
+                    <span style="color:var(--sage);">Unspecified comp</span>
+                  {% endif %}
+                </td>
+                <td class="align-middle">
+                  <span style="color:var(--gold-lt);">{{ p.seller.username }}</span>
+                </td>
+                <td class="align-middle fw-semibold" style="color:var(--gold); font-family:var(--serif);">
+                  &#8377;{{ p.listed_price|floatformat:0 }}
+                </td>
+                <td class="text-end align-middle">
+                  <div class="d-flex gap-1 justify-content-end">
+                    <form method="post" action="{% url 'admin_resolve_duplicate' p.pk 'dismiss' %}" class="d-inline">
+                      {% csrf_token %}
+                      <button class="btn btn-sm btn-outline-success py-1 px-2" style="font-size:0.7rem;" title="Mark as unique and authentic">
+                        &#10003; Approve Unique
+                      </button>
+                    </form>
+                    <form method="post" action="{% url 'admin_resolve_duplicate' p.pk 'deactivate' %}" class="d-inline">
+                      {% csrf_token %}
+                      <button class="btn btn-sm btn-outline-warning py-1 px-2" style="font-size:0.7rem;" title="De-list from public search">
+                        De-list
+                      </button>
+                    </form>
+                    <form method="post" action="{% url 'admin_resolve_duplicate' p.pk 'delete' %}" class="d-inline">
+                      {% csrf_token %}
+                      <button class="btn btn-sm btn-outline-danger py-1 px-2" style="font-size:0.7rem;" onclick="return confirm('Permanently expunge this listing?');" title="Permanent deletion">
+                        Expunge
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="p-4 text-center" style="color:var(--sage);">
+        <span style="color:#79D6A0; font-size:1.2rem;">&#10003;</span> All 15 estates have passed algorithmic duplicate screening without dispute.
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- ESCROW DISPUTE & CUSTODIAL SUPERVISION -->
+  <div class="pp-form-section mb-4 p-0 overflow-hidden">
+    <div class="p-3 d-flex justify-content-between align-items-center" style="background:#091712; border-bottom:1px solid rgba(212,175,55,0.2);">
+      <div class="d-flex align-items-center gap-2">
+        <span style="color:var(--gold); font-size:1.1rem;">&#128176;</span>
+        <h2 class="h6 mb-0" style="font-family:var(--sans); letter-spacing:0.15em; text-transform:uppercase; color:var(--ivory); font-size:0.85rem;">
+          Escrow Custody &amp; Dispute Intervention
+        </h2>
+      </div>
+      <span class="small" style="color:var(--sage);">{{ payments|length }} Recent Settlements</span>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table mb-0" style="color:var(--ivory);">
+        <thead style="background:#07130F;">
+          <tr>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Invoice #</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Estate Property</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Buyer / Depositor</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Amount</th>
+            <th style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Status</th>
+            <th class="text-end" style="color:var(--gold); font-size:0.72rem; letter-spacing:0.18em;">Admin Custody Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pay in payments %}
+            <tr>
+              <td class="align-middle">
+                <code style="color:var(--gold-lt);">{{ pay.invoice_number }}</code><br>
+                <span class="small" style="color:var(--sage); font-size:0.68rem;">{{ pay.paid_at|date:"M j, H:i" }}</span>
+              </td>
+              <td class="align-middle">
+                {% if pay.estate %}
+                  <strong style="color:var(--ivory);">{{ pay.estate.title }}</strong><br>
+                  <span class="small" style="color:var(--sage);">Proprietor: {{ pay.estate.seller.username }}</span>
+                {% else %}
+                  <span style="color:var(--sage);">Site Inspection Coordination</span>
+                {% endif %}
+              </td>
+              <td class="align-middle">
+                <span style="color:var(--ivory);">{{ pay.buyer.username }}</span>
+              </td>
+              <td class="align-middle fw-semibold" style="color:var(--gold); font-family:var(--serif); font-size:1.1rem;">
+                &#8377;{{ pay.amount_rupees|floatformat:0 }}
+              </td>
+              <td class="align-middle">
+                <span class="badge {% if pay.status == 'PAID' %}bg-success{% elif pay.status == 'REFUNDED' %}bg-secondary{% else %}bg-warning{% endif %}">
+                  {{ pay.get_status_display }}
+                </span>
+              </td>
+              <td class="text-end align-middle">
+                <div class="d-flex gap-1 justify-content-end">
+                  <a href="{% url 'payment_receipt' pay.public_id %}" class="btn btn-sm btn-outline-secondary py-1 px-2" style="font-size:0.7rem;">
+                    Receipt
+                  </a>
+                  {% if pay.status == 'PAID' %}
+                    <form method="post" action="{% url 'admin_moderate_payment' pay.pk 'refund' %}" class="d-inline">
+                      {% csrf_token %}
+                      <button class="btn btn-sm btn-outline-danger py-1 px-2" style="font-size:0.7rem;" onclick="return confirm('Authorize bilateral refund to buyer?');">
+                        Force Refund
+                      </button>
+                    </form>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="6" class="text-center py-4" style="color:var(--sage);">No escrow transactions recorded.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- USER & IDENTITY VERIFICATION STATION -->
+  <div class="row g-4 mb-4">
+    <div class="col-lg-6">
+      <div class="pp-form-section p-0 overflow-hidden h-100">
+        <div class="p-3 d-flex justify-content-between align-items-center" style="background:#091712; border-bottom:1px solid rgba(212,175,55,0.2);">
+          <h2 class="h6 mb-0" style="font-family:var(--sans); letter-spacing:0.15em; text-transform:uppercase; color:var(--ivory); font-size:0.85rem;">
+            User Directory &amp; Gold KYC Verification
+          </h2>
+          <span class="small" style="color:var(--sage);">{{ all_users|length }} Users</span>
+        </div>
+        <div class="table-responsive" style="max-height:360px; overflow-y:auto;">
+          <table class="table mb-0" style="color:var(--ivory);">
+            <thead style="background:#07130F; position:sticky; top:0;">
+              <tr>
+                <th style="color:var(--gold); font-size:0.7rem;">User</th>
+                <th style="color:var(--gold); font-size:0.7rem;">Role</th>
+                <th style="color:var(--gold); font-size:0.7rem;">KYC Seal</th>
+                <th class="text-end" style="color:var(--gold); font-size:0.7rem;">Sovereign Controls</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for u in all_users %}
+                <tr>
+                  <td class="align-middle">
+                    <strong style="color:var(--ivory);">{{ u.username }}</strong>
+                    {% if not u.is_active %}<span class="badge bg-danger ms-1" style="font-size:0.6rem;">Suspended</span>{% endif %}<br>
+                    <span class="small" style="color:var(--sage); font-size:0.68rem;">{{ u.email|default:"No email registered" }}</span>
+                  </td>
+                  <td class="align-middle">
+                    <span class="badge" style="background:rgba(212,175,55,0.15); color:var(--gold); font-size:0.65rem;">
+                      {{ u.profile.get_role_display|default:"Buyer" }}
+                    </span>
+                  </td>
+                  <td class="align-middle">
+                    {% if u.profile.is_verified %}
+                      <span class="badge bg-success" style="font-size:0.65rem;">&#10003; Gold Verified</span>
+                    {% else %}
+                      <span class="badge bg-secondary" style="font-size:0.65rem;">Unverified</span>
+                    {% endif %}
+                  </td>
+                  <td class="text-end align-middle">
+                    <div class="d-flex gap-1 justify-content-end">
+                      <form method="post" action="{% url 'admin_toggle_verification' u.pk %}" class="d-inline">
+                        {% csrf_token %}
+                        <button class="btn btn-sm btn-outline-primary line py-0 px-2" style="font-size:0.65rem;" title="Toggle KYC Gold Accredited Seal">
+                          {% if u.profile.is_verified %}Revoke{% else %}Verify{% endif %}
+                        </button>
+                      </form>
+                      {% if not u.is_superuser %}
+                        <form method="post" action="{% url 'admin_toggle_user_status' u.pk %}" class="d-inline">
+                          {% csrf_token %}
+                          <button class="btn btn-sm {% if u.is_active %}btn-outline-danger{% else %}btn-outline-success{% endif %} py-0 px-2" style="font-size:0.65rem;" title="Suspend or reinstate account">
+                            {% if u.is_active %}Suspend{% else %}Restore{% endif %}
+                          </button>
+                        </form>
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESTATE CATALOG MODERATION -->
+    <div class="col-lg-6">
+      <div class="pp-form-section p-0 overflow-hidden h-100">
+        <div class="p-3 d-flex justify-content-between align-items-center" style="background:#091712; border-bottom:1px solid rgba(212,175,55,0.2);">
+          <h2 class="h6 mb-0" style="font-family:var(--sans); letter-spacing:0.15em; text-transform:uppercase; color:var(--ivory); font-size:0.85rem;">
+            Listing Moderation &amp; Sanctions
+          </h2>
+          <span class="small" style="color:var(--sage);">{{ all_properties|length }} Estates</span>
+        </div>
+        <div class="table-responsive" style="max-height:360px; overflow-y:auto;">
+          <table class="table mb-0" style="color:var(--ivory);">
+            <thead style="background:#07130F; position:sticky; top:0;">
+              <tr>
+                <th style="color:var(--gold); font-size:0.7rem;">Estate</th>
+                <th style="color:var(--gold); font-size:0.7rem;">Price</th>
+                <th style="color:var(--gold); font-size:0.7rem;">Status</th>
+                <th class="text-end" style="color:var(--gold); font-size:0.7rem;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for ep in all_properties %}
+                <tr>
+                  <td class="align-middle">
+                    <strong style="color:var(--ivory); font-size:0.85rem;">{{ ep.title }}</strong><br>
+                    <span class="small" style="color:var(--sage); font-size:0.68rem;">{{ ep.locality }} &middot; {{ ep.seller.username }}</span>
+                  </td>
+                  <td class="align-middle fw-semibold" style="color:var(--gold); font-family:var(--serif);">
+                    &#8377;{{ ep.listed_price|floatformat:0 }}
+                  </td>
+                  <td class="align-middle">
+                    <span class="badge {% if ep.status == 'ACTIVE' %}bg-success{% else %}bg-danger{% endif %}" style="font-size:0.65rem;">
+                      {{ ep.get_status_display }}
+                    </span>
+                  </td>
+                  <td class="text-end align-middle">
+                    <form method="post" action="{% url 'admin_toggle_property_status' ep.pk %}">
+                      {% csrf_token %}
+                      <button class="btn btn-sm btn-outline-warning py-0 px-2" style="font-size:0.68rem;">
+                        {% if ep.status == 'ACTIVE' %}Suspend{% else %}Activate{% endif %}
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+{% endblock %}

@@ -255,3 +255,62 @@ def generate_seller_bot_response(query, user):
         f"- *'How can I optimize my property description for UHNW buyers?'*\n"
         f"- *'What are the guidelines for accepting token escrow deposits?'*"
     )
+
+
+def generate_admin_bot_response(query, user):
+    """
+    Executive Platform AI: Dedicated diagnostic & oversight AI for platform administrators.
+    Provides real-time health checks, dispute summaries, and escrow auditing.
+    """
+    q = query.lower().strip()
+
+    total_props = Property.objects.count()
+    duplicates_count = Property.objects.filter(possible_duplicate_of__isnull=False).count()
+    total_payments = Payment.objects.count()
+    paid_payments = Payment.objects.filter(status=Payment.Status.PAID)
+    escrow_held = sum(p.amount_rupees for p in paid_payments)
+    open_conversations = Conversation.objects.count()
+    pending_appts = Appointment.objects.filter(status=Appointment.Status.REQUESTED).count()
+
+    if any(k in q for k in ["duplicate", "flag", "fraud"]):
+        if duplicates_count > 0:
+            flagged = Property.objects.filter(possible_duplicate_of__isnull=False).select_related("seller", "possible_duplicate_of")[:3]
+            res = f"### Duplicate Detection Alert ({duplicates_count} Flagged Listings)\n\n"
+            for f in flagged:
+                orig_title = f.possible_duplicate_of.title if f.possible_duplicate_of else "Catalog comp"
+                res += f"- **{f.title}** (Seller: {f.seller.username}) &rarr; Flagged against *'{orig_title}'*\n"
+            res += f"\nYou can approve, de-list, or expunge them at [Command Center Duplicate Station](/accounts/command-center/)."
+            return res
+        return "All active estates have passed algorithmic duplicate screening. No unresolved flags present."
+
+    if any(k in q for k in ["escrow", "payment", "money", "fund", "balance", "custody"]):
+        return (
+            f"### Escrow Custody Ledger Overview\n\n"
+            f"- **Active Escrow Funds in Custody:** ₹{escrow_held:,.0f}\n"
+            f"- **Total Platform Settlements:** {total_payments}\n"
+            f"- **Cleared Payments:** {paid_payments.count()}\n\n"
+            f"Manage bilateral dispute refunds or release funds at the [Escrow Fiduciary Station](/accounts/command-center/)."
+        )
+
+    if any(k in q for k in ["health", "scan", "status", "overview", "metric", "audit"]):
+        return (
+            f"### Platform Sovereign Diagnostic Summary\n\n"
+            f"- **Catalog Estates:** {total_props} listings\n"
+            f"- **Flagged Duplicate Risks:** {duplicates_count}\n"
+            f"- **Escrow Held in Fiduciary Trust:** ₹{escrow_held:,.0f}\n"
+            f"- **Active Inquiries & Negotiations:** {open_conversations}\n"
+            f"- **Pending VIP Inspections:** {pending_appts}\n\n"
+            f"System status is **Operational**. Access the full executive management console at [Administrator Command Center](/accounts/command-center/)."
+        )
+
+    return (
+        f"Greetings Administrator. I am your **Executive Platform Oversight AI**.\n\n"
+        f"**Platform Snapshot:**\n"
+        f"- Active Estates: **{total_props}** | Flagged Duplicates: **{duplicates_count}**\n"
+        f"- Escrow Trust Fund: **₹{escrow_held:,.0f}** | Negotiation Channels: **{open_conversations}**\n\n"
+        f"**Direct Commands:**\n"
+        f"- *'Check platform health and diagnostics'*\n"
+        f"- *'Review duplicate listing risks'*\n"
+        f"- *'Audit escrow balance and custody settlements'*"
+    )
+

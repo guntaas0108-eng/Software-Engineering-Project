@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'css/style.css' %}?v=emerald-gold-v3" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}?v=emerald-gold-v4" rel="stylesheet">
     <script>
       (function(){
         try {
@@ -84,6 +84,14 @@
             </div>
             <div class="navbar-nav ms-auto align-items-lg-center gap-2">
                 {% if user.is_authenticated %}
+                    {% if is_platform_admin %}
+                    <!-- EXCLUSIVE ADMINISTRATOR COMMAND CENTER PILL -->
+                    <a class="btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-1" href="{% url 'platform_admin' %}" title="Sovereign Administrator Command Center" style="background:rgba(212,175,55,0.14); border:1px solid var(--gold); color:var(--gold-lt); font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; box-shadow:0 0 14px rgba(212,175,55,0.3);">
+                        <span>&#128737;</span>
+                        <span>Admin Command</span>
+                    </a>
+                    {% endif %}
+
                     <!-- PROMINENT DEDICATED MESSAGES BUTTON -->
                     <a class="btn pp-nav-msg-btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-1 {% if request.resolver_match.url_name == 'chat_inbox' or request.resolver_match.url_name == 'chat_thread' %}active{% endif %}" href="{% url 'chat_inbox' %}" title="Direct Buyer &amp; Seller Inquiries">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -104,6 +112,11 @@
                             <span>{{ user.username }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="userMenu">
+                            {% if is_platform_admin %}
+                                <li><h6 class="dropdown-header" style="color:var(--gold-lt);">&#128737; Platform Jurisdiction</h6></li>
+                                <li><a class="dropdown-item fw-semibold" href="{% url 'platform_admin' %}" style="color:var(--gold-lt) !important;">&#128737; Admin Command Center</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            {% endif %}
                             <li><h6 class="dropdown-header">Proprietor / Seller</h6></li>
                             <li><a class="dropdown-item" href="{% url 'my_listings' %}">&#127963; My Listings</a></li>
                             <li><a class="dropdown-item" href="{% url 'seller_analytics' %}">&#128200; Proprietor Analytics</a></li>
@@ -166,66 +179,81 @@
 
 <button class="replay" id="replay" type="button" title="Replay the PropertyPulse cinematic intro">Replay intro</button>
 
-<!-- ============ UNIFIED FLOATING ACTION DOCK (FLEX LAYOUT - ZERO OVERLAP) ============ -->
-<div id="floating-actions-dock" class="position-fixed d-flex align-items-center gap-2" style="bottom:22px; right:22px; z-index:1040;">
+<!-- ============ UNIFIED LUXURY FLOATING ACTION CAPSULE (ZERO OVERLAP) ============ -->
+<div id="pp-floating-dock" class="position-fixed d-flex align-items-center rounded-pill shadow-lg" style="bottom:22px; right:22px; z-index:1040; background:#081611; border:1px solid var(--gold); padding:3px; box-shadow:0 12px 32px rgba(0,0,0,0.65), 0 0 16px rgba(212,175,55,0.22);">
 
   {% if user.is_authenticated %}
   <!-- Quick Floating Messages Pill for Buyer & Seller -->
-  <a id="floating-msg-btn" href="{% url 'chat_inbox' %}" class="btn btn-sm d-flex align-items-center gap-2 text-decoration-none px-3 py-2 shadow-lg" title="Direct Encrypted Messages &amp; Site Visits" style="background:#091712; border:1px solid var(--gold); border-radius:99px; color:var(--ivory); font-family:var(--sans); font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; white-space:nowrap; transition:all 0.25s ease;">
+  <a id="floating-msg-btn" href="{% url 'chat_inbox' %}" class="btn btn-sm d-flex align-items-center gap-2 text-decoration-none px-3 py-2 rounded-pill" title="Direct Encrypted Messages &amp; Site Visits" style="background:transparent; color:var(--ivory); font-family:var(--sans); font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; border:none; white-space:nowrap; transition:all 0.25s ease;">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     <span>Messages</span>
     <span id="floating-msg-badge" class="badge rounded-pill bg-danger d-none" style="font-size:0.65rem; padding:2px 6px;">0</span>
   </a>
+
+  <!-- Delicate Vertical Separator -->
+  <div style="width:1px; height:20px; background:rgba(212,175,55,0.3); margin:0 2px;"></div>
   {% endif %}
 
-  <!-- AI Advisor Toggle -->
-  <button id="ai-widget-toggle" type="button" class="btn btn-primary gold rounded-pill d-flex align-items-center gap-2 shadow-lg px-3 py-2" style="border:1px solid #F0D98A; white-space:nowrap;">
-    <span style="font-size:1.15rem;">&#129302;</span>
-    <span class="d-none d-sm-inline fw-semibold" style="letter-spacing:0.1em; font-size:0.75rem;">AI Advisor</span>
+  <!-- AI Advisor Toggle (Strictly identified by role) -->
+  <button id="ai-widget-toggle" type="button" class="btn btn-sm d-flex align-items-center gap-2 px-3 py-2 rounded-pill" title="Open {{ bot_name }}" style="background:linear-gradient(135deg, var(--gold), #B8922A); color:#07130F; font-family:var(--sans); font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; font-weight:600; border:none; white-space:nowrap; box-shadow:0 2px 8px rgba(0,0,0,0.3);">
+    <span style="font-size:1.05rem;">&#129302;</span>
+    <span>{{ bot_name }}</span>
     <span id="ai-widget-alert-badge" class="badge rounded-pill bg-danger d-none" style="font-size:0.6rem;">0</span>
   </button>
 
-  <!-- Popup Widget Box (Positioned safely above the dock) -->
-  <div id="ai-widget-box" class="card pp-form-section p-0 overflow-hidden shadow-lg d-none" style="position:absolute; bottom:56px; right:0; width:min(380px, 92vw); height:520px; border:1px solid var(--gold); background:#0A1D15; border-radius:8px;">
+  <!-- Popup Widget Box (Strictly segregated: NO switcher button) -->
+  <div id="ai-widget-box" class="card pp-form-section p-0 overflow-hidden shadow-lg d-none" style="position:absolute; bottom:56px; right:0; width:min(390px, 92vw); height:520px; border:1px solid var(--gold); background:#0A1D15; border-radius:8px;">
     
     <!-- Widget Header -->
     <div class="p-3 d-flex justify-content-between align-items-center" style="background:#091712; border-bottom:1px solid rgba(212,175,55,0.25);">
       <div class="d-flex align-items-center gap-2">
         <span style="color:var(--gold); font-size:1.1rem;">&#129302;</span>
         <div>
-          <div class="fw-semibold small" id="widget-bot-name" style="color:var(--ivory); font-size:0.85rem;">Estate Concierge AI</div>
-          <div class="small" style="color:var(--sage); font-size:0.68rem;">Live Database Connected</div>
+          <div class="fw-semibold small" id="widget-bot-name" style="color:var(--ivory); font-size:0.85rem;">{{ bot_name }}</div>
+          <div class="small" style="color:var(--sage); font-size:0.68rem;">Live Database Synchronized</div>
         </div>
       </div>
-      <div class="d-flex align-items-center gap-1">
-        <button type="button" class="btn btn-sm btn-link p-1 text-white text-decoration-none" id="widget-mode-toggle" title="Switch between Buyer & Seller bot" style="font-size:0.7rem; color:var(--gold-lt) !important;">
-          Switch Mode
-        </button>
-        <button type="button" class="btn-close btn-close-white p-1" id="widget-close-btn" style="font-size:0.75rem;"></button>
-      </div>
+      <button type="button" class="btn-close btn-close-white p-1" id="widget-close-btn" style="font-size:0.75rem;"></button>
     </div>
 
     <!-- Mode Badge Banner -->
     <div class="px-3 py-1 d-flex justify-content-between align-items-center" style="background:#07130F; border-bottom:1px solid rgba(212,175,55,0.15); font-size:0.7rem;">
-      <span style="color:var(--sage);">Active Role:</span>
-      <span class="badge" id="widget-role-badge" style="background:rgba(212,175,55,0.2); color:var(--gold-lt); font-size:0.65rem;">BUYER CONCIERGE</span>
+      <span style="color:var(--sage);">Operating Channel:</span>
+      <span class="badge" id="widget-role-badge" style="background:rgba(212,175,55,0.2); color:{{ bot_badge_color }}; font-size:0.65rem;">{{ bot_role_label }}</span>
     </div>
 
     <!-- Message Scroll Box -->
     <div id="widget-chat-messages" style="flex-grow:1; overflow-y:auto; padding:1rem; background:#07130F; display:flex; flex-direction:column; gap:0.75rem;">
       <div class="d-flex justify-content-start">
         <div class="p-2" style="max-width:88%; background:#0F2019; border:1px solid rgba(212,175,55,0.2); border-radius:6px; color:var(--ivory); font-size:0.82rem; line-height:1.5;">
-          Hello! I am your <strong>PropertyPulse AI Advisor</strong>. Ask me to find estates with private pools, calculate loan EMIs, or review active notifications!
+          {% if is_seller %}
+            Hello! I am your <strong>Portfolio Strategist AI</strong>. Ask me to analyze asking prices, optimize listing descriptions, or review buyer inquiries.
+          {% elif is_platform_admin %}
+            Greetings Administrator. I am your <strong>Executive Platform AI</strong>. Ask me to scan platform diagnostics, check duplicate listings, or audit escrow custody.
+          {% else %}
+            Hello! I am your <strong>Estate Concierge AI</strong>. Ask me to recommend luxury residences, calculate mortgage installments, or check your site visits.
+          {% endif %}
         </div>
       </div>
     </div>
 
-    <!-- Quick Chips -->
+    <!-- Quick Role-Specific Chips -->
     <div class="p-2 d-flex gap-1 flex-wrap" id="widget-chips" style="background:#091712; border-top:1px solid rgba(212,175,55,0.15); max-height:65px; overflow-y:auto;">
-      <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Which estates are Great Deals?">Great Deals</button>
-      <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Estates with infinity pool">Pool Estates</button>
-      <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Calculate EMI for 15 Cr loan">EMI 15 Cr</button>
-      <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Check my messages and alerts">My Alerts</button>
+      {% if is_seller %}
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Analyze my listing prices">Analyze Prices</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Staging tips for country estates">Staging Tips</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Check recent buyer inquiries">Buyer Inquiries</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="How does the AI barometer evaluate value?">AI Barometer</button>
+      {% elif is_platform_admin %}
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Check platform health and diagnostics">Health Scan</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Review duplicate listing risks">Duplicates</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Audit escrow balance and custody settlements">Escrow Audit</button>
+      {% else %}
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Which estates are Great Deals?">Great Deals</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Estates with infinity pool">Pool Estates</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Calculate EMI for 15 Cr loan">EMI 15 Cr</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Check my messages and alerts">My Alerts</button>
+      {% endif %}
     </div>
 
     <!-- Input Box -->
@@ -239,7 +267,7 @@
   </div>
 
 </div>
-<!-- ============ END UNIFIED FLOATING DOCK ============ -->
+<!-- ============ END UNIFIED CAPSULE DOCK ============ -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -326,11 +354,10 @@
   }
 
   // ================= FLOATING AI ADVISOR WIDGET =================
-  let widgetMode = "buyer";
+  const widgetMode = "{{ bot_mode }}";
   const widgetBox = document.getElementById('ai-widget-box');
   const widgetToggle = document.getElementById('ai-widget-toggle');
   const widgetClose = document.getElementById('widget-close-btn');
-  const widgetModeToggle = document.getElementById('widget-mode-toggle');
   const widgetBotName = document.getElementById('widget-bot-name');
   const widgetRoleBadge = document.getElementById('widget-role-badge');
   const widgetChatMessages = document.getElementById('widget-chat-messages');
@@ -352,23 +379,6 @@
   if (widgetClose) {
     widgetClose.addEventListener('click', () => {
       widgetBox.classList.add('d-none');
-    });
-  }
-
-  if (widgetModeToggle) {
-    widgetModeToggle.addEventListener('click', () => {
-      widgetMode = widgetMode === 'buyer' ? 'seller' : 'buyer';
-      if (widgetMode === 'seller') {
-        widgetBotName.textContent = 'Portfolio Strategist AI';
-        widgetRoleBadge.textContent = 'SELLER STRATEGIST';
-        widgetRoleBadge.style.color = '#79D6A0';
-        appendWidgetBot("Switched to **Portfolio Strategist AI**. Ask me how to optimize your listing prices, attract high-net-worth buyers, or review property inquiries.");
-      } else {
-        widgetBotName.textContent = 'Estate Concierge AI';
-        widgetRoleBadge.textContent = 'BUYER CONCIERGE';
-        widgetRoleBadge.style.color = 'var(--gold-lt)';
-        appendWidgetBot("Switched to **Estate Concierge AI**. Ask me for recommendations, pool villas, mortgage calculations, or private inspection booking.");
-      }
     });
   }
 
