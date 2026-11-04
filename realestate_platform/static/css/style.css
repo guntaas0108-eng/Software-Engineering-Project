@@ -1260,3 +1260,76 @@ body.theme-light .form-select {
   #intro { display: none !important; }
   body.locked { overflow: auto !important; }
 }
+
+
+/* ================= LUXURY NAVBAR ACTIONS & MESSAGES PILL ================= */
+.pp-nav-msg-btn {
+  background: rgba(212, 175, 55, 0.14) !important;
+  border: 1px solid var(--gold) !important;
+  color: var(--gold-lt) !important;
+  border-radius: 99px !important;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.15);
+}
+.pp-nav-msg-btn:hover,
+.pp-nav-msg-btn.active {
+  background: linear-gradient(135deg, var(--gold), #B8922A) !important;
+  color: #07130F !important;
+  box-shadow: 0 4px 18px rgba(212, 175, 55, 0.4);
+  transform: translateY(-1px);
+}
+.pp-nav-msg-btn svg {
+  stroke: currentColor;
+}
+
+/* Luxury Dropdown Menu */
+.dropdown-menu {
+  background: #0C1E17 !important;
+  border: 1px solid var(--gold) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 15px rgba(212, 175, 55, 0.12);
+  padding: 0.6rem 0;
+  border-radius: 4px;
+}
+.dropdown-item {
+  color: var(--ivory) !important;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  padding: 0.55rem 1.2rem;
+  transition: background 0.2s, color 0.2s;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+  background: rgba(212, 175, 55, 0.14) !important;
+  color: var(--gold-lt) !important;
+}
+.dropdown-header {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold) !important;
+  padding: 0.4rem 1.2rem 0.2rem;
+}
+.dropdown-divider {
+  border-top: 1px solid rgba(212, 175, 55, 0.18) !important;
+  margin: 0.4rem 0;
+}
+
+/* Floating Messages Quick Access */
+#floating-msg-btn {
+  background: #091712;
+  border: 1px solid var(--gold);
+  color: var(--ivory);
+  border-radius: 99px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 16px rgba(212, 175, 55, 0.18);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#floating-msg-btn:hover {
+  background: linear-gradient(135deg, #0F2019, #19382B);
+  border-color: var(--gold-lt);
+  color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 22px rgba(212, 175, 55, 0.3);
+}

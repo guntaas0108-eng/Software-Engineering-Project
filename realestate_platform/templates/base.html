@@ -66,7 +66,7 @@
 <!-- ============ END INTRO ============ -->
 
 <header class="site-header">
-<nav class="navbar navbar-expand-xl navbar-dark pp-navbar mb-0">
+<nav class="navbar navbar-expand-lg navbar-dark pp-navbar mb-0">
     <div class="container">
         <a class="navbar-brand logo" href="{% url 'home' %}">Property<i>Pulse</i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ppNav">
@@ -81,23 +81,48 @@
                 <a class="nav-link {% if request.resolver_match.url_name == 'estate_advisor' %}active{% endif %}" href="{% url 'estate_advisor' %}">
                   AI Advisor <span class="badge" style="background:var(--gold); color:#07130F; font-size:0.6rem; padding:2px 5px;">NEW</span>
                 </a>
-                <a class="nav-link {% if request.resolver_match.url_name == 'submit_property' %}active{% endif %}" href="{% url 'submit_property' %}">List Estate</a>
             </div>
-            <div class="navbar-nav ms-auto align-items-xl-center">
+            <div class="navbar-nav ms-auto align-items-lg-center gap-2">
                 {% if user.is_authenticated %}
-                    <a class="nav-link {% if request.resolver_match.url_name == 'my_listings' %}active{% endif %}" href="{% url 'my_listings' %}">My Listings</a>
-                    <a class="nav-link {% if request.resolver_match.url_name == 'seller_analytics' %}active{% endif %}" href="{% url 'seller_analytics' %}">Analytics</a>
-                    <a class="nav-link {% if request.resolver_match.url_name == 'buyer_dashboard' %}active{% endif %}" href="{% url 'buyer_dashboard' %}">Saved</a>
-                    <a class="nav-link {% if request.resolver_match.url_name == 'my_transactions' %}active{% endif %}" href="{% url 'my_transactions' %}">Escrow Ledger</a>
-                    <a class="nav-link position-relative {% if request.resolver_match.url_name == 'chat_inbox' or request.resolver_match.url_name == 'chat_thread' %}active{% endif %}" href="{% url 'chat_inbox' %}">
-                      Messages
-                      <span id="nav-msg-badge" class="badge rounded-pill bg-danger d-none" style="font-size:0.6rem; position:relative; top:-2px;">0</span>
+                    <!-- PROMINENT DEDICATED MESSAGES BUTTON -->
+                    <a class="btn pp-nav-msg-btn btn-sm d-inline-flex align-items-center gap-2 px-3 py-1 {% if request.resolver_match.url_name == 'chat_inbox' or request.resolver_match.url_name == 'chat_thread' %}active{% endif %}" href="{% url 'chat_inbox' %}" title="Direct Buyer &amp; Seller Inquiries">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <span style="font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase;">Messages</span>
+                        <span id="nav-msg-badge" class="badge rounded-pill bg-danger d-none" style="font-size:0.65rem; padding:2px 6px;">0</span>
                     </a>
-                    <span class="nav-link pp-user-chip d-none d-xl-inline">{{ user.username }}</span>
-                    <form method="post" action="{% url 'logout' %}" class="d-inline">
-                        {% csrf_token %}
-                        <button type="submit" class="nav-link btn btn-link pp-logout-link">Sign Out</button>
-                    </form>
+
+                    <!-- List Estate Link -->
+                    <a class="nav-link {% if request.resolver_match.url_name == 'submit_property' %}active{% endif %}" href="{% url 'submit_property' %}" style="font-size:0.75rem;">
+                        + List Estate
+                    </a>
+
+                    <!-- User Account Dropdown (Cleans navbar, keeps all features in 1 click) -->
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle pp-user-chip d-inline-flex align-items-center gap-1" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding:0.4rem 0.85rem !important;">
+                            <span>{{ user.username }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="userMenu">
+                            <li><h6 class="dropdown-header">Proprietor / Seller</h6></li>
+                            <li><a class="dropdown-item" href="{% url 'my_listings' %}">&#127963; My Listings</a></li>
+                            <li><a class="dropdown-item" href="{% url 'seller_analytics' %}">&#128200; Proprietor Analytics</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><h6 class="dropdown-header">Investor / Buyer</h6></li>
+                            <li><a class="dropdown-item" href="{% url 'buyer_dashboard' %}">&#9825; Saved Residences</a></li>
+                            <li><a class="dropdown-item" href="{% url 'my_transactions' %}">&#128176; Escrow Ledger</a></li>
+                            <li><a class="dropdown-item fw-semibold" href="{% url 'chat_inbox' %}" style="color:var(--gold-lt) !important;">&#9993; All Inquiries &rarr;</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="{% url 'logout' %}" class="px-3 py-1">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-link p-0 text-start w-100 text-decoration-none" style="color:#FFA494; font-size:0.8rem;">
+                                        Sign Out
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 {% else %}
                     <a class="nav-link" href="{% url 'login' %}">Sign In</a>
                     <a class="nav-link btn-signup" href="{% url 'signup' %}">Request Access</a>
@@ -140,6 +165,17 @@
 </footer>
 
 <button class="replay" id="replay" type="button" title="Replay the PropertyPulse cinematic intro">Replay intro</button>
+
+{% if user.is_authenticated %}
+<!-- Quick Floating Messages Pill for Buyer & Seller -->
+<a id="floating-msg-btn" href="{% url 'chat_inbox' %}" class="position-fixed shadow-lg d-flex align-items-center gap-2 text-decoration-none px-3 py-2" style="bottom:22px; right:150px; z-index:1030;" title="Direct Encrypted Messages &amp; Site Visits">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <span style="font-family:var(--sans); font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; color:var(--ivory);">
+    Messages
+  </span>
+  <span id="floating-msg-badge" class="badge rounded-pill bg-danger d-none" style="font-size:0.65rem; padding:2px 6px;">0</span>
+</a>
+{% endif %}
 
 <!-- ============ FLOATING AI ADVISOR WIDGET ============ -->
 <div id="floating-ai-advisor" class="position-fixed" style="bottom:22px; right:22px; z-index:1040;">
@@ -301,6 +337,7 @@
   const widgetForm = document.getElementById('widget-chat-form');
   const widgetBadge = document.getElementById('ai-widget-alert-badge');
   const navMsgBadge = document.getElementById('nav-msg-badge');
+  const floatingMsgBadge = document.getElementById('floating-msg-badge');
 
   if (widgetToggle) {
     widgetToggle.addEventListener('click', () => {
@@ -398,6 +435,10 @@
             navMsgBadge.textContent = count;
             navMsgBadge.classList.remove('d-none');
           }
+          if (floatingMsgBadge) {
+            floatingMsgBadge.textContent = count;
+            floatingMsgBadge.classList.remove('d-none');
+          }
           if (widgetBadge) {
             widgetBadge.textContent = count;
             widgetBadge.classList.remove('d-none');
@@ -409,6 +450,7 @@
           }
         } else {
           if (navMsgBadge) navMsgBadge.classList.add('d-none');
+          if (floatingMsgBadge) floatingMsgBadge.classList.add('d-none');
           if (widgetBadge) widgetBadge.classList.add('d-none');
         }
         seenAlertCount = count;
