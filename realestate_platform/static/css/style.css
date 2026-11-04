@@ -1333,3 +1333,29 @@ body.theme-light .form-select {
   transform: translateY(-2px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 22px rgba(212, 175, 55, 0.3);
 }
+
+
+/* Unified Floating Actions Dock - Zero Overlap */
+#floating-actions-dock {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  position: fixed !important;
+  bottom: 22px !important;
+  right: 22px !important;
+  z-index: 1040 !important;
+}
+
+#floating-actions-dock .btn,
+#floating-actions-dock a {
+  white-space: nowrap !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 576px) {
+  #floating-actions-dock {
+    bottom: 14px !important;
+    right: 14px !important;
+    gap: 8px !important;
+  }
+}
