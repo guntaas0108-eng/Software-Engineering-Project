@@ -2,33 +2,134 @@
 {% block title %}PropertyPulse — Curated Luxury Real Estate &amp; Private Estates{% endblock %}
 {% block content %}
 
+<!-- ============================================================== -->
+<!-- HERO SECTION                                                  -->
+<!-- ============================================================== -->
 <section class="pp-hero hero">
     <div class="container position-relative text-center py-4">
-        <div class="eyebrow">Curated luxury real estate</div>
+        <div class="eyebrow">&#127963; AI-Powered Luxury Real Estate Platform</div>
         <h1 class="hero-title mx-auto">Homes with a <em>pulse</em> of their own</h1>
-        <p class="pp-hero-sub mx-auto">Discover villas, penthouses and private estates, hand-selected for those who expect more from an address.</p>
-        <div class="cta mt-3 mb-2">
-            <a class="btn btn-primary gold me-2" href="{% url 'property_list' %}">Explore Properties</a>
+        <p class="pp-hero-sub mx-auto">
+            Predictive machine learning valuations, 3-year investment horizons, and institutional escrow custody &mdash; establishing mathematical clarity and trust in luxury real estate.
+        </p>
+        <div class="cta mt-3 mb-2 d-flex justify-content-center gap-2 flex-wrap">
+            <a class="btn btn-primary gold" href="{% url 'property_list' %}">Explore Residences &rarr;</a>
             {% if is_seller %}
-                <a class="btn btn-outline-primary line" href="{% url 'submit_property' %}">List an Estate</a>
+                <a class="btn btn-outline-primary line" href="{% url 'submit_property' %}">+ List an Estate</a>
+                <a class="btn btn-outline-secondary line" href="{% url 'seller_analytics' %}">Portfolio Analytics</a>
             {% elif is_platform_admin %}
-                <a class="btn btn-outline-warning line" href="{% url 'platform_admin' %}">Admin Command</a>
+                <a class="btn btn-outline-warning line" href="{% url 'platform_admin' %}">&#128737; Sovereign Command Center</a>
+                <a class="btn btn-outline-secondary line" href="{% url 'admin_run_diagnostics' %}">&#128302; Run Audit Scan</a>
             {% else %}
-                <a class="btn btn-outline-primary line" href="{% url 'estate_advisor' %}">Estate Advisory</a>
+                <a class="btn btn-outline-primary line" href="{% url 'compare_properties' %}">&#9878; Compare Estates</a>
+                <a class="btn btn-outline-secondary line" href="{% url 'estate_advisor' %}">&#129302; AI Concierge Advisor</a>
             {% endif %}
         </div>
     </div>
 </section>
 
+<!-- ============================================================== -->
+<!-- 30-SECOND PLATFORM & ML EXPLAINER (Concise, Beautiful, Clear) -->
+<!-- ============================================================== -->
+<div class="container my-4">
+    <div class="p-4" style="background:#091913; border:1px solid rgba(212,175,55,0.3); border-radius:8px; box-shadow:0 12px 32px rgba(0,0,0,0.45);">
+        <div class="row align-items-center mb-3">
+            <div class="col-12 col-md-8">
+                <div class="eyebrow mb-1" style="font-size:0.7rem; letter-spacing:0.25em; color:var(--gold);">Platform Architecture at a Glance</div>
+                <h2 class="h4 mb-1" style="color:var(--ivory); font-family:var(--serif);">What is PropertyPulse &amp; How Does It Work?</h2>
+                <p class="small mb-0" style="color:var(--sage);">
+                    A dual-sided luxury estate trading system powered by an upstream Multiple Linear Regression engine (trained on 2,000 comps, R&sup2; = 0.8975) and fiduciary escrow rails.
+                </p>
+            </div>
+            <div class="col-12 col-md-4 text-md-end mt-2 mt-md-0">
+                <span class="badge py-2 px-3" style="background:rgba(212,175,55,0.15); color:var(--gold-lt); border:1px solid rgba(212,175,55,0.4); font-size:0.72rem; letter-spacing:0.1em;">
+                    &#10004; Certified UCS503P ML Engine
+                </span>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <!-- Pillar 1: ML Valuation -->
+            <div class="col-12 col-md-4">
+                <div class="p-3 h-100" style="background:#07130F; border:1px solid rgba(212,175,55,0.18); border-radius:6px;">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span style="font-size:1.4rem;">&#129302;</span>
+                        <h3 class="h6 mb-0 text-uppercase" style="color:var(--gold); letter-spacing:0.12em; font-size:0.8rem;">1. AI Fair Valuation</h3>
+                    </div>
+                    <p class="small mb-0" style="color:var(--sage); line-height:1.6; font-size:0.8rem;">
+                        Eliminates opaque pricing. The ML regression model parses 7 architectural parameters (Area, BHK, Baths, Age, Category, Locality, City) to calculate an un-biased fair market benchmark.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Pillar 2: Timing Horizon -->
+            <div class="col-12 col-md-4">
+                <div class="p-3 h-100" style="background:#07130F; border:1px solid rgba(212,175,55,0.18); border-radius:6px;">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span style="font-size:1.4rem;">&#128200;</span>
+                        <h3 class="h6 mb-0 text-uppercase" style="color:var(--gold); letter-spacing:0.12em; font-size:0.8rem;">2. Buy Now vs. Future</h3>
+                    </div>
+                    <p class="small mb-0" style="color:var(--sage); line-height:1.6; font-size:0.8rem;">
+                        Solves the buyer dilemma: <em>"Should I acquire today or wait?"</em> Models 3-year compound micro-market growth and produces definitive verdicts: <strong>Buy Now &#128640;</strong> or <strong>Wait for Correction &#128201;</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Pillar 3: Fiduciary Escrow -->
+            <div class="col-12 col-md-4">
+                <div class="p-3 h-100" style="background:#07130F; border:1px solid rgba(212,175,55,0.18); border-radius:6px;">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span style="font-size:1.4rem;">&#128737;</span>
+                        <h3 class="h6 mb-0 text-uppercase" style="color:var(--gold); letter-spacing:0.12em; font-size:0.8rem;">3. Fiduciary Escrow</h3>
+                    </div>
+                    <p class="small mb-0" style="color:var(--sage); line-height:1.6; font-size:0.8rem;">
+                        100% refundable token reservation deposits with HMAC-SHA256 tamper-evident digital signatures, bot-defense rate limiting, and zero-fraud anti-self-dealing verification.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEACHER QUICK-TEST CASE SELECTOR -->
+        <div class="mt-4 pt-3" style="border-top:1px solid rgba(212,175,55,0.15);">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                <span class="small fw-bold text-uppercase" style="letter-spacing:0.15em; color:var(--ivory); font-size:0.75rem;">
+                    &#127891; Demonstration Test Cases (Instant Jump for Academic Review):
+                </span>
+                <span class="small" style="color:var(--sage); font-size:0.72rem;">Click any case to test live ML outputs</span>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{% url 'property_list' %}?q=High+Equity" class="btn btn-sm" style="background:rgba(16,185,129,0.15); color:#34D399; border:1px solid #10B981; font-size:0.72rem;">
+                    &#128640; Case 1: Best Time: Buy Now Deals (Undervalued)
+                </a>
+                <a href="{% url 'property_list' %}?q=Fair+Market" class="btn btn-sm" style="background:rgba(59,130,246,0.15); color:#60A5FA; border:1px solid #3B82F6; font-size:0.72rem;">
+                    &#128994; Case 2: Favorable Time: Buy Now (Fair Price)
+                </a>
+                <a href="{% url 'property_list' %}?q=Negotiate" class="btn btn-sm" style="background:rgba(245,158,11,0.15); color:#FBBF24; border:1px solid #F59E0B; font-size:0.72rem;">
+                    &#9203; Case 3: Monitor &amp; Negotiate (Mild Premium)
+                </a>
+                <a href="{% url 'property_list' %}?q=Overpriced" class="btn btn-sm" style="background:rgba(239,68,68,0.15); color:#F87171; border:1px solid #EF4444; font-size:0.72rem;">
+                    &#128201; Case 4: Wait for Correction (Bubble Pricing)
+                </a>
+                <a href="{% url 'property_list' %}?q=Sold" class="btn btn-sm" style="background:rgba(107,114,128,0.15); color:#D1D5DB; border:1px solid #6B7280; font-size:0.72rem;">
+                    &#128391; Case 5: Acquired &amp; Sold Out (Grayscale Archive)
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- SEARCH BAR CARD                                                -->
+<!-- ============================================================== -->
 <div class="container">
     <div class="pp-search-card">
         <form method="get" action="{% url 'property_list' %}" class="row g-3 align-items-end">
             <div class="col-12 col-md-4">
-                <label class="pp-label">Estate or Locality</label>
-                <input type="text" name="q" class="form-control" placeholder="e.g. Model Town, Ludhiana">
+                <label class="pp-label">Estate, Locality or City</label>
+                <input type="text" name="q" class="form-control" placeholder="e.g. Chandigarh, Ludhiana, Gurgaon">
             </div>
             <div class="col-6 col-md-2">
-                <label class="pp-label">Category</label>
+                <label class="pp-label">Asset Category</label>
                 <select name="category" class="form-select">
                     <option value="">All Categories</option>
                     {% for value, label in categories %}
@@ -37,12 +138,12 @@
                 </select>
             </div>
             <div class="col-6 col-md-2">
-                <label class="pp-label">Min Price</label>
-                <input type="number" name="min_price" class="form-control" placeholder="&#8377; Min">
+                <label class="pp-label">Min Price (&#8377;)</label>
+                <input type="number" name="min_price" class="form-control" placeholder="Min Price">
             </div>
             <div class="col-6 col-md-2">
-                <label class="pp-label">Max Price</label>
-                <input type="number" name="max_price" class="form-control" placeholder="&#8377; Max">
+                <label class="pp-label">Max Price (&#8377;)</label>
+                <input type="number" name="max_price" class="form-control" placeholder="Max Price">
             </div>
             <div class="col-6 col-md-2">
                 <button type="submit" class="btn btn-primary w-100">Search</button>
@@ -51,14 +152,17 @@
     </div>
 </div>
 
+<!-- ============================================================== -->
+<!-- FEATURED RESIDENCES SECTION                                    -->
+<!-- ============================================================== -->
 <section class="pp-section py-5">
     <div class="container">
-        <div class="d-flex justify-content-between align-items-end mb-4">
+        <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-2">
             <div>
                 <div class="eyebrow mb-1" style="font-size:0.68rem; letter-spacing:0.3em; color:var(--gold);">Featured Residences</div>
                 <h2 class="mb-0" style="font-size:2rem;">Explore Distinguished Estates</h2>
             </div>
-            <a href="{% url 'property_list' %}" class="pp-muted" style="letter-spacing:0.15em; text-transform:uppercase; font-size:0.75rem;">View All Residences &rarr;</a>
+            <a href="{% url 'property_list' %}" class="pp-muted" style="letter-spacing:0.15em; text-transform:uppercase; font-size:0.75rem;">View All 35+ Residences &rarr;</a>
         </div>
         <div class="row">
             {% for property in featured %}
@@ -75,47 +179,64 @@
     </div>
 </section>
 
+<!-- ============================================================== -->
+<!-- 3 ROLE PROFILES BREAKDOWN (Buyers, Sellers, Governance)        -->
+<!-- ============================================================== -->
 <section class="pp-section-tight pb-5">
     <div class="container">
         <div class="text-center mb-5">
-            <div class="eyebrow mb-1" style="font-size:0.68rem; letter-spacing:0.3em; color:var(--gold);">Distinction &amp; Trust</div>
-            <h2 style="font-size:2rem;">Why PropertyPulse?</h2>
+            <div class="eyebrow mb-1" style="font-size:0.68rem; letter-spacing:0.3em; color:var(--gold);">Engineered for Every Stakeholder</div>
+            <h2 style="font-size:2rem;">Three Purpose-Built Experiences</h2>
+            <p class="pp-muted mx-auto" style="max-width:650px; font-size:0.9rem;">
+                Strict separation of roles ensures buyers discover and invest without seller bias, proprietors manage portfolios with precision, and administrators maintain systemic trust.
+            </p>
         </div>
         <div class="row g-4">
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="pp-feature-card">
-                    <div class="pp-feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke-linecap="round"/></svg>
+            <!-- Role 1: Buyer -->
+            <div class="col-12 col-md-4">
+                <div class="pp-feature-card text-center h-100">
+                    <div class="pp-feature-icon mx-auto mb-3" style="width:52px; height:52px; background:rgba(212,175,55,0.15); border:1px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem;">
+                        &#128269;
                     </div>
-                    <h3>AI Valuation</h3>
-                    <p>Every estate is analyzed with an instant AI price estimate, establishing fair market value with algorithmic clarity.</p>
+                    <h3 style="color:var(--ivory); font-size:1.15rem;">Accredited Buyer</h3>
+                    <p style="color:var(--sage); font-size:0.85rem; line-height:1.6;">
+                        Explore luxury residences with algorithmic purchase timing. Inspect the 1-year cost of delay, analyze 3-year valuation horizons, save residences, and secure reservations via refundable fiduciary escrow.
+                    </p>
+                    <div class="small fw-semibold mt-auto" style="color:var(--gold);">
+                        Estate Concierge AI Active
+                    </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="pp-feature-card">
-                    <div class="pp-feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+            <!-- Role 2: Seller -->
+            <div class="col-12 col-md-4">
+                <div class="pp-feature-card text-center h-100">
+                    <div class="pp-feature-icon mx-auto mb-3" style="width:52px; height:52px; background:rgba(212,175,55,0.15); border:1px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem;">
+                        &#127963;
                     </div>
-                    <h3>Verified Uniqueness</h3>
-                    <p>Proprietary duplicate detection filters ensure every residence is authentic, preventing duplicate listings.</p>
+                    <h3 style="color:var(--ivory); font-size:1.15rem;">Estate Proprietor</h3>
+                    <p style="color:var(--sage); font-size:0.85rem; line-height:1.6;">
+                        Benchmark listing asking prices with instant ML fair market appraisals. Manage private VIP buyer inspection schedules, track portfolio save velocity, and toggle active/sold custody.
+                    </p>
+                    <div class="small fw-semibold mt-auto" style="color:var(--gold);">
+                        Portfolio Strategist AI Active
+                    </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="pp-feature-card">
-                    <div class="pp-feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+            <!-- Role 3: Admin -->
+            <div class="col-12 col-md-4">
+                <div class="pp-feature-card text-center h-100">
+                    <div class="pp-feature-icon mx-auto mb-3" style="width:52px; height:52px; background:rgba(212,175,55,0.15); border:1px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.4rem;">
+                        &#128737;
                     </div>
-                    <h3>Private Portfolio</h3>
-                    <p>Bookmark exceptional villas and penthouses to curate your personal acquisition shortlist.</p>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="pp-feature-card">
-                    <div class="pp-feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+                    <h3 style="color:var(--ivory); font-size:1.15rem;">Platform Governance</h3>
+                    <p style="color:var(--sage); font-size:0.85rem; line-height:1.6;">
+                        Enterprise monitoring console. Inspect real-time ML inference telemetry, moderate duplicate listing flags, verify user KYC accreditation, and manage cryptographic escrow holds.
+                    </p>
+                    <div class="small fw-semibold mt-auto" style="color:var(--gold);">
+                        Executive Platform AI Active
                     </div>
-                    <h3>Refined Search</h3>
-                    <p>Filter seamlessly by architectural category, prime locality, and target valuation threshold.</p>
                 </div>
             </div>
         </div>

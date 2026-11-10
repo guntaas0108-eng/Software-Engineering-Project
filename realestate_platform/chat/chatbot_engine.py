@@ -150,14 +150,61 @@ def generate_buyer_bot_response(query, user):
                 )
             return res
 
+    # 3. Best Time to Buy / Market Timing & Future Projections Inquiry
+    if any(k in q for k in ["buy now", "in future", "best time", "when to buy", "timing", "should i buy", "wait", "delay"]):
+        from ml_predictor.predictor import PricePredictor
+        predictor = PricePredictor()
+
+        # Check if user mentioned a specific estate or city
+        target_property = None
+        for p in Property.objects.all():
+            main_name = p.title.split("—")[0].split("–")[0].strip().lower()
+            if main_name in q or (p.locality and p.locality.lower() in q):
+                target_property = p
+                break
+
+        if target_property:
+            t = predictor.analyze_timing(target_property)
+            res = (
+                f"### &#128200; ML Purchase Timing Analysis: [{target_property.title}](/properties/{target_property.pk}/)\n\n"
+                f"**Strategic Timing Verdict:** {t['timing_badge']} ({target_property.barometer_display()})\n\n"
+                f"- **Listed Asking Price:** &#8377;{t['listed_price']:,.0f}\n"
+                f"- **ML Fair Market Valuation:** &#8377;{t['predicted_price']:,.0f} ({t['valuation_gap_pct']}% spread)\n"
+                f"- **1-Year Projected Valuation:** &#8377;{t['projections'][2]['projected_price']:,.0f} (+{t['annual_growth_rate']}% CAGR)\n"
+                f"- **1-Year Cost of Delay:** &#8377;{t['cost_of_delay_1yr']:,.0f} ({'+' if t['cost_of_delay_1yr'] > 0 else ''}{t['cost_of_delay_1yr_pct']}%)\n\n"
+                f"**Economic Key Drivers:**\n"
+            )
+            for r in t["reasons"]:
+                res += f"- {r}\n"
+            res += f"\n[&#128202; View Interactive Price Trajectory Graph &amp; Comps Table &rarr;](/properties/{target_property.pk}/)"
+            return res
+        else:
+            top_buy_now = [p for p in Property.objects.all() if p.barometer_key() == "great"][:3]
+            res = (
+                "### &#128200; AI Market Timing &amp; Buyer Barometer Intelligence\n\n"
+                "Our Multiple Linear Regression ML engine analyzes micro-market appreciation, historical comps, and structural depreciation to evaluate **whether to BUY NOW or WAIT**:\n\n"
+                "- &#128640; **BUY NOW (Great Deal):** Listed &gt;5% below algorithmic fair value with robust compound appreciation. Delaying purchase results in higher acquisition cost next year.\n"
+                "- &#9878;&#65039; **FAVORABLE ENTRY (Fair Price):** Accurately aligned with market baseline; locking in today protects against quarterly capital growth.\n"
+                "- &#9203; **WAIT / NEGOTIATE (Above Market):** Listed at a premium; recommended to submit counter-proposals or await price correction.\n\n"
+                "**Prime Estates Currently Recommended to BUY NOW &#128640;:**\n\n"
+            )
+            for p in top_buy_now:
+                t = predictor.analyze_timing(p)
+                res += (
+                    f"- **[{p.title}](/properties/{p.pk}/)** — &#8377;{p.listed_price:,.0f} "
+                    f"({p.barometer_display()}) &middot; *1-Yr Delay Cost: +&#8377;{t['cost_of_delay_1yr']:,.0f}*\n"
+                )
+            res += "\nOpen any estate dossier to review its full interactive price forecast charts and decision matrix!"
+            return res
+
     if any(k in q for k in ["great deal", "fair price", "below market", "best price", "valuation"]):
         great_deals = [p for p in Property.objects.all() if p.barometer_key() == "great"][:3]
         if great_deals:
             res = "Our algorithmic AI valuation has identified the following **Great Deal** properties (priced favorably below estimated market value):\n\n"
             for p in great_deals:
                 res += (
-                    f"- **[{p.title}](/properties/{p.pk}/)**\n"
-                    f"  Listed: ₹{p.listed_price:,.0f} | AI Model Estimate: ₹{p.predicted_price:,.0f}\n"
+                    f"- **[{p.title}](/properties/{p.pk}/)** ({p.barometer_display()})\n"
+                    f"  Listed: &#8377;{p.listed_price:,.0f} | AI Model Estimate: &#8377;{p.predicted_price:,.0f}\n"
                     f"  *{p.locality}, {p.city}*\n\n"
                 )
             return res
@@ -220,7 +267,7 @@ def generate_seller_bot_response(query, user):
                     f"- **{p.title}**:\n"
                     f"  - Listed Price: ₹{p.listed_price:,.0f}\n"
                     f"  - AI Barometer Estimate: ₹{p.predicted_price:,.0f}\n"
-                    f"  - Current Status: **{p.barometer_label()}**\n\n"
+                    f"  - Current Status: **{p.barometer_display()}**\n\n"
                 )
             res += (
                 "**Strategic Recommendation:** Listings calibrated within &plusmn;5% of our AI Valuation "

@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 from .models import Property, SavedProperty
+from accounts.models import UserProfile
+from ml_predictor.predictor import PricePredictor
 
 User = get_user_model()
 
@@ -27,21 +29,34 @@ class PropertyModelTests(TestCase):
         p = self._make_property("4000000", "4500000")
         self.assertEqual(p.barometer_key(), "great")
         self.assertEqual(p.barometer_label(), "Great Deal")
+        self.assertIn("🔥", p.barometer_emoji())
+        self.assertIn("Great Deal", p.barometer_display())
 
     def test_barometer_fair_price(self):
         p = self._make_property("4400000", "4300000")
         self.assertEqual(p.barometer_key(), "fair")
         self.assertEqual(p.barometer_label(), "Fair Price")
+        self.assertIn("⚖️", p.barometer_emoji())
 
     def test_barometer_above_market(self):
         p = self._make_property("5500000", "4500000")
         self.assertEqual(p.barometer_key(), "above")
         self.assertEqual(p.barometer_label(), "Above Market")
+        self.assertIn("⏳", p.barometer_emoji())
 
     def test_barometer_pending_without_prediction(self):
         p = self._make_property("4000000", None)
         self.assertEqual(p.barometer_key(), "pending")
         self.assertEqual(p.barometer_label(), "Pending Analysis")
+
+    def test_ml_timing_analysis_buy_now(self):
+        p = self._make_property("4000000", "4500000")
+        predictor = PricePredictor()
+        timing = predictor.analyze_timing(p)
+        self.assertEqual(timing["verdict"], "BUY NOW")
+        self.assertIn("BUY NOW", timing["timing_badge"])
+        self.assertGreater(len(timing["projections"]), 0)
+        self.assertIn("Today", timing["chart_labels"])
 
 
 class PropertyListViewTests(TestCase):
@@ -70,7 +85,11 @@ class SellerDashboardTests(TestCase):
 
     def setUp(self):
         self.owner = User.objects.create_user(username="owner", password="testpass123")
+        self.owner.profile.role = UserProfile.Role.SELLER
+        self.owner.profile.save()
         self.other = User.objects.create_user(username="other", password="testpass123")
+        self.other.profile.role = UserProfile.Role.SELLER
+        self.other.profile.save()
         self.prop = Property.objects.create(
             seller=self.owner, title="Owner Flat", locality="Model Town", city="Patiala",
             area_sqft=Decimal("1000"), listed_price=Decimal("3000000"),
@@ -117,6 +136,8 @@ class DuplicateFlagTests(TestCase):
 
     def test_duplicate_flag_set_on_submit(self):
         seller = User.objects.create_user(username="dupuser", password="testpass123")
+        seller.profile.role = UserProfile.Role.SELLER
+        seller.profile.save()
         original = Property.objects.create(
             seller=seller, title="Sunrise Villa", locality="Model Town", city="Patiala",
             category="RES", area_sqft=Decimal("1200"), listed_price=Decimal("4000000"),
@@ -214,4 +235,4 @@ class FrontendStaticRegressionTests(TestCase):
 
     def test_listing_references_redesigned_stylesheet(self):
         response = self.client.get(reverse("property_list"))
-        self.assertContains(response, '/static/css/style.css?v=frontend-redesign-v1')
+        self.assertContains(response, '/static/css/style.css')

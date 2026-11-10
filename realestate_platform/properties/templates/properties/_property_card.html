@@ -1,7 +1,12 @@
 {% load static %}
 <div class="col-12 col-md-6 col-lg-4 mb-4">
-    <div class="pp-property-card">
-        <div class="pp-card-media">
+    <div class="pp-property-card {% if property.status == 'SOLD' %}pp-card-sold{% endif %}" {% if property.status == 'SOLD' %}style="filter: grayscale(0.85); opacity: 0.82; border: 1px solid rgba(220, 38, 38, 0.45);"{% endif %}>
+        <div class="pp-card-media position-relative">
+            {% if property.status == 'SOLD' %}
+            <div class="position-absolute top-0 start-0 m-2 px-2 py-1 fw-bold text-uppercase" style="background:#DC2626; color:#FFF; font-size:0.68rem; letter-spacing:0.15em; border-radius:3px; z-index:10; box-shadow:0 4px 10px rgba(0,0,0,0.6);">
+                &#128391; SOLD OUT
+            </div>
+            {% endif %}
             <a href="{% url 'property_detail' property.pk %}" class="d-block w-100 h-100">
                 {% with img=property.images.first %}
                 {% if img %}
@@ -29,7 +34,7 @@
         </div>
         <div class="pp-card-body">
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="pp-card-badge badge-{{ property.barometer_key }} mb-0">{{ property.barometer_label }}</span>
+                <span class="pp-card-badge badge-{{ property.barometer_key }} mb-0">{{ property.barometer_display }}</span>
                 <span class="small" style="font-size:0.7rem; color:var(--gold); letter-spacing:0.1em; text-transform:uppercase;">
                     {{ property.get_category_display }}
                 </span>
@@ -62,12 +67,21 @@
                     <div class="pp-price">&#8377;{{ property.listed_price|floatformat:0 }}</div>
                 </div>
                 <div class="d-flex gap-1">
+                    {% if property.status == 'SOLD' %}
+                    <span class="badge py-2 px-2" style="background:#2A1212; color:#F87171; border:1px solid #DC2626; font-size:0.65rem; letter-spacing:0.1em;">
+                        &#10006; SOLD OUT
+                    </span>
+                    <a href="{% url 'property_detail' property.pk %}" class="btn btn-outline-secondary btn-sm" style="font-size:0.68rem; padding:0.35rem 0.65rem;">
+                        View Dossier
+                    </a>
+                    {% else %}
                     <a href="{% url 'payment_checkout_property' property.pk %}" class="btn btn-primary gold btn-sm" title="Place token escrow deposit" style="font-size:0.68rem; padding:0.35rem 0.65rem;">
                         Reserve &rarr;
                     </a>
                     <a href="{% url 'property_detail' property.pk %}" class="btn btn-outline-primary btn-sm" style="font-size:0.68rem; padding:0.35rem 0.65rem;">
                         Details
                     </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

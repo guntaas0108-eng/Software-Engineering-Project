@@ -69,6 +69,15 @@ class Property(models.Model):
             return "fair"
         return "above"
 
+    def barometer_emoji(self):
+        """Emoji indicator reflecting the AI Buyer Barometer valuation."""
+        return {
+            "great": "🔥 🚀",
+            "fair": "🟢 ⚖️",
+            "above": "⏳ ⚠️",
+            "pending": "⏳ 📊",
+        }.get(self.barometer_key(), "📊")
+
     def barometer_label(self):
         """Human-friendly label shown on the Buyer Barometer badge."""
         return {
@@ -77,6 +86,15 @@ class Property(models.Model):
             "above": "Above Market",
             "pending": "Pending Analysis",
         }[self.barometer_key()]
+
+    def barometer_display(self):
+        """Rich badge label pairing emoji and verdict."""
+        return {
+            "great": "🔥 Great Deal 🚀",
+            "fair": "⚖️ Fair Price 🟢",
+            "above": "⏳ Above Market · Wait",
+            "pending": "⏳ Pending Analysis",
+        }.get(self.barometer_key(), "Pending Analysis")
 
 
 class PropertyImage(models.Model):

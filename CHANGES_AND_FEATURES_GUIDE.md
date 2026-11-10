@@ -44,20 +44,34 @@ Every user role has a **strictly tailored interface, permissions, and AI agent**
 
 ---
 
-## 🤖 3. Dual Role-Segregated AI Advisory Engine
+## 🤖 3. Dual Role-Segregated AI Advisory & Machine Learning Engine
 
-The AI assistants are strictly segregated on both the frontend UI and the backend API:
+The platform integrates dual role-segregated AI assistants alongside an enterprise **Machine Learning Price Predictor & Buy-Now vs Future Decision Engine**:
 
-### A. Estate Concierge AI (Exclusively for Buyers)
+### A. Machine Learning Valuation & Horizon Decision Engine
+* **Hugging Face Hub & Local Hybrid Model**: Powered by `Haneesh112/propertypulse-price-predictor` (`model.joblib`) with seamless local offline fallback. Evaluates property size (sq ft), bedrooms, bathrooms, and category against market regression benchmarks.
+* **Buy Now vs. In Future Decision Matrix**:
+  * **🟢 BUY NOW (Optimal Investment Window)**: When Asking Price $\le$ Model Valuation. Indicates favorable pricing before future appreciation kicks in.
+  * **🟡 FAIR VALUE (Market Benchmark)**: When Asking Price is within $\pm 5\%$ of fair market valuation.
+  * **🟠 MONITOR & NEGOTIATE**: When Asking Price is $5\%$ to $20\%$ above benchmark.
+  * **🔴 WAIT / FUTURE (Overpriced Premium)**: When Asking Price exceeds benchmark by $>20\%$. Suggests monitoring or awaiting price correction.
+* **3-Year Appreciation & Delay Cost Horizon**:
+  * Calculates projected 3-year asset valuation under compound market growth ($8.2\%$ CAGR).
+  * Computes the **Opportunity Cost of Delaying** if purchased now vs. waiting 12 to 36 months.
+* **Dynamic Emoji Investment Barometer**:
+  * Visual badge with situational emojis (⚡ *Great Deal - Buy Now!*, ⚖️ *Fair Market Benchmark*, 🔍 *Negotiate*, ⏳ *Wait for Correction*, 🏛️ *Sold Out / Archive*).
+  * Available **strictly to Accredited Buyers** on property detail and comparison pages.
+
+### B. Estate Concierge AI (Exclusively for Buyers)
 * **Target Audience:** Accredited buyers, investors, and prospective clients.
 * **Capabilities:**
   * Curates luxury residences by lifestyle amenities (e.g. *"Show me villas with an infinity pool"*).
   * Computes mathematical mortgage amortizations and monthly EMIs (e.g. *"Calculate EMI for a ₹15 Cr estate loan"* at 8.5% luxury lending rate).
-  * Explains ML algorithmic valuations (*Great Deal*, *Fair Price*, *Premium*).
+  * Explains ML algorithmic valuations and investment timing signals.
   * Informs the buyer about unread seller dispatches and confirmed viewing tours.
 * **UI Controls:** Mode switchers are completely disabled. Prompts chips only display buyer discovery queries.
 
-### B. Portfolio Strategist AI (Exclusively for Sellers)
+### C. Portfolio Strategist AI (Exclusively for Sellers)
 * **Target Audience:** Estate proprietors, luxury homeowners, and developers.
 * **Capabilities:**
   * Analyzes asking prices against the Machine Learning AI Barometer.
@@ -66,7 +80,7 @@ The AI assistants are strictly segregated on both the frontend UI and the backen
   * Advises on token escrow security deposits.
 * **UI Controls:** Mode switchers are completely disabled. Prompt chips only display seller optimization queries.
 
-### C. Executive Platform AI (Exclusively for Administrators)
+### D. Executive Platform AI (Exclusively for Administrators)
 * **Target Audience:** Platform administrators.
 * **Capabilities:**
   * Summarizes platform GMV, active escrow deposits, and pending disputes.
@@ -127,28 +141,31 @@ Accessible strictly at [`/accounts/command-center/`](file:///c:/Users/gunta/Desk
 
 ---
 
-## 🏛️ 7. Curated Catalog of 15 Luxury Test Estates
+## 🔒 7. Enterprise Order-App Security Architecture
 
-The database comes pre-seeded with **15 luxury estates** featuring high-resolution photography, AI Barometer valuations, and distinct architectural categories:
-* *The Palm Manor — Waterfront Colonial Estate* (Alibaug)
-* *The Grand Imperial Haveli* (Civil Lines, Jaipur)
-* *Skyline Sovereign Penthouse* (Worli Sea Face, Mumbai)
-* *The Whispering Pines Alpine Villa* (Kasauli Hills)
-* *Monsoon Palms Portuguese Heritage Villa* (Assagao, Goa)
-* *The Glass Pavilion Modernist Estate* (Golf Links, New Delhi)
-* *The Royal Orchard Country Estate* (Sadahalli, Bangalore)
-* *The Crestview Lakefront Villa* (Udaipur Lakefront)
-* *Elysium Heights Duplex Sky-Mansion* (Jubilee Hills, Hyderabad)
-* *The Sterling Heritage Plantation Villa* (Coonoor, Nilgiris)
-* *The Citadel Modernist Mansion* (DLF Phase 5, Gurgaon)
-* *The Azure Bay Cliffside Residence* (Dona Paula, Goa)
-* *The Windsor Court Georgian Villa* (Race Course, Dehradun)
-* *The Emerald Courtyard Haveli* (Old City Enclave, Udaipur)
-* *The Solarium Glass Villa* (Lonavala Hill Crest)
+To ensure institutional financial standards for escrow deposits and transaction security, the platform incorporates enterprise security controls:
+* **Cryptographic HMAC-SHA256 Audit Seal**: Every transaction receipt and state transition is cryptographically signed using platform secret hashes (`X-Audit-Signature: hmac-sha256:...`).
+* **Idempotency Protection**: Checkout forms issue unique UUID idempotency keys stored in session cache (`idempotency_key`), preventing duplicate charge submissions from double-clicking or network retries.
+* **Transaction Rate Limiting**: `OrderRateLimitMiddleware` restricts payment checkouts to at most 1 request per 2 seconds per user session (`HTTP 429 Too Many Requests`).
+* **Anti-Self-Dealing Guard**: Sellers are strictly prohibited from depositing escrow on their own properties.
+* **Strict Admin Purchasing Prohibition**: Platform administrators are strictly limited to supervisory oversight; checkout attempts by staff accounts are blocked with administrative policy warnings.
+* **Security Headers**: Standardized injection of `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, and `Strict-Transport-Security`.
 
 ---
 
-## 🔑 8. Login Credentials Cheatsheet
+## 🏛️ 8. Teacher Demonstration Suite & 35 Test Estates
+
+The platform includes **35 cataloged estates** showcasing all 6 valuation and lifecycle scenarios designed specifically for demonstration:
+1. **Case 1: Exceptional Value / "BUY NOW" Deal** — *The Palm Manor*, *Silver Oak Woodland Estate* (Asking price significantly below ML valuation).
+2. **Case 2: Fair Market Benchmark** — *The Grand Imperial Haveli*, *Emerald Crest Fair Benchmark* (Asking price aligns with ML prediction).
+3. **Case 3: Monitor & Negotiate** — *The Whispering Pines Alpine Villa*, *Fairview Lakefront Benchmark* (Asking price 5-15% above benchmark).
+4. **Case 4: Overpriced / "WAIT IN FUTURE"** — *Skyline Sovereign Penthouse*, *The Grand Sovereign Palace* (Premium markup >25%; ML warns buyer to wait or negotiate).
+5. **Case 5: Sold Out Property Grayscale Archive** — *Highland Crest SOLD Manor*, *The Sunset Ridge SOLD Villa* (Grayscale styling, `SOLD OUT` banner, disabled escrow actions).
+6. **Case 6: Agricultural Land & Commercial Assets** — *Golden Ridge Commercial Office Park*, *Valley Green Agricultural Plantation*.
+
+---
+
+## 🔑 9. Login Credentials Cheatsheet
 
 Use these pre-configured credentials to demonstrate all perspectives of the platform:
 

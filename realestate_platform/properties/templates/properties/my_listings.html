@@ -50,10 +50,19 @@
                         {% endif %}
                         <div class="pp-muted" style="font-size:0.85rem;">{{ property.locality }}, {{ property.city }}</div>
                     </td>
-                    <td>{{ property.get_status_display }}</td>
-                    <td><span class="pp-card-badge badge-{{ property.barometer_key }}">{{ property.barometer_label }}</span></td>
+                    <td>
+                        {% if property.status == 'SOLD' %}
+                            <span class="badge bg-danger" style="font-size:0.7rem; letter-spacing:0.1em;">&#128391; SOLD</span>
+                        {% else %}
+                            <span class="badge bg-success" style="font-size:0.7rem; letter-spacing:0.1em;">ACTIVE</span>
+                        {% endif %}
+                    </td>
+                    <td><span class="pp-card-badge badge-{{ property.barometer_key }}">{{ property.barometer_display }}</span></td>
                     <td>&#8377;{{ property.listed_price }}</td>
                     <td class="text-end pe-3">
+                        <a href="{% url 'toggle_property_sold' property.pk %}" class="btn btn-sm {% if property.status == 'SOLD' %}btn-outline-success{% else %}btn-outline-warning{% endif %}" title="Toggle sold or active status">
+                            {% if property.status == 'SOLD' %}Mark Active{% else %}Mark Sold{% endif %}
+                        </a>
                         <a href="{% url 'edit_property' property.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
                         <a href="{% url 'delete_property' property.pk %}" class="btn btn-sm btn-outline-secondary text-danger">Delete</a>
                     </td>

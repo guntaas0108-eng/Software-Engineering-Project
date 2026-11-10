@@ -1,0 +1,976 @@
+area_sqft,bedrooms,bathrooms,age_years,category,locality,city,price
+12500.0,6,7,2,RES,"Awas Beach, Alibaug",Mumbai Enclave,400000000.0
+12500.0,6,7,2,RES,"Awas Beach, Alibaug",Mumbai Enclave,400000000.0
+12500.0,6,7,2,RES,"Awas Beach, Alibaug",Mumbai Enclave,400000000.0
+12500.0,6,7,2,RES,"Awas Beach, Alibaug",Mumbai Enclave,400000000.0
+12500.0,6,7,2,RES,"Awas Beach, Alibaug",Mumbai Enclave,400000000.0
+8200.0,5,6,1,RES,Worli Sea Face,Mumbai,238000000.0
+8200.0,5,6,1,RES,Worli Sea Face,Mumbai,238000000.0
+8200.0,5,6,1,RES,Worli Sea Face,Mumbai,238000000.0
+8200.0,5,6,1,RES,Worli Sea Face,Mumbai,238000000.0
+8200.0,5,6,1,RES,Worli Sea Face,Mumbai,238000000.0
+14000.0,7,8,6,RES,Golf Links,New Delhi,430000000.0
+14000.0,7,8,6,RES,Golf Links,New Delhi,430000000.0
+14000.0,7,8,6,RES,Golf Links,New Delhi,430000000.0
+14000.0,7,8,6,RES,Golf Links,New Delhi,430000000.0
+14000.0,7,8,6,RES,Golf Links,New Delhi,430000000.0
+7800.0,4,5,0,RES,Sarjapur Gated Sanctuary,Bangalore,180000000.0
+7800.0,4,5,0,RES,Sarjapur Gated Sanctuary,Bangalore,180000000.0
+7800.0,4,5,0,RES,Sarjapur Gated Sanctuary,Bangalore,180000000.0
+7800.0,4,5,0,RES,Sarjapur Gated Sanctuary,Bangalore,180000000.0
+7800.0,4,5,0,RES,Sarjapur Gated Sanctuary,Bangalore,180000000.0
+9500.0,5,6,3,RES,Juhu Tara Road,Mumbai,310000000.0
+9500.0,5,6,3,RES,Juhu Tara Road,Mumbai,310000000.0
+9500.0,5,6,3,RES,Juhu Tara Road,Mumbai,310000000.0
+9500.0,5,6,3,RES,Juhu Tara Road,Mumbai,310000000.0
+9500.0,5,6,3,RES,Juhu Tara Road,Mumbai,310000000.0
+18000.0,8,10,4,RES,Chhatarpur Farms,New Delhi,240000000.0
+18000.0,8,10,4,RES,Chhatarpur Farms,New Delhi,240000000.0
+18000.0,8,10,4,RES,Chhatarpur Farms,New Delhi,240000000.0
+18000.0,8,10,4,RES,Chhatarpur Farms,New Delhi,240000000.0
+18000.0,8,10,4,RES,Chhatarpur Farms,New Delhi,240000000.0
+6200.0,4,5,1,RES,Assagao Highlands,Goa,120000000.0
+6200.0,4,5,1,RES,Assagao Highlands,Goa,120000000.0
+6200.0,4,5,1,RES,Assagao Highlands,Goa,120000000.0
+6200.0,4,5,1,RES,Assagao Highlands,Goa,120000000.0
+6200.0,4,5,1,RES,Assagao Highlands,Goa,120000000.0
+5800.0,4,4,1,RES,Hitec City Financial District,Hyderabad,95000000.0
+5800.0,4,4,1,RES,Hitec City Financial District,Hyderabad,95000000.0
+5800.0,4,4,1,RES,Hitec City Financial District,Hyderabad,95000000.0
+5800.0,4,4,1,RES,Hitec City Financial District,Hyderabad,95000000.0
+5800.0,4,4,1,RES,Hitec City Financial District,Hyderabad,95000000.0
+11000.0,6,7,3,RES,"Banjara Hills, Road No. 12",Hyderabad,175000000.0
+11000.0,6,7,3,RES,"Banjara Hills, Road No. 12",Hyderabad,175000000.0
+11000.0,6,7,3,RES,"Banjara Hills, Road No. 12",Hyderabad,175000000.0
+11000.0,6,7,3,RES,"Banjara Hills, Road No. 12",Hyderabad,175000000.0
+11000.0,6,7,3,RES,"Banjara Hills, Road No. 12",Hyderabad,175000000.0
+10500.0,5,6,2,RES,"DLF Phase V, Golf Course Road",Gurgaon,255000000.0
+10500.0,5,6,2,RES,"DLF Phase V, Golf Course Road",Gurgaon,255000000.0
+10500.0,5,6,2,RES,"DLF Phase V, Golf Course Road",Gurgaon,255000000.0
+10500.0,5,6,2,RES,"DLF Phase V, Golf Course Road",Gurgaon,255000000.0
+10500.0,5,6,2,RES,"DLF Phase V, Golf Course Road",Gurgaon,255000000.0
+13000.0,6,6,12,RES,Pillar Rocks Road,Kodaikanal Enclave,155000000.0
+13000.0,6,6,12,RES,Pillar Rocks Road,Kodaikanal Enclave,155000000.0
+13000.0,6,6,12,RES,Pillar Rocks Road,Kodaikanal Enclave,155000000.0
+13000.0,6,6,12,RES,Pillar Rocks Road,Kodaikanal Enclave,155000000.0
+13000.0,6,6,12,RES,Pillar Rocks Road,Kodaikanal Enclave,155000000.0
+6900.0,4,5,0,RES,Whitefield Prestige Boulevard,Bangalore,110000000.0
+6900.0,4,5,0,RES,Whitefield Prestige Boulevard,Bangalore,110000000.0
+6900.0,4,5,0,RES,Whitefield Prestige Boulevard,Bangalore,110000000.0
+6900.0,4,5,0,RES,Whitefield Prestige Boulevard,Bangalore,110000000.0
+6900.0,4,5,0,RES,Whitefield Prestige Boulevard,Bangalore,110000000.0
+11800.0,6,7,10,RES,Civil Lines Historic Enclave,Jaipur,165000000.0
+11800.0,6,7,10,RES,Civil Lines Historic Enclave,Jaipur,165000000.0
+11800.0,6,7,10,RES,Civil Lines Historic Enclave,Jaipur,165000000.0
+11800.0,6,7,10,RES,Civil Lines Historic Enclave,Jaipur,165000000.0
+11800.0,6,7,10,RES,Civil Lines Historic Enclave,Jaipur,165000000.0
+22000.0,0,12,2,COM,Cyber City Phase II,Gurgaon,325000000.0
+22000.0,0,12,2,COM,Cyber City Phase II,Gurgaon,325000000.0
+22000.0,0,12,2,COM,Cyber City Phase II,Gurgaon,325000000.0
+22000.0,0,12,2,COM,Cyber City Phase II,Gurgaon,325000000.0
+22000.0,0,12,2,COM,Cyber City Phase II,Gurgaon,325000000.0
+16500.0,7,8,5,RES,Lake Pichola Enclave,Udaipur,310000000.0
+16500.0,7,8,5,RES,Lake Pichola Enclave,Udaipur,310000000.0
+16500.0,7,8,5,RES,Lake Pichola Enclave,Udaipur,310000000.0
+16500.0,7,8,5,RES,Lake Pichola Enclave,Udaipur,310000000.0
+16500.0,7,8,5,RES,Lake Pichola Enclave,Udaipur,310000000.0
+10376.0,5,6,1,RES,Zirad,Mumbai Enclave,301700000.0
+21500.0,0,7,10,COM,Fateh Sagar Hills,Udaipur,423140000.0
+10732.0,5,5,13,RES,Lake View Ridge,Kodaikanal Enclave,129870000.0
+10734.0,5,5,1,RES,Koramangala,Bangalore,221160000.0
+18466.0,9,9,11,RES,Candolim Beach,Goa,378090000.0
+15397.0,8,9,11,ENT,Malabar Hill,Mumbai,528690000.0
+2397.0,1,2,10,RES,Jor Bagh,New Delhi,73920000.0
+20063.0,10,10,1,RES,Koramangala,Bangalore,427980000.0
+4163.0,2,2,3,RES,"Banjara Hills, Road No. 12",Hyderabad,76680000.0
+14410.0,7,8,1,ENT,Model Town,Patiala,125130000.0
+17997.0,9,10,4,RES,Cyber City Phase II,Gurgaon,430050000.0
+18000.0,9,9,11,RES,Civil Lines Historic Enclave,Jaipur,257580000.0
+15955.0,0,5,8,COM,Pillar Rocks Road,Kodaikanal Enclave,211070000.0
+4365.0,2,2,10,RES,Hitec City Financial District,Hyderabad,77310000.0
+13279.0,0,4,9,COM,Sector 9,Chandigarh,228710000.0
+13858.0,7,7,5,RES,Mandwa Jetty,Mumbai Enclave,410440000.0
+9874.0,5,5,3,ENT,Hitec City Financial District,Hyderabad,194930000.0
+10403.0,5,6,1,RES,Sector 8,Chandigarh,172390000.0
+15118.0,8,8,12,RES,Candolim Beach,Goa,309120000.0
+17316.0,9,10,10,RES,Sarjapur Gated Sanctuary,Bangalore,343600000.0
+11771.0,6,6,10,RES,Jubilee Hills,Hyderabad,208900000.0
+15515.0,8,9,9,RES,Mandwa Jetty,Mumbai Enclave,434300000.0
+3919.0,0,1,5,LAND,Whitefield Prestige Boulevard,Bangalore,71940000.0
+6950.0,0,2,3,LAND,Sector 9,Chandigarh,103020000.0
+10711.0,5,5,1,RES,Lake View Ridge,Kodaikanal Enclave,138060000.0
+16293.0,8,8,12,RES,Mandwa Jetty,Mumbai Enclave,452010000.0
+19060.0,0,6,7,COM,Anjuna Coast,Goa,446720000.0
+14359.0,7,7,9,RES,Lake Pichola Enclave,Udaipur,255910000.0
+5178.0,3,3,2,RES,Pillar Rocks Road,Kodaikanal Enclave,68350000.0
+3619.0,2,3,2,RES,Sohna Road,Gurgaon,86120000.0
+14055.0,7,8,4,RES,Model Town,Patiala,109650000.0
+11387.0,0,4,0,COM,Bandra West,Mumbai,434480000.0
+11559.0,0,4,2,IND,Colaba,Mumbai,321100000.0
+6973.0,3,4,7,RES,Candolim Beach,Goa,146230000.0
+1703.0,1,2,8,ENT,"DLF Phase V, Golf Course Road",Gurgaon,43240000.0
+3725.0,2,2,4,RES,"Awas Beach, Alibaug",Mumbai Enclave,110290000.0
+8073.0,0,3,1,COM,Fateh Sagar Hills,Udaipur,166950000.0
+4395.0,2,3,8,RES,Urban Estate,Patiala,33960000.0
+18069.0,9,9,14,RES,Whitefield Prestige Boulevard,Bangalore,352850000.0
+21823.0,11,12,2,RES,C-Scheme,Jaipur,324530000.0
+10419.0,0,3,2,LAND,"Awas Beach, Alibaug",Mumbai Enclave,292470000.0
+19761.0,10,10,7,ENT,Sector 10,Chandigarh,351530000.0
+9909.0,5,5,13,RES,Colaba,Mumbai,310340000.0
+6880.0,0,2,14,IND,Mandwa Jetty,Mumbai Enclave,169990000.0
+18537.0,9,10,2,RES,Golf Links,New Delhi,591790000.0
+7250.0,4,4,14,RES,Fateh Sagar Hills,Udaipur,127580000.0
+11765.0,6,7,0,RES,Pillar Rocks Road,Kodaikanal Enclave,158350000.0
+21370.0,11,11,4,RES,"DLF Phase V, Golf Course Road",Gurgaon,497540000.0
+13412.0,7,8,12,RES,Candolim Beach,Goa,281290000.0
+10393.0,5,5,8,RES,Zirad,Mumbai Enclave,295770000.0
+7669.0,4,5,9,RES,Baradari,Patiala,61490000.0
+11732.0,0,4,0,IND,Assagao Highlands,Goa,225350000.0
+16328.0,8,8,11,RES,Mandwa Jetty,Mumbai Enclave,477230000.0
+13718.0,0,5,11,IND,Hitec City Financial District,Hyderabad,200790000.0
+17587.0,9,10,1,RES,Lake View Ridge,Kodaikanal Enclave,227760000.0
+8352.0,4,5,11,RES,Sohna Road,Gurgaon,187420000.0
+9170.0,5,5,9,RES,Civil Lines Historic Enclave,Jaipur,128960000.0
+7008.0,4,4,14,RES,Cyber City Phase II,Gurgaon,160760000.0
+3658.0,2,2,8,RES,Fateh Sagar Hills,Udaipur,67430000.0
+20428.0,10,10,13,RES,Vasant Vihar,New Delhi,600350000.0
+7336.0,4,4,1,RES,Urban Estate,Patiala,59630000.0
+18535.0,9,9,6,RES,Lake Pichola Enclave,Udaipur,346610000.0
+9569.0,5,6,7,RES,Mansarovar,Jaipur,140040000.0
+11608.0,6,6,13,RES,Lake View Ridge,Kodaikanal Enclave,146080000.0
+13210.0,7,7,0,RES,Prithviraj Road,New Delhi,411330000.0
+9783.0,5,6,10,RES,Zirad,Mumbai Enclave,282260000.0
+20004.0,0,7,4,LAND,Zirad,Mumbai Enclave,544930000.0
+14670.0,0,5,11,COM,Lake View Ridge,Kodaikanal Enclave,191860000.0
+12041.0,6,7,6,ENT,"Awas Beach, Alibaug",Mumbai Enclave,382820000.0
+2753.0,1,1,6,RES,Fateh Sagar Hills,Udaipur,50220000.0
+6267.0,3,4,5,RES,"Banjara Hills, Road No. 12",Hyderabad,113120000.0
+6326.0,3,3,11,RES,"Banjara Hills, Road No. 12",Hyderabad,110960000.0
+11358.0,6,6,8,RES,Baradari,Patiala,91210000.0
+12837.0,0,4,7,COM,"Banjara Hills, Road No. 12",Hyderabad,250540000.0
+2220.0,0,1,3,COM,Juhu Tara Road,Mumbai,81880000.0
+21026.0,11,12,9,RES,Candolim Beach,Goa,454690000.0
+3232.0,0,1,10,IND,Mandwa Jetty,Mumbai Enclave,78590000.0
+17918.0,9,9,11,RES,"Awas Beach, Alibaug",Mumbai Enclave,499830000.0
+16298.0,8,9,0,RES,Baradari,Patiala,133010000.0
+13081.0,7,7,6,RES,"Awas Beach, Alibaug",Mumbai Enclave,382830000.0
+12112.0,0,4,7,COM,Fateh Sagar Hills,Udaipur,235470000.0
+17612.0,9,9,10,RES,Zirad,Mumbai Enclave,502670000.0
+10081.0,0,3,3,COM,Zirad,Mumbai Enclave,337570000.0
+19916.0,0,7,9,COM,Fateh Sagar Hills,Udaipur,389790000.0
+7946.0,4,5,2,RES,Cyber City Phase II,Gurgaon,192920000.0
+4122.0,2,3,2,RES,Anjuna Coast,Goa,89510000.0
+17496.0,9,9,5,RES,Anjuna Coast,Goa,383690000.0
+10187.0,0,3,1,LAND,Colaba,Mumbai,320750000.0
+11302.0,6,7,0,RES,Sector 9,Chandigarh,189390000.0
+10813.0,5,5,4,ENT,Lake Pichola Enclave,Udaipur,214680000.0
+12068.0,6,7,11,RES,Cyber City Phase II,Gurgaon,267360000.0
+21939.0,11,12,4,ENT,Pillar Rocks Road,Kodaikanal Enclave,309660000.0
+1991.0,0,1,9,LAND,Worli Sea Face,Mumbai,58080000.0
+19200.0,10,10,3,ENT,Civil Lines Historic Enclave,Jaipur,311520000.0
+17423.0,9,9,13,RES,Vasant Vihar,New Delhi,513740000.0
+4704.0,2,2,12,RES,Sector 8,Chandigarh,70660000.0
+6390.0,3,3,0,ENT,Mansarovar,Jaipur,106190000.0
+18845.0,0,6,10,COM,Baradari,Patiala,149720000.0
+3831.0,2,2,10,RES,Hitec City Financial District,Hyderabad,68790000.0
+14415.0,7,7,2,ENT,Anjuna Coast,Goa,336740000.0
+3549.0,2,3,7,RES,Worli Sea Face,Mumbai,111540000.0
+2617.0,1,1,0,RES,Model Town,Patiala,20480000.0
+9108.0,5,5,11,RES,Jubilee Hills,Hyderabad,157300000.0
+10900.0,0,4,3,COM,Jor Bagh,New Delhi,380100000.0
+4475.0,0,1,8,LAND,C-Scheme,Jaipur,56090000.0
+15845.0,8,8,14,RES,Cyber City Phase II,Gurgaon,353440000.0
+20231.0,10,10,1,RES,"Banjara Hills, Road No. 12",Hyderabad,374310000.0
+7200.0,4,5,6,RES,Zirad,Mumbai Enclave,211840000.0
+4645.0,2,2,12,RES,Indiranagar,Bangalore,87790000.0
+7999.0,4,4,6,RES,Prithviraj Road,New Delhi,251080000.0
+8692.0,4,5,8,RES,"Awas Beach, Alibaug",Mumbai Enclave,248400000.0
+14874.0,7,7,11,RES,Fateh Sagar Hills,Udaipur,269700000.0
+12290.0,6,6,14,RES,Jor Bagh,New Delhi,364220000.0
+19671.0,0,7,12,IND,Anjuna Coast,Goa,349020000.0
+17897.0,9,10,12,RES,Assagao Highlands,Goa,372960000.0
+3091.0,2,2,8,RES,Sector 10,Chandigarh,49780000.0
+7934.0,0,3,13,COM,Indiranagar,Bangalore,165260000.0
+19059.0,10,11,2,RES,Colaba,Mumbai,618520000.0
+11785.0,6,7,1,RES,Lake Pichola Enclave,Udaipur,226220000.0
+7874.0,4,4,10,RES,Model Town,Patiala,60340000.0
+15336.0,8,8,11,RES,Model Town,Patiala,119050000.0
+4901.0,2,3,14,ENT,Candolim Beach,Goa,107220000.0
+14844.0,0,5,2,LAND,Vasant Vihar,New Delhi,437470000.0
+18626.0,9,10,0,RES,Sector 9,Chandigarh,316460000.0
+4588.0,2,2,13,RES,Jubilee Hills,Hyderabad,78960000.0
+5484.0,3,3,14,RES,Civil Lines Historic Enclave,Jaipur,74160000.0
+3224.0,2,3,12,RES,Civil Lines Historic Enclave,Jaipur,47160000.0
+17786.0,9,10,9,RES,Anjuna Coast,Goa,368180000.0
+12560.0,6,7,12,RES,Colaba,Mumbai,390110000.0
+9082.0,5,6,6,ENT,Candolim Beach,Goa,211520000.0
+18930.0,9,10,7,RES,Sector 8,Chandigarh,299270000.0
+21963.0,11,12,9,RES,Assagao Highlands,Goa,455920000.0
+8446.0,4,4,0,RES,Civil Lines Historic Enclave,Jaipur,125800000.0
+4419.0,2,3,8,RES,Lake Pichola Enclave,Udaipur,81140000.0
+15912.0,8,9,14,RES,Worli Sea Face,Mumbai,494430000.0
+14843.0,0,5,13,COM,Sector 9,Chandigarh,238490000.0
+10945.0,0,4,13,COM,Sohna Road,Gurgaon,272600000.0
+14818.0,7,8,14,RES,Candolim Beach,Goa,308420000.0
+21683.0,11,12,11,RES,Civil Lines Historic Enclave,Jaipur,300790000.0
+21246.0,0,7,7,COM,"DLF Phase V, Golf Course Road",Gurgaon,549880000.0
+6459.0,0,2,6,LAND,Sector 9,Chandigarh,92280000.0
+12578.0,6,7,3,RES,Civil Lines Historic Enclave,Jaipur,188960000.0
+2257.0,1,2,0,RES,Urban Estate,Patiala,18410000.0
+14969.0,0,5,11,COM,Baradari,Patiala,114640000.0
+9327.0,0,3,0,COM,Fateh Sagar Hills,Udaipur,193370000.0
+10596.0,5,5,14,ENT,Mandwa Jetty,Mumbai Enclave,317640000.0
+2106.0,1,2,13,RES,Anjuna Coast,Goa,44570000.0
+12245.0,6,6,11,ENT,"DLF Phase V, Golf Course Road",Gurgaon,300710000.0
+13601.0,7,7,4,RES,Sector 10,Chandigarh,220530000.0
+15337.0,8,8,6,RES,Sector 8,Chandigarh,249350000.0
+21974.0,11,12,6,RES,Fateh Sagar Hills,Udaipur,405330000.0
+19041.0,0,6,10,LAND,Mandwa Jetty,Mumbai Enclave,484390000.0
+5999.0,0,2,7,IND,Juhu Tara Road,Mumbai,166480000.0
+8692.0,4,4,8,RES,Mandwa Jetty,Mumbai Enclave,245530000.0
+14508.0,7,7,6,RES,Malabar Hill,Mumbai,451190000.0
+21600.0,11,11,5,RES,Baradari,Patiala,166490000.0
+8169.0,0,3,4,IND,Sector 9,Chandigarh,108960000.0
+13610.0,7,7,4,RES,Assagao Highlands,Goa,288540000.0
+8613.0,4,5,0,RES,"DLF Phase V, Golf Course Road",Gurgaon,208910000.0
+17735.0,0,6,9,COM,"DLF Phase V, Golf Course Road",Gurgaon,452160000.0
+21891.0,11,11,12,RES,Jubilee Hills,Hyderabad,376860000.0
+5009.0,3,4,4,RES,Sohna Road,Gurgaon,118920000.0
+21084.0,11,12,6,RES,"Awas Beach, Alibaug",Mumbai Enclave,623100000.0
+7519.0,4,4,0,RES,Baradari,Patiala,60550000.0
+10829.0,5,6,4,RES,Vasant Vihar,New Delhi,332830000.0
+17439.0,9,9,13,RES,Sector 8,Chandigarh,265350000.0
+7692.0,4,4,6,RES,Fateh Sagar Hills,Udaipur,142240000.0
+4832.0,2,2,1,ENT,"DLF Phase V, Golf Course Road",Gurgaon,123620000.0
+8328.0,4,5,11,RES,Assagao Highlands,Goa,170190000.0
+13748.0,7,7,13,RES,Assagao Highlands,Goa,277690000.0
+6179.0,3,3,13,RES,"Banjara Hills, Road No. 12",Hyderabad,104480000.0
+5422.0,0,2,2,COM,"Banjara Hills, Road No. 12",Hyderabad,110110000.0
+3341.0,0,1,0,IND,"DLF Phase V, Golf Course Road",Gurgaon,70670000.0
+15978.0,8,9,7,RES,Pillar Rocks Road,Kodaikanal Enclave,205580000.0
+13599.0,7,7,0,ENT,Chhatarpur Farms,New Delhi,478230000.0
+19882.0,10,11,14,RES,Anjuna Coast,Goa,405220000.0
+20335.0,10,11,9,RES,Sector 8,Chandigarh,329460000.0
+4543.0,0,2,4,COM,Juhu Tara Road,Mumbai,166150000.0
+12065.0,6,6,9,RES,Mandwa Jetty,Mumbai Enclave,347480000.0
+2111.0,1,1,0,RES,Sohna Road,Gurgaon,50330000.0
+7680.0,0,3,11,COM,Mansarovar,Jaipur,119980000.0
+6343.0,3,3,11,RES,Zirad,Mumbai Enclave,175480000.0
+5045.0,3,3,14,RES,"Awas Beach, Alibaug",Mumbai Enclave,140510000.0
+13345.0,0,4,8,LAND,Urban Estate,Patiala,87300000.0
+10008.0,5,6,2,ENT,Candolim Beach,Goa,239570000.0
+2535.0,1,1,4,RES,Mansarovar,Jaipur,37050000.0
+2564.0,1,2,2,RES,Baradari,Patiala,20950000.0
+6700.0,3,3,8,RES,Vasant Vihar,New Delhi,202180000.0
+17143.0,0,6,8,COM,Lake View Ridge,Kodaikanal Enclave,228960000.0
+20446.0,10,11,14,RES,Fateh Sagar Hills,Udaipur,356690000.0
+12164.0,6,7,1,RES,Juhu Tara Road,Mumbai,402690000.0
+11110.0,6,6,5,RES,C-Scheme,Jaipur,162890000.0
+5590.0,3,4,13,ENT,Baradari,Patiala,46170000.0
+14710.0,0,5,13,COM,Whitefield Prestige Boulevard,Bangalore,315590000.0
+14881.0,0,5,10,COM,Indiranagar,Bangalore,327160000.0
+17462.0,9,10,10,RES,Model Town,Patiala,133580000.0
+3547.0,2,2,11,RES,Sector 9,Chandigarh,55470000.0
+18002.0,9,10,13,RES,Vasant Vihar,New Delhi,527770000.0
+8042.0,4,5,8,RES,Sector 9,Chandigarh,126810000.0
+11837.0,0,4,7,IND,Colaba,Mumbai,333880000.0
+17262.0,9,9,4,RES,Whitefield Prestige Boulevard,Bangalore,359030000.0
+8459.0,0,3,10,LAND,"Awas Beach, Alibaug",Mumbai Enclave,216380000.0
+16946.0,8,8,4,ENT,Jor Bagh,New Delhi,579630000.0
+2669.0,1,1,6,RES,Urban Estate,Patiala,20290000.0
+11370.0,0,4,3,LAND,"DLF Phase V, Golf Course Road",Gurgaon,239760000.0
+3769.0,2,2,4,RES,Mansarovar,Jaipur,55810000.0
+3657.0,0,1,14,IND,Sohna Road,Gurgaon,68870000.0
+9907.0,5,5,14,RES,Koramangala,Bangalore,191250000.0
+3488.0,2,3,9,ENT,Cyber City Phase II,Gurgaon,87840000.0
+10813.0,5,5,1,RES,Assagao Highlands,Goa,234310000.0
+16570.0,8,9,5,RES,Sector 9,Chandigarh,268990000.0
+2384.0,0,1,3,COM,Zirad,Mumbai Enclave,78040000.0
+16398.0,8,8,5,ENT,Sarjapur Gated Sanctuary,Bangalore,361600000.0
+5179.0,3,3,6,RES,Cyber City Phase II,Gurgaon,120300000.0
+13273.0,7,8,11,ENT,Sector 10,Chandigarh,229270000.0
+6592.0,3,3,2,RES,Indiranagar,Bangalore,135080000.0
+8232.0,0,3,7,COM,Malabar Hill,Mumbai,300570000.0
+18421.0,9,9,5,RES,"Banjara Hills, Road No. 12",Hyderabad,332530000.0
+21021.0,11,12,14,RES,"Awas Beach, Alibaug",Mumbai Enclave,586010000.0
+4870.0,2,2,13,RES,Indiranagar,Bangalore,95430000.0
+20295.0,10,11,9,RES,Worli Sea Face,Mumbai,648540000.0
+15039.0,8,8,12,RES,Model Town,Patiala,115960000.0
+16703.0,8,9,2,RES,Baradari,Patiala,134780000.0
+20601.0,10,10,0,RES,Lake Pichola Enclave,Udaipur,406030000.0
+16892.0,0,6,12,COM,Pillar Rocks Road,Kodaikanal Enclave,220960000.0
+10478.0,5,6,0,RES,Jor Bagh,New Delhi,324500000.0
+9649.0,5,5,11,RES,"DLF Phase V, Golf Course Road",Gurgaon,217350000.0
+14461.0,7,7,13,RES,Zirad,Mumbai Enclave,396030000.0
+7709.0,4,5,9,RES,Indiranagar,Bangalore,156390000.0
+20976.0,10,11,2,RES,C-Scheme,Jaipur,316290000.0
+21753.0,11,11,4,RES,Baradari,Patiala,172030000.0
+15029.0,8,8,14,RES,Sector 10,Chandigarh,237200000.0
+19833.0,10,11,2,RES,Fateh Sagar Hills,Udaipur,376090000.0
+20095.0,10,10,9,RES,Fateh Sagar Hills,Udaipur,360190000.0
+6800.0,3,3,12,RES,Lake Pichola Enclave,Udaipur,121400000.0
+14938.0,7,7,0,RES,"Awas Beach, Alibaug",Mumbai Enclave,440290000.0
+20764.0,0,7,12,COM,Pillar Rocks Road,Kodaikanal Enclave,266570000.0
+19358.0,10,10,11,RES,Sector 10,Chandigarh,305060000.0
+15332.0,0,5,11,IND,"Awas Beach, Alibaug",Mumbai Enclave,380740000.0
+15878.0,0,5,8,LAND,Jor Bagh,New Delhi,441720000.0
+14322.0,7,8,14,RES,Civil Lines Historic Enclave,Jaipur,200370000.0
+12554.0,6,6,10,RES,Jubilee Hills,Hyderabad,222960000.0
+10600.0,0,4,12,IND,Sector 9,Chandigarh,138020000.0
+12663.0,6,6,9,RES,Sector 10,Chandigarh,196600000.0
+21066.0,0,7,13,IND,Pillar Rocks Road,Kodaikanal Enclave,211590000.0
+21933.0,0,7,11,COM,Baradari,Patiala,170090000.0
+15846.0,8,8,9,RES,Mandwa Jetty,Mumbai Enclave,455110000.0
+6785.0,3,3,6,RES,Civil Lines Historic Enclave,Jaipur,100310000.0
+13205.0,7,7,5,ENT,Mansarovar,Jaipur,209240000.0
+17848.0,9,9,2,ENT,Bandra West,Mumbai,638620000.0
+10737.0,5,6,4,RES,Civil Lines Historic Enclave,Jaipur,158950000.0
+10167.0,5,6,13,RES,Golf Links,New Delhi,304010000.0
+13566.0,7,8,3,RES,Civil Lines Historic Enclave,Jaipur,202940000.0
+15100.0,8,9,12,RES,"DLF Phase V, Golf Course Road",Gurgaon,343930000.0
+6494.0,3,4,4,RES,Mandwa Jetty,Mumbai Enclave,191620000.0
+21836.0,0,7,0,LAND,Lake Pichola Enclave,Udaipur,387260000.0
+16420.0,0,5,4,LAND,Candolim Beach,Goa,328700000.0
+10207.0,5,5,10,RES,"DLF Phase V, Golf Course Road",Gurgaon,227860000.0
+20075.0,10,11,14,ENT,Sohna Road,Gurgaon,494080000.0
+16850.0,0,6,2,COM,Sarjapur Gated Sanctuary,Bangalore,385700000.0
+4450.0,2,3,1,ENT,Hitec City Financial District,Hyderabad,89760000.0
+11955.0,6,6,3,RES,Cyber City Phase II,Gurgaon,280030000.0
+17379.0,9,9,9,RES,Malabar Hill,Mumbai,560400000.0
+2835.0,1,2,4,RES,Sarjapur Gated Sanctuary,Bangalore,58010000.0
+18293.0,9,9,5,RES,Pillar Rocks Road,Kodaikanal Enclave,237230000.0
+5630.0,0,2,7,COM,Civil Lines Historic Enclave,Jaipur,88240000.0
+9937.0,5,5,9,RES,Lake Pichola Enclave,Udaipur,180250000.0
+3937.0,2,2,2,RES,Vasant Vihar,New Delhi,124920000.0
+15832.0,8,9,12,RES,Malabar Hill,Mumbai,484330000.0
+10698.0,5,5,13,RES,"Awas Beach, Alibaug",Mumbai Enclave,303610000.0
+14151.0,7,7,7,RES,Baradari,Patiala,109880000.0
+16561.0,8,9,8,RES,Civil Lines Historic Enclave,Jaipur,247840000.0
+12375.0,6,6,13,RES,Indiranagar,Bangalore,234490000.0
+6833.0,3,3,11,RES,C-Scheme,Jaipur,93650000.0
+16969.0,8,8,1,RES,Indiranagar,Bangalore,347910000.0
+13063.0,7,8,0,RES,Anjuna Coast,Goa,290380000.0
+17357.0,9,10,11,ENT,Juhu Tara Road,Mumbai,589890000.0
+11134.0,6,7,14,RES,Golf Links,New Delhi,328620000.0
+11009.0,6,6,4,RES,Sarjapur Gated Sanctuary,Bangalore,233180000.0
+3532.0,2,2,6,RES,Fateh Sagar Hills,Udaipur,66100000.0
+5195.0,3,3,5,ENT,Worli Sea Face,Mumbai,181550000.0
+8826.0,4,5,9,RES,Indiranagar,Bangalore,175190000.0
+15838.0,0,5,1,IND,Lake View Ridge,Kodaikanal Enclave,169940000.0
+9850.0,5,5,2,RES,Worli Sea Face,Mumbai,322200000.0
+18306.0,9,9,14,RES,Sector 8,Chandigarh,275930000.0
+11102.0,6,7,1,RES,Jor Bagh,New Delhi,353460000.0
+4991.0,0,2,4,LAND,Candolim Beach,Goa,98710000.0
+9649.0,5,5,1,RES,Jubilee Hills,Hyderabad,180370000.0
+17869.0,9,10,0,RES,Golf Links,New Delhi,579790000.0
+9877.0,5,6,9,RES,Mansarovar,Jaipur,141630000.0
+17345.0,9,9,4,RES,Lake View Ridge,Kodaikanal Enclave,228020000.0
+10967.0,5,5,8,RES,"Banjara Hills, Road No. 12",Hyderabad,191880000.0
+12408.0,6,6,4,RES,Model Town,Patiala,99440000.0
+9476.0,5,6,8,RES,Zirad,Mumbai Enclave,273110000.0
+21398.0,11,12,2,ENT,Assagao Highlands,Goa,517830000.0
+2577.0,0,1,12,LAND,Mansarovar,Jaipur,32690000.0
+13369.0,7,8,0,RES,Koramangala,Bangalore,290370000.0
+8379.0,4,5,2,RES,Sector 9,Chandigarh,133650000.0
+11048.0,6,7,11,RES,Sector 8,Chandigarh,170380000.0
+18943.0,9,10,0,RES,Sector 10,Chandigarh,312050000.0
+17385.0,9,9,8,RES,Cyber City Phase II,Gurgaon,405540000.0
+18955.0,9,9,13,ENT,Malabar Hill,Mumbai,635480000.0
+9176.0,5,5,12,RES,C-Scheme,Jaipur,131690000.0
+16453.0,0,5,9,LAND,Jor Bagh,New Delhi,462890000.0
+4139.0,2,2,13,RES,Model Town,Patiala,30800000.0
+7330.0,4,5,13,RES,Pillar Rocks Road,Kodaikanal Enclave,90320000.0
+10389.0,5,6,8,RES,Model Town,Patiala,80250000.0
+9223.0,5,5,0,RES,"Awas Beach, Alibaug",Mumbai Enclave,282510000.0
+10670.0,5,5,8,RES,Model Town,Patiala,79790000.0
+3484.0,0,1,2,LAND,Golf Links,New Delhi,101060000.0
+21475.0,11,12,9,RES,Whitefield Prestige Boulevard,Bangalore,448740000.0
+4241.0,2,2,5,RES,Sector 9,Chandigarh,67620000.0
+21867.0,0,7,9,LAND,Juhu Tara Road,Mumbai,626800000.0
+7686.0,0,3,5,IND,Bandra West,Mumbai,218640000.0
+18668.0,9,9,0,RES,Colaba,Mumbai,634890000.0
+2919.0,1,2,13,RES,Urban Estate,Patiala,21660000.0
+10622.0,5,5,14,RES,Candolim Beach,Goa,218110000.0
+5557.0,3,4,2,RES,Pillar Rocks Road,Kodaikanal Enclave,74550000.0
+16010.0,8,8,14,ENT,"Awas Beach, Alibaug",Mumbai Enclave,488370000.0
+20419.0,10,11,4,RES,Koramangala,Bangalore,422400000.0
+19927.0,0,7,6,LAND,Candolim Beach,Goa,371440000.0
+10856.0,5,5,5,RES,Lake Pichola Enclave,Udaipur,200830000.0
+13148.0,7,8,10,RES,"Awas Beach, Alibaug",Mumbai Enclave,370740000.0
+14050.0,7,7,2,RES,Jubilee Hills,Hyderabad,251070000.0
+9362.0,5,6,9,RES,Sohna Road,Gurgaon,210840000.0
+6345.0,3,3,2,RES,Urban Estate,Patiala,50110000.0
+8969.0,4,5,3,RES,"Awas Beach, Alibaug",Mumbai Enclave,264880000.0
+5638.0,0,2,12,COM,Candolim Beach,Goa,124750000.0
+20951.0,10,10,1,RES,C-Scheme,Jaipur,324040000.0
+18912.0,0,6,5,LAND,Whitefield Prestige Boulevard,Bangalore,351600000.0
+14137.0,7,7,2,RES,Mandwa Jetty,Mumbai Enclave,414710000.0
+10412.0,5,6,10,RES,Civil Lines Historic Enclave,Jaipur,150390000.0
+18354.0,9,9,8,RES,Fateh Sagar Hills,Udaipur,335500000.0
+11917.0,6,6,14,RES,Hitec City Financial District,Hyderabad,200410000.0
+21452.0,11,11,11,RES,Anjuna Coast,Goa,454560000.0
+14570.0,7,8,14,RES,Mansarovar,Jaipur,207560000.0
+16202.0,8,8,12,RES,Jubilee Hills,Hyderabad,280280000.0
+17526.0,9,9,9,RES,Lake View Ridge,Kodaikanal Enclave,226300000.0
+10416.0,5,6,11,RES,Lake View Ridge,Kodaikanal Enclave,127050000.0
+9103.0,5,6,12,RES,Fateh Sagar Hills,Udaipur,163860000.0
+12414.0,6,6,8,RES,Colaba,Mumbai,392020000.0
+5570.0,3,3,11,RES,Lake Pichola Enclave,Udaipur,99960000.0
+3544.0,2,3,12,RES,Lake Pichola Enclave,Udaipur,65940000.0
+7472.0,4,4,13,RES,Mandwa Jetty,Mumbai Enclave,209620000.0
+16901.0,8,8,11,RES,Prithviraj Road,New Delhi,501520000.0
+7105.0,4,4,1,RES,"Banjara Hills, Road No. 12",Hyderabad,131160000.0
+10167.0,5,5,3,RES,Lake View Ridge,Kodaikanal Enclave,128550000.0
+18208.0,9,9,12,RES,Pillar Rocks Road,Kodaikanal Enclave,220480000.0
+6242.0,3,3,5,RES,Whitefield Prestige Boulevard,Bangalore,123660000.0
+16911.0,8,8,4,RES,Koramangala,Bangalore,348060000.0
+19139.0,10,10,13,RES,Bandra West,Mumbai,588530000.0
+20565.0,10,11,9,RES,Golf Links,New Delhi,598190000.0
+10541.0,5,6,12,RES,Mansarovar,Jaipur,147700000.0
+10949.0,5,6,0,RES,Sector 9,Chandigarh,175600000.0
+10752.0,5,6,11,RES,"Banjara Hills, Road No. 12",Hyderabad,184170000.0
+3727.0,2,2,11,RES,Candolim Beach,Goa,75540000.0
+3929.0,2,3,2,ENT,Lake View Ridge,Kodaikanal Enclave,56540000.0
+6995.0,3,4,14,RES,Sohna Road,Gurgaon,150540000.0
+5916.0,3,3,3,RES,Model Town,Patiala,46750000.0
+20960.0,10,10,12,RES,Prithviraj Road,New Delhi,609450000.0
+6125.0,3,4,14,RES,Lake Pichola Enclave,Udaipur,107650000.0
+4371.0,2,3,12,RES,Sohna Road,Gurgaon,97010000.0
+13014.0,0,4,3,LAND,Urban Estate,Patiala,88750000.0
+17400.0,9,10,9,RES,Model Town,Patiala,135700000.0
+18620.0,9,10,0,RES,Lake View Ridge,Kodaikanal Enclave,247700000.0
+5781.0,3,3,13,RES,Koramangala,Bangalore,114140000.0
+3325.0,2,2,11,RES,Candolim Beach,Goa,67170000.0
+13069.0,7,7,6,RES,Golf Links,New Delhi,391200000.0
+14666.0,7,7,14,RES,"Banjara Hills, Road No. 12",Hyderabad,252200000.0
+2966.0,0,1,3,IND,C-Scheme,Jaipur,36800000.0
+9988.0,5,5,1,RES,Zirad,Mumbai Enclave,297510000.0
+11008.0,6,6,11,RES,Jor Bagh,New Delhi,325720000.0
+13827.0,7,7,1,RES,Candolim Beach,Goa,304380000.0
+20847.0,10,11,3,RES,"DLF Phase V, Golf Course Road",Gurgaon,480390000.0
+3243.0,2,2,11,RES,C-Scheme,Jaipur,47340000.0
+5824.0,0,2,9,IND,Civil Lines Historic Enclave,Jaipur,68330000.0
+6167.0,3,4,13,RES,Sector 8,Chandigarh,93690000.0
+13851.0,0,5,1,COM,Mandwa Jetty,Mumbai Enclave,464620000.0
+21492.0,0,7,6,COM,Zirad,Mumbai Enclave,695940000.0
+2449.0,0,1,12,COM,Jor Bagh,New Delhi,77500000.0
+7827.0,4,5,10,RES,Hitec City Financial District,Hyderabad,140680000.0
+9599.0,0,3,14,COM,Candolim Beach,Goa,218540000.0
+16598.0,8,8,7,RES,Sector 10,Chandigarh,257860000.0
+1663.0,0,1,10,LAND,Koramangala,Bangalore,30460000.0
+8788.0,4,5,9,RES,Zirad,Mumbai Enclave,255070000.0
+3423.0,2,3,13,RES,Hitec City Financial District,Hyderabad,60590000.0
+14006.0,7,8,7,RES,Candolim Beach,Goa,299880000.0
+17288.0,9,9,9,RES,Sector 8,Chandigarh,274790000.0
+10836.0,5,5,13,RES,Baradari,Patiala,80280000.0
+11659.0,6,6,5,RES,Fateh Sagar Hills,Udaipur,215020000.0
+10035.0,5,6,13,RES,Pillar Rocks Road,Kodaikanal Enclave,119830000.0
+19265.0,0,6,11,COM,Bandra West,Mumbai,653880000.0
+12391.0,0,4,11,COM,Sector 9,Chandigarh,203640000.0
+2057.0,0,1,6,LAND,Jor Bagh,New Delhi,58280000.0
+16751.0,8,8,7,RES,Lake Pichola Enclave,Udaipur,304370000.0
+1854.0,1,2,12,RES,Colaba,Mumbai,55980000.0
+13361.0,7,7,14,RES,Lake View Ridge,Kodaikanal Enclave,162570000.0
+18471.0,9,9,4,RES,Fateh Sagar Hills,Udaipur,349710000.0
+3962.0,2,2,14,RES,Golf Links,New Delhi,117040000.0
+16565.0,8,9,1,ENT,Worli Sea Face,Mumbai,598230000.0
+19584.0,10,10,7,RES,Pillar Rocks Road,Kodaikanal Enclave,241790000.0
+4941.0,2,2,1,RES,Whitefield Prestige Boulevard,Bangalore,101370000.0
+6844.0,3,4,3,RES,Prithviraj Road,New Delhi,213900000.0
+14739.0,7,8,13,RES,Lake Pichola Enclave,Udaipur,261940000.0
+7807.0,4,4,10,RES,Juhu Tara Road,Mumbai,241370000.0
+6598.0,3,3,5,RES,"Awas Beach, Alibaug",Mumbai Enclave,197130000.0
+14011.0,7,8,2,RES,Anjuna Coast,Goa,301390000.0
+13992.0,7,7,11,RES,Mansarovar,Jaipur,197930000.0
+3277.0,2,2,6,RES,"Banjara Hills, Road No. 12",Hyderabad,62200000.0
+11009.0,6,7,0,ENT,Pillar Rocks Road,Kodaikanal Enclave,156130000.0
+11733.0,6,7,13,RES,Lake View Ridge,Kodaikanal Enclave,140810000.0
+21972.0,11,12,1,RES,Model Town,Patiala,178040000.0
+11372.0,0,4,5,IND,Colaba,Mumbai,326320000.0
+21225.0,11,12,2,RES,Jubilee Hills,Hyderabad,397850000.0
+14746.0,7,7,5,RES,"Awas Beach, Alibaug",Mumbai Enclave,418250000.0
+2159.0,1,2,2,RES,Lake View Ridge,Kodaikanal Enclave,28260000.0
+5502.0,3,3,5,RES,Urban Estate,Patiala,43690000.0
+17072.0,9,9,13,RES,Civil Lines Historic Enclave,Jaipur,240160000.0
+8879.0,4,5,12,ENT,Zirad,Mumbai Enclave,273470000.0
+6633.0,3,4,8,RES,Chhatarpur Farms,New Delhi,201890000.0
+8488.0,4,5,10,RES,Malabar Hill,Mumbai,267870000.0
+5679.0,3,4,12,RES,Sector 8,Chandigarh,89890000.0
+10703.0,0,4,14,LAND,Model Town,Patiala,67770000.0
+2273.0,1,1,9,RES,Candolim Beach,Goa,47770000.0
+11862.0,6,6,6,RES,Assagao Highlands,Goa,258950000.0
+12314.0,6,6,6,RES,Pillar Rocks Road,Kodaikanal Enclave,152150000.0
+10648.0,5,5,11,RES,Vasant Vihar,New Delhi,309060000.0
+3796.0,2,2,3,RES,Golf Links,New Delhi,117560000.0
+2831.0,1,2,8,RES,Mansarovar,Jaipur,40530000.0
+12138.0,6,7,3,RES,Malabar Hill,Mumbai,388890000.0
+2971.0,0,1,9,COM,"Banjara Hills, Road No. 12",Hyderabad,57400000.0
+5161.0,0,2,5,IND,Sector 9,Chandigarh,71490000.0
+5657.0,3,3,10,RES,Candolim Beach,Goa,116150000.0
+12970.0,6,6,13,RES,Baradari,Patiala,98980000.0
+6100.0,3,3,5,RES,Jubilee Hills,Hyderabad,109390000.0
+12646.0,6,7,3,RES,Sarjapur Gated Sanctuary,Bangalore,263050000.0
+18115.0,0,6,0,COM,C-Scheme,Jaipur,292380000.0
+13869.0,7,7,0,RES,Mandwa Jetty,Mumbai Enclave,413960000.0
+3205.0,2,2,2,RES,Anjuna Coast,Goa,70310000.0
+5627.0,0,2,7,IND,Pillar Rocks Road,Kodaikanal Enclave,60170000.0
+21014.0,11,12,11,RES,Bandra West,Mumbai,648360000.0
+5424.0,0,2,8,LAND,Vasant Vihar,New Delhi,152270000.0
+20733.0,10,11,7,RES,Malabar Hill,Mumbai,668420000.0
+4648.0,0,2,10,COM,"Banjara Hills, Road No. 12",Hyderabad,90700000.0
+18904.0,9,10,7,RES,Worli Sea Face,Mumbai,589290000.0
+1978.0,0,1,5,COM,Baradari,Patiala,16320000.0
+13658.0,7,8,7,RES,Sarjapur Gated Sanctuary,Bangalore,272160000.0
+19121.0,10,10,12,RES,Fateh Sagar Hills,Udaipur,337930000.0
+4044.0,0,1,3,IND,C-Scheme,Jaipur,49800000.0
+10743.0,5,5,10,RES,Mansarovar,Jaipur,150300000.0
+2960.0,1,2,11,RES,Lake Pichola Enclave,Udaipur,52860000.0
+16491.0,8,9,4,ENT,Anjuna Coast,Goa,395410000.0
+21035.0,11,11,1,RES,Sector 10,Chandigarh,349140000.0
+7050.0,4,4,2,RES,Lake Pichola Enclave,Udaipur,135150000.0
+7375.0,4,4,6,RES,Fateh Sagar Hills,Udaipur,138410000.0
+10227.0,5,5,10,RES,Anjuna Coast,Goa,208600000.0
+14852.0,7,7,0,RES,Civil Lines Historic Enclave,Jaipur,228600000.0
+17177.0,9,10,0,RES,Whitefield Prestige Boulevard,Bangalore,362660000.0
+13667.0,7,8,7,RES,Sarjapur Gated Sanctuary,Bangalore,274760000.0
+3491.0,2,3,12,RES,Sector 9,Chandigarh,55510000.0
+13828.0,0,5,13,COM,Baradari,Patiala,106620000.0
+14463.0,0,5,14,IND,Cyber City Phase II,Gurgaon,275850000.0
+10621.0,5,6,2,RES,Model Town,Patiala,83360000.0
+3095.0,2,2,1,RES,Zirad,Mumbai Enclave,94500000.0
+11335.0,0,4,4,LAND,Sector 8,Chandigarh,165680000.0
+20881.0,10,11,7,RES,Jubilee Hills,Hyderabad,369080000.0
+16471.0,0,5,7,IND,Anjuna Coast,Goa,298150000.0
+16383.0,8,9,2,RES,Urban Estate,Patiala,132720000.0
+19037.0,10,10,7,RES,"Banjara Hills, Road No. 12",Hyderabad,347850000.0
+5595.0,3,3,6,RES,Golf Links,New Delhi,173000000.0
+15440.0,8,9,10,RES,Indiranagar,Bangalore,309940000.0
+7721.0,4,5,6,RES,Anjuna Coast,Goa,162370000.0
+18978.0,9,9,3,RES,Hitec City Financial District,Hyderabad,346470000.0
+13073.0,7,7,8,RES,"Banjara Hills, Road No. 12",Hyderabad,243190000.0
+16815.0,8,8,12,RES,Zirad,Mumbai Enclave,466650000.0
+10025.0,0,3,10,COM,Prithviraj Road,New Delhi,325410000.0
+3791.0,2,3,12,RES,"Banjara Hills, Road No. 12",Hyderabad,66490000.0
+14068.0,7,7,13,RES,Anjuna Coast,Goa,286940000.0
+17068.0,9,9,5,RES,"DLF Phase V, Golf Course Road",Gurgaon,400930000.0
+5455.0,3,3,5,RES,"DLF Phase V, Golf Course Road",Gurgaon,124150000.0
+13887.0,7,7,3,RES,Whitefield Prestige Boulevard,Bangalore,288830000.0
+21811.0,0,7,0,IND,Jor Bagh,New Delhi,599370000.0
+7948.0,0,3,1,COM,Candolim Beach,Goa,194710000.0
+19857.0,10,10,11,RES,Pillar Rocks Road,Kodaikanal Enclave,247440000.0
+11602.0,0,4,1,IND,Pillar Rocks Road,Kodaikanal Enclave,130300000.0
+7169.0,4,5,2,RES,Jubilee Hills,Hyderabad,132890000.0
+17884.0,9,10,12,RES,Colaba,Mumbai,544980000.0
+18961.0,9,9,9,RES,Pillar Rocks Road,Kodaikanal Enclave,235750000.0
+9551.0,5,5,13,RES,Jubilee Hills,Hyderabad,165370000.0
+17017.0,9,9,11,RES,Sector 10,Chandigarh,262920000.0
+6776.0,3,3,2,RES,Anjuna Coast,Goa,152060000.0
+11407.0,6,7,14,RES,C-Scheme,Jaipur,165800000.0
+17586.0,0,6,8,LAND,"DLF Phase V, Golf Course Road",Gurgaon,368060000.0
+12292.0,6,6,12,RES,Sector 10,Chandigarh,193600000.0
+20771.0,0,7,1,IND,"DLF Phase V, Golf Course Road",Gurgaon,434840000.0
+8407.0,4,5,2,RES,Indiranagar,Bangalore,174660000.0
+12000.0,6,6,9,RES,Lake View Ridge,Kodaikanal Enclave,147530000.0
+6804.0,3,3,3,ENT,Koramangala,Bangalore,151730000.0
+16220.0,8,8,2,RES,Cyber City Phase II,Gurgaon,380720000.0
+7946.0,4,5,3,RES,Fateh Sagar Hills,Udaipur,151310000.0
+3299.0,2,3,13,RES,Jubilee Hills,Hyderabad,57680000.0
+15497.0,8,8,11,RES,Whitefield Prestige Boulevard,Bangalore,301480000.0
+19916.0,10,10,10,RES,Indiranagar,Bangalore,399440000.0
+3602.0,2,2,8,RES,Civil Lines Historic Enclave,Jaipur,50940000.0
+20971.0,0,7,6,COM,Mansarovar,Jaipur,329770000.0
+8063.0,4,5,8,RES,Sector 10,Chandigarh,129880000.0
+12639.0,6,6,9,RES,Sector 8,Chandigarh,193000000.0
+6868.0,3,3,5,RES,Indiranagar,Bangalore,138130000.0
+1845.0,0,1,5,COM,Fateh Sagar Hills,Udaipur,38090000.0
+4019.0,2,3,13,RES,Sohna Road,Gurgaon,91150000.0
+10296.0,5,6,14,RES,Lake View Ridge,Kodaikanal Enclave,127290000.0
+2118.0,1,1,10,RES,Worli Sea Face,Mumbai,65810000.0
+16330.0,8,9,9,ENT,Pillar Rocks Road,Kodaikanal Enclave,219650000.0
+12256.0,6,7,0,ENT,Jubilee Hills,Hyderabad,250390000.0
+5933.0,3,4,9,ENT,Colaba,Mumbai,206350000.0
+15943.0,8,9,4,RES,Worli Sea Face,Mumbai,508150000.0
+19704.0,0,7,1,COM,Jor Bagh,New Delhi,688710000.0
+21427.0,0,7,8,COM,Golf Links,New Delhi,730560000.0
+7632.0,4,4,10,RES,C-Scheme,Jaipur,108020000.0
+21756.0,0,7,14,COM,Sector 8,Chandigarh,359670000.0
+19382.0,10,10,1,RES,Jor Bagh,New Delhi,612640000.0
+10338.0,5,6,13,RES,Cyber City Phase II,Gurgaon,222690000.0
+1561.0,1,1,11,RES,Pillar Rocks Road,Kodaikanal Enclave,19930000.0
+5078.0,0,2,12,COM,Whitefield Prestige Boulevard,Bangalore,109030000.0
+2168.0,1,1,6,RES,Jubilee Hills,Hyderabad,39300000.0
+8293.0,0,3,3,LAND,"DLF Phase V, Golf Course Road",Gurgaon,185130000.0
+18559.0,9,10,2,RES,Mandwa Jetty,Mumbai Enclave,561410000.0
+4340.0,2,2,10,RES,Whitefield Prestige Boulevard,Bangalore,86890000.0
+14895.0,7,7,4,RES,Pillar Rocks Road,Kodaikanal Enclave,193100000.0
+16421.0,8,8,10,RES,Jor Bagh,New Delhi,495190000.0
+3044.0,2,2,4,ENT,Baradari,Patiala,27080000.0
+18999.0,9,9,8,RES,Bandra West,Mumbai,601900000.0
+2074.0,1,2,13,RES,Sohna Road,Gurgaon,47070000.0
+18529.0,9,9,7,RES,Model Town,Patiala,144180000.0
+17145.0,9,9,12,RES,Mandwa Jetty,Mumbai Enclave,497330000.0
+12189.0,6,6,4,RES,"Banjara Hills, Road No. 12",Hyderabad,225170000.0
+2334.0,1,1,12,RES,Pillar Rocks Road,Kodaikanal Enclave,28810000.0
+4242.0,2,3,12,RES,Sector 9,Chandigarh,64580000.0
+3827.0,2,2,4,RES,Hitec City Financial District,Hyderabad,72660000.0
+2420.0,0,1,1,COM,Pillar Rocks Road,Kodaikanal Enclave,34650000.0
+16999.0,8,9,0,RES,Juhu Tara Road,Mumbai,569110000.0
+9625.0,5,5,7,RES,Vasant Vihar,New Delhi,295520000.0
+13727.0,0,5,10,COM,Mandwa Jetty,Mumbai Enclave,435110000.0
+18018.0,9,10,8,RES,Pillar Rocks Road,Kodaikanal Enclave,227440000.0
+12557.0,0,4,10,IND,Sector 8,Chandigarh,164950000.0
+20325.0,10,10,5,RES,"Banjara Hills, Road No. 12",Hyderabad,373180000.0
+12316.0,6,7,13,RES,Zirad,Mumbai Enclave,337540000.0
+18675.0,0,6,1,COM,"Awas Beach, Alibaug",Mumbai Enclave,619960000.0
+2639.0,1,2,12,RES,Baradari,Patiala,20020000.0
+18478.0,0,6,13,COM,Civil Lines Historic Enclave,Jaipur,276330000.0
+15794.0,0,5,0,LAND,Mansarovar,Jaipur,215700000.0
+10461.0,0,3,5,COM,C-Scheme,Jaipur,167220000.0
+5649.0,3,3,7,RES,Urban Estate,Patiala,43710000.0
+18935.0,9,10,11,RES,Worli Sea Face,Mumbai,582510000.0
+16264.0,8,8,11,RES,C-Scheme,Jaipur,227280000.0
+18807.0,9,10,14,RES,Pillar Rocks Road,Kodaikanal Enclave,225400000.0
+3353.0,2,2,3,RES,Sector 8,Chandigarh,54240000.0
+21196.0,11,12,4,RES,Sector 10,Chandigarh,348750000.0
+19214.0,0,6,5,COM,Koramangala,Bangalore,442930000.0
+2532.0,1,1,2,RES,Assagao Highlands,Goa,56460000.0
+21706.0,11,11,14,RES,Baradari,Patiala,165900000.0
+18222.0,9,10,11,RES,"Awas Beach, Alibaug",Mumbai Enclave,506670000.0
+19975.0,10,11,2,RES,Assagao Highlands,Goa,443670000.0
+20427.0,10,11,7,ENT,Koramangala,Bangalore,446610000.0
+15409.0,0,5,7,COM,Civil Lines Historic Enclave,Jaipur,239800000.0
+11695.0,0,4,12,LAND,Mansarovar,Jaipur,145960000.0
+15008.0,0,5,14,LAND,Sector 8,Chandigarh,204660000.0
+15493.0,8,8,13,RES,Lake View Ridge,Kodaikanal Enclave,183580000.0
+6271.0,3,3,2,ENT,Zirad,Mumbai Enclave,200600000.0
+8705.0,4,4,5,RES,Sector 9,Chandigarh,141070000.0
+14336.0,0,5,6,IND,Candolim Beach,Goa,266000000.0
+20001.0,10,10,9,ENT,"Awas Beach, Alibaug",Mumbai Enclave,606510000.0
+12295.0,6,6,0,RES,C-Scheme,Jaipur,182880000.0
+17520.0,9,9,0,RES,Urban Estate,Patiala,142200000.0
+12151.0,6,6,12,RES,Cyber City Phase II,Gurgaon,273490000.0
+9193.0,0,3,6,LAND,Vasant Vihar,New Delhi,261850000.0
+7526.0,4,4,7,RES,Vasant Vihar,New Delhi,228280000.0
+12750.0,6,7,14,RES,Lake View Ridge,Kodaikanal Enclave,154620000.0
+11006.0,6,7,9,RES,Juhu Tara Road,Mumbai,351860000.0
+15376.0,8,9,4,RES,Zirad,Mumbai Enclave,449410000.0
+3549.0,2,2,14,RES,Indiranagar,Bangalore,69550000.0
+11250.0,0,4,12,COM,C-Scheme,Jaipur,172310000.0
+17921.0,9,10,13,RES,Mandwa Jetty,Mumbai Enclave,503750000.0
+2033.0,1,1,1,ENT,Mandwa Jetty,Mumbai Enclave,67350000.0
+19274.0,10,10,3,RES,Sarjapur Gated Sanctuary,Bangalore,407440000.0
+9748.0,0,3,9,COM,"Awas Beach, Alibaug",Mumbai Enclave,308830000.0
+4050.0,2,3,13,RES,Sector 10,Chandigarh,61450000.0
+13153.0,0,4,14,LAND,Whitefield Prestige Boulevard,Bangalore,233130000.0
+15964.0,8,9,7,RES,Sector 10,Chandigarh,254150000.0
+14091.0,7,8,9,RES,Bandra West,Mumbai,431510000.0
+12324.0,0,4,7,COM,Sohna Road,Gurgaon,316920000.0
+7644.0,4,4,5,RES,"Awas Beach, Alibaug",Mumbai Enclave,228830000.0
+19994.0,10,11,14,ENT,Sector 10,Chandigarh,343420000.0
+4559.0,2,2,10,RES,Mansarovar,Jaipur,62650000.0
+7415.0,4,5,1,RES,Assagao Highlands,Goa,167910000.0
+15828.0,8,9,2,RES,Lake View Ridge,Kodaikanal Enclave,202980000.0
+5790.0,3,3,2,ENT,"Banjara Hills, Road No. 12",Hyderabad,118410000.0
+7379.0,4,5,3,RES,Lake View Ridge,Kodaikanal Enclave,96570000.0
+16452.0,0,5,0,COM,Cyber City Phase II,Gurgaon,433170000.0
+21858.0,11,11,12,RES,Civil Lines Historic Enclave,Jaipur,300740000.0
+5778.0,0,2,5,IND,Bandra West,Mumbai,158140000.0
+7956.0,4,5,10,RES,Assagao Highlands,Goa,167060000.0
+6542.0,3,4,12,RES,Indiranagar,Bangalore,128340000.0
+9481.0,5,5,4,RES,Civil Lines Historic Enclave,Jaipur,139280000.0
+9672.0,5,5,8,RES,Civil Lines Historic Enclave,Jaipur,139890000.0
+15741.0,0,5,11,COM,Mandwa Jetty,Mumbai Enclave,488740000.0
+7097.0,4,4,1,ENT,Mansarovar,Jaipur,117160000.0
+16653.0,8,9,10,RES,Candolim Beach,Goa,346810000.0
+9467.0,0,3,5,LAND,"Banjara Hills, Road No. 12",Hyderabad,154780000.0
+5171.0,3,3,12,ENT,Vasant Vihar,New Delhi,166770000.0
+9562.0,5,6,10,ENT,Lake View Ridge,Kodaikanal Enclave,131500000.0
+12971.0,0,4,10,COM,Juhu Tara Road,Mumbai,461290000.0
+8723.0,4,4,8,RES,Candolim Beach,Goa,189760000.0
+6568.0,3,4,2,RES,Civil Lines Historic Enclave,Jaipur,100040000.0
+12281.0,6,7,6,RES,Urban Estate,Patiala,95390000.0
+12001.0,0,4,3,COM,Bandra West,Mumbai,431900000.0
+4942.0,0,2,12,COM,Whitefield Prestige Boulevard,Bangalore,107070000.0
+9565.0,5,6,0,ENT,Pillar Rocks Road,Kodaikanal Enclave,136600000.0
+12820.0,6,6,8,RES,Jor Bagh,New Delhi,384060000.0
+12357.0,0,4,1,COM,Hitec City Financial District,Hyderabad,243340000.0
+18810.0,9,9,11,RES,Assagao Highlands,Goa,394540000.0
+17375.0,9,9,11,RES,Jubilee Hills,Hyderabad,302700000.0
+6118.0,0,2,7,COM,Jubilee Hills,Hyderabad,117510000.0
+19582.0,0,7,13,COM,Sector 9,Chandigarh,331400000.0
+15320.0,8,8,9,RES,Sector 9,Chandigarh,239110000.0
+2049.0,1,1,8,RES,Civil Lines Historic Enclave,Jaipur,29600000.0
+15344.0,8,9,14,ENT,Urban Estate,Patiala,127100000.0
+4660.0,2,2,3,ENT,Sohna Road,Gurgaon,118120000.0
+14796.0,7,7,3,RES,Lake View Ridge,Kodaikanal Enclave,190220000.0
+3397.0,2,3,3,RES,Hitec City Financial District,Hyderabad,61830000.0
+15683.0,8,9,8,RES,Koramangala,Bangalore,312600000.0
+16046.0,8,8,6,ENT,"Banjara Hills, Road No. 12",Hyderabad,309210000.0
+18855.0,9,10,9,RES,Fateh Sagar Hills,Udaipur,339500000.0
+8407.0,0,3,14,COM,Candolim Beach,Goa,192000000.0
+13956.0,7,7,4,RES,Civil Lines Historic Enclave,Jaipur,209250000.0
+16486.0,8,9,2,RES,Jor Bagh,New Delhi,513800000.0
+10079.0,5,5,6,RES,Vasant Vihar,New Delhi,299880000.0
+7291.0,4,4,6,RES,Bandra West,Mumbai,235950000.0
+13998.0,7,7,13,RES,Pillar Rocks Road,Kodaikanal Enclave,166140000.0
+16651.0,8,8,3,RES,Baradari,Patiala,130680000.0
+19139.0,10,10,8,RES,Candolim Beach,Goa,410500000.0
+15518.0,8,9,9,RES,Jubilee Hills,Hyderabad,273440000.0
+5398.0,3,4,5,RES,Anjuna Coast,Goa,115480000.0
+6529.0,3,3,8,RES,Jubilee Hills,Hyderabad,117220000.0
+16238.0,0,5,5,COM,Civil Lines Historic Enclave,Jaipur,256870000.0
+9939.0,0,3,4,COM,Cyber City Phase II,Gurgaon,258260000.0
+21123.0,11,11,2,RES,Sohna Road,Gurgaon,499870000.0
+9995.0,5,5,4,RES,Fateh Sagar Hills,Udaipur,184790000.0
+18775.0,9,9,9,RES,Whitefield Prestige Boulevard,Bangalore,370210000.0
+2242.0,1,2,6,RES,Assagao Highlands,Goa,48490000.0
+19556.0,10,10,1,RES,Hitec City Financial District,Hyderabad,359890000.0
+12345.0,6,6,2,RES,"DLF Phase V, Golf Course Road",Gurgaon,287280000.0
+11125.0,6,7,4,RES,Cyber City Phase II,Gurgaon,264820000.0
+20798.0,10,11,1,RES,Jor Bagh,New Delhi,652090000.0
+14731.0,7,8,8,RES,Sector 10,Chandigarh,230270000.0
+21477.0,11,12,9,RES,Model Town,Patiala,168360000.0
+7799.0,0,3,2,IND,Mandwa Jetty,Mumbai Enclave,206860000.0
+7635.0,4,5,8,RES,"Banjara Hills, Road No. 12",Hyderabad,138200000.0
+13140.0,0,4,13,COM,Juhu Tara Road,Mumbai,444460000.0
+15307.0,8,8,2,RES,"Awas Beach, Alibaug",Mumbai Enclave,465970000.0
+7196.0,4,5,11,RES,Sohna Road,Gurgaon,163930000.0
+4801.0,2,3,0,RES,Baradari,Patiala,37850000.0
+11236.0,6,6,5,RES,Sohna Road,Gurgaon,258900000.0
+5756.0,3,4,13,RES,Fateh Sagar Hills,Udaipur,103710000.0
+16091.0,8,8,13,RES,Pillar Rocks Road,Kodaikanal Enclave,195970000.0
+21725.0,11,11,12,RES,Golf Links,New Delhi,631140000.0
+4069.0,2,2,8,RES,Civil Lines Historic Enclave,Jaipur,59630000.0
+19443.0,10,10,11,RES,Lake View Ridge,Kodaikanal Enclave,240430000.0
+5527.0,3,3,10,RES,Jubilee Hills,Hyderabad,97380000.0
+6582.0,0,2,2,IND,"Awas Beach, Alibaug",Mumbai Enclave,169430000.0
+3565.0,2,2,3,RES,Lake View Ridge,Kodaikanal Enclave,45810000.0
+4757.0,2,3,14,RES,Whitefield Prestige Boulevard,Bangalore,91510000.0
+14841.0,7,7,13,RES,Golf Links,New Delhi,432870000.0
+15441.0,8,9,3,RES,Koramangala,Bangalore,321560000.0
+14078.0,7,8,1,RES,Lake Pichola Enclave,Udaipur,274320000.0
+11697.0,6,6,14,RES,Golf Links,New Delhi,341130000.0
+14013.0,0,5,13,COM,Assagao Highlands,Goa,319770000.0
+12753.0,6,6,7,RES,Lake View Ridge,Kodaikanal Enclave,159060000.0
+16934.0,0,6,1,LAND,"Awas Beach, Alibaug",Mumbai Enclave,475350000.0
+7255.0,4,5,1,RES,C-Scheme,Jaipur,109800000.0
+13594.0,7,7,1,RES,Mandwa Jetty,Mumbai Enclave,407410000.0
+11514.0,6,7,6,ENT,"DLF Phase V, Golf Course Road",Gurgaon,296580000.0
+16033.0,0,5,3,LAND,Fateh Sagar Hills,Udaipur,275820000.0
+6310.0,3,3,11,RES,Mandwa Jetty,Mumbai Enclave,171850000.0
+10005.0,5,5,5,RES,Mandwa Jetty,Mumbai Enclave,301000000.0
+13849.0,7,7,11,RES,"DLF Phase V, Golf Course Road",Gurgaon,309450000.0
+4572.0,2,3,1,RES,Whitefield Prestige Boulevard,Bangalore,98920000.0
+1602.0,1,2,9,RES,Fateh Sagar Hills,Udaipur,30160000.0
+10622.0,0,4,6,COM,Vasant Vihar,New Delhi,357700000.0
+17678.0,0,6,3,IND,Cyber City Phase II,Gurgaon,363060000.0
+2024.0,1,2,9,RES,Hitec City Financial District,Hyderabad,36160000.0
+4609.0,2,3,4,RES,Civil Lines Historic Enclave,Jaipur,69490000.0
+4873.0,2,3,4,RES,Pillar Rocks Road,Kodaikanal Enclave,61720000.0
+9898.0,5,5,10,RES,Koramangala,Bangalore,199500000.0
+2917.0,0,1,12,LAND,"DLF Phase V, Golf Course Road",Gurgaon,61610000.0
+14985.0,0,5,5,IND,Zirad,Mumbai Enclave,371540000.0
+6393.0,3,3,3,RES,Mandwa Jetty,Mumbai Enclave,187660000.0
+17508.0,0,6,8,COM,"Awas Beach, Alibaug",Mumbai Enclave,555300000.0
+10799.0,5,6,13,RES,Cyber City Phase II,Gurgaon,233320000.0
+19988.0,10,10,3,RES,Koramangala,Bangalore,413500000.0
+6782.0,3,4,14,RES,Mandwa Jetty,Mumbai Enclave,183640000.0
+7456.0,0,2,9,COM,Malabar Hill,Mumbai,263200000.0
+10499.0,5,5,0,RES,Assagao Highlands,Goa,231960000.0
+6731.0,0,2,8,COM,Baradari,Patiala,53980000.0
+14465.0,7,8,10,RES,C-Scheme,Jaipur,207080000.0
+20329.0,10,10,12,RES,Urban Estate,Patiala,157350000.0
+5403.0,3,3,8,RES,"DLF Phase V, Golf Course Road",Gurgaon,124760000.0
+4052.0,0,1,6,LAND,Mansarovar,Jaipur,52280000.0
+7120.0,4,5,7,RES,Assagao Highlands,Goa,158400000.0
+2664.0,0,1,0,COM,Lake View Ridge,Kodaikanal Enclave,37610000.0
+5046.0,0,2,1,LAND,Indiranagar,Bangalore,97940000.0
+14609.0,0,5,1,COM,Bandra West,Mumbai,548110000.0
+5267.0,3,3,8,RES,Lake Pichola Enclave,Udaipur,95030000.0
+11398.0,6,6,0,RES,Pillar Rocks Road,Kodaikanal Enclave,148800000.0
+20278.0,10,11,14,RES,Colaba,Mumbai,608710000.0
+3092.0,0,1,9,COM,Urban Estate,Patiala,24000000.0
+12585.0,6,6,12,RES,Golf Links,New Delhi,376770000.0
+15275.0,0,5,8,COM,C-Scheme,Jaipur,234000000.0
+2323.0,1,2,5,ENT,Model Town,Patiala,20230000.0
+17073.0,0,6,3,IND,Bandra West,Mumbai,477600000.0
+21813.0,11,11,14,RES,Pillar Rocks Road,Kodaikanal Enclave,267060000.0
+4437.0,2,2,2,RES,Lake Pichola Enclave,Udaipur,83120000.0
+5932.0,3,4,11,RES,Jor Bagh,New Delhi,178100000.0
+3429.0,2,3,13,RES,Indiranagar,Bangalore,68290000.0
+16702.0,0,6,9,IND,Sohna Road,Gurgaon,334580000.0
+6286.0,3,3,3,RES,Sector 9,Chandigarh,100550000.0
+8709.0,0,3,14,COM,Mandwa Jetty,Mumbai Enclave,276080000.0
+4501.0,0,2,3,COM,Lake View Ridge,Kodaikanal Enclave,62180000.0
+7252.0,4,5,4,RES,Koramangala,Bangalore,152950000.0
+5355.0,3,3,11,RES,Colaba,Mumbai,164380000.0
+5494.0,3,3,7,RES,Pillar Rocks Road,Kodaikanal Enclave,68950000.0
+9011.0,5,5,7,RES,Golf Links,New Delhi,274080000.0
+21059.0,11,11,5,RES,Mandwa Jetty,Mumbai Enclave,610630000.0
+16121.0,8,9,11,RES,Mansarovar,Jaipur,225010000.0
+12902.0,6,6,12,RES,Sohna Road,Gurgaon,288750000.0
+11993.0,0,4,8,LAND,Cyber City Phase II,Gurgaon,252940000.0
+7156.0,4,5,1,RES,Model Town,Patiala,58660000.0
+13088.0,7,7,1,RES,"Awas Beach, Alibaug",Mumbai Enclave,386900000.0
+18722.0,9,9,0,RES,"DLF Phase V, Golf Course Road",Gurgaon,444850000.0
+17149.0,0,6,4,LAND,Vasant Vihar,New Delhi,496930000.0
+13692.0,7,8,10,RES,"Awas Beach, Alibaug",Mumbai Enclave,386900000.0
+10036.0,5,6,2,RES,Candolim Beach,Goa,221340000.0
+15125.0,8,8,4,RES,Cyber City Phase II,Gurgaon,362590000.0
+2123.0,1,2,2,RES,"Awas Beach, Alibaug",Mumbai Enclave,62750000.0
+10384.0,5,6,10,RES,Hitec City Financial District,Hyderabad,185820000.0
+1707.0,1,2,5,RES,Anjuna Coast,Goa,36730000.0
+11324.0,6,6,14,RES,Lake View Ridge,Kodaikanal Enclave,135780000.0
+3240.0,0,1,10,LAND,Hitec City Financial District,Hyderabad,51810000.0
+11161.0,6,7,4,RES,Urban Estate,Patiala,91330000.0
+20706.0,10,11,9,RES,Malabar Hill,Mumbai,656730000.0
+19295.0,0,6,1,COM,Hitec City Financial District,Hyderabad,385190000.0
+21438.0,11,11,11,RES,Pillar Rocks Road,Kodaikanal Enclave,261130000.0
+13888.0,7,8,6,ENT,Fateh Sagar Hills,Udaipur,286030000.0
+2883.0,1,2,7,RES,Sector 9,Chandigarh,45940000.0
+6474.0,3,3,5,RES,"DLF Phase V, Golf Course Road",Gurgaon,150270000.0
+20004.0,10,11,2,RES,Candolim Beach,Goa,434520000.0
+4730.0,2,3,7,RES,Whitefield Prestige Boulevard,Bangalore,95280000.0
+19591.0,10,11,4,RES,Lake View Ridge,Kodaikanal Enclave,250720000.0
+3880.0,2,2,4,RES,Indiranagar,Bangalore,77600000.0
+20666.0,10,10,8,RES,Cyber City Phase II,Gurgaon,470540000.0
+8020.0,4,4,8,RES,Fateh Sagar Hills,Udaipur,143250000.0
+13521.0,7,8,4,RES,"Awas Beach, Alibaug",Mumbai Enclave,400460000.0
+10541.0,5,6,0,ENT,C-Scheme,Jaipur,175650000.0
+16378.0,8,8,9,RES,Worli Sea Face,Mumbai,517630000.0
+10825.0,0,4,0,LAND,Bandra West,Mumbai,347260000.0
+20408.0,10,11,3,RES,Cyber City Phase II,Gurgaon,476320000.0
+12212.0,0,4,6,LAND,Model Town,Patiala,80870000.0
+6432.0,3,4,9,RES,Sector 8,Chandigarh,100590000.0
+20502.0,10,11,1,RES,Malabar Hill,Mumbai,671660000.0
+12314.0,6,7,6,RES,"Banjara Hills, Road No. 12",Hyderabad,223580000.0
+19498.0,0,6,6,COM,Assagao Highlands,Goa,458260000.0
+11872.0,6,7,9,RES,Candolim Beach,Goa,249960000.0
+11199.0,6,6,9,RES,Anjuna Coast,Goa,229920000.0
+17629.0,9,9,12,RES,Golf Links,New Delhi,524860000.0
+3749.0,2,2,5,RES,"Banjara Hills, Road No. 12",Hyderabad,68590000.0
+3270.0,2,3,13,ENT,Zirad,Mumbai Enclave,102530000.0
+19977.0,10,11,6,RES,Fateh Sagar Hills,Udaipur,376320000.0
+13019.0,7,7,4,RES,Golf Links,New Delhi,402610000.0
+17112.0,9,9,0,RES,C-Scheme,Jaipur,254380000.0
+19518.0,10,10,10,RES,Worli Sea Face,Mumbai,610240000.0
+2261.0,1,2,12,ENT,"DLF Phase V, Golf Course Road",Gurgaon,55980000.0
+2219.0,0,1,9,LAND,Assagao Highlands,Goa,41960000.0
+19997.0,10,10,11,RES,Pillar Rocks Road,Kodaikanal Enclave,253060000.0
+9422.0,5,5,10,RES,Jubilee Hills,Hyderabad,164750000.0
+14204.0,7,7,4,RES,Pillar Rocks Road,Kodaikanal Enclave,177050000.0
+17767.0,9,10,7,RES,Pillar Rocks Road,Kodaikanal Enclave,221700000.0
+10362.0,5,5,13,ENT,Indiranagar,Bangalore,222510000.0
+8471.0,4,5,1,RES,Cyber City Phase II,Gurgaon,199360000.0
+15849.0,0,5,3,COM,Sector 9,Chandigarh,287970000.0
+5777.0,3,3,8,RES,Fateh Sagar Hills,Udaipur,105530000.0
+9068.0,5,5,8,RES,Baradari,Patiala,70240000.0
+17045.0,9,9,12,RES,Lake View Ridge,Kodaikanal Enclave,210040000.0
+14027.0,7,8,14,RES,Model Town,Patiala,104480000.0
+11679.0,0,4,9,COM,Fateh Sagar Hills,Udaipur,233320000.0
+21161.0,0,7,1,COM,Fateh Sagar Hills,Udaipur,449570000.0
+20337.0,0,7,13,COM,Model Town,Patiala,157070000.0
+12638.0,0,4,7,COM,Civil Lines Historic Enclave,Jaipur,203440000.0
+3747.0,2,3,7,RES,Candolim Beach,Goa,80030000.0
+9256.0,5,6,14,RES,Lake Pichola Enclave,Udaipur,162990000.0
+1838.0,1,1,2,RES,Jubilee Hills,Hyderabad,34970000.0
+16105.0,8,9,12,RES,Sohna Road,Gurgaon,356920000.0
+19720.0,10,11,13,RES,Mandwa Jetty,Mumbai Enclave,538320000.0
+10146.0,5,5,14,RES,"Awas Beach, Alibaug",Mumbai Enclave,286250000.0
+18965.0,9,10,8,ENT,Urban Estate,Patiala,155820000.0
+2310.0,1,2,14,RES,Mandwa Jetty,Mumbai Enclave,64850000.0
+14265.0,7,8,10,RES,"Banjara Hills, Road No. 12",Hyderabad,250830000.0
+7512.0,4,5,4,RES,Malabar Hill,Mumbai,247320000.0
+11399.0,6,6,4,ENT,Pillar Rocks Road,Kodaikanal Enclave,160270000.0
+19725.0,10,10,4,RES,Urban Estate,Patiala,157330000.0
+18312.0,9,10,11,RES,"DLF Phase V, Golf Course Road",Gurgaon,420580000.0
+14341.0,0,5,6,COM,Colaba,Mumbai,522410000.0
+21841.0,0,7,5,COM,Koramangala,Bangalore,504340000.0
+10632.0,5,6,0,RES,Fateh Sagar Hills,Udaipur,204630000.0
+3279.0,2,2,14,RES,Cyber City Phase II,Gurgaon,73880000.0
+6921.0,3,3,0,RES,Jor Bagh,New Delhi,219840000.0
+20678.0,10,11,2,RES,Anjuna Coast,Goa,440980000.0
+8816.0,4,5,5,RES,Civil Lines Historic Enclave,Jaipur,126240000.0
+19750.0,10,11,10,RES,"DLF Phase V, Golf Course Road",Gurgaon,458510000.0
+7330.0,4,5,7,RES,Sarjapur Gated Sanctuary,Bangalore,149190000.0
+10743.0,5,5,10,ENT,Mansarovar,Jaipur,167390000.0
+20250.0,10,11,2,RES,Lake View Ridge,Kodaikanal Enclave,269110000.0
+21285.0,11,12,6,RES,Prithviraj Road,New Delhi,643470000.0
+3001.0,2,2,3,ENT,"DLF Phase V, Golf Course Road",Gurgaon,78660000.0
+7169.0,4,4,12,RES,Lake View Ridge,Kodaikanal Enclave,87540000.0
+7207.0,0,2,5,COM,Hitec City Financial District,Hyderabad,141730000.0
+17136.0,9,9,14,ENT,"DLF Phase V, Golf Course Road",Gurgaon,419990000.0
+5664.0,3,4,1,RES,Jor Bagh,New Delhi,179990000.0
+12480.0,6,6,3,ENT,Sector 9,Chandigarh,223290000.0
+19745.0,10,10,3,RES,Jor Bagh,New Delhi,619320000.0
+21378.0,11,11,1,RES,Sarjapur Gated Sanctuary,Bangalore,462890000.0
+14021.0,7,7,5,RES,Candolim Beach,Goa,298540000.0
+20466.0,10,11,4,RES,Lake View Ridge,Kodaikanal Enclave,260920000.0
+16626.0,8,9,6,RES,"DLF Phase V, Golf Course Road",Gurgaon,376630000.0
+13689.0,7,7,5,RES,"Awas Beach, Alibaug",Mumbai Enclave,409230000.0
+9318.0,5,5,9,RES,Model Town,Patiala,74300000.0
+21812.0,0,7,6,COM,Lake View Ridge,Kodaikanal Enclave,291680000.0
+2290.0,1,1,11,RES,Civil Lines Historic Enclave,Jaipur,31250000.0
+13268.0,7,8,0,RES,Sector 9,Chandigarh,222910000.0
+18215.0,9,9,13,RES,Civil Lines Historic Enclave,Jaipur,258940000.0
+17046.0,0,6,8,LAND,Lake Pichola Enclave,Udaipur,277780000.0
+18563.0,0,6,6,COM,Lake View Ridge,Kodaikanal Enclave,255630000.0
+11241.0,6,7,7,RES,Lake View Ridge,Kodaikanal Enclave,140360000.0
+17456.0,0,6,11,COM,Mandwa Jetty,Mumbai Enclave,536870000.0
+3564.0,0,1,11,COM,Civil Lines Historic Enclave,Jaipur,53770000.0
+15030.0,8,9,13,RES,Vasant Vihar,New Delhi,450000000.0
+6727.0,0,2,14,COM,Chhatarpur Farms,New Delhi,220310000.0
+5829.0,3,3,12,RES,Lake View Ridge,Kodaikanal Enclave,71260000.0
+5671.0,0,2,3,COM,Worli Sea Face,Mumbai,206380000.0
+19087.0,10,10,11,RES,Pillar Rocks Road,Kodaikanal Enclave,230330000.0
+16901.0,8,8,5,RES,Assagao Highlands,Goa,362620000.0
+6349.0,0,2,2,IND,"DLF Phase V, Golf Course Road",Gurgaon,127440000.0
+7930.0,4,4,12,RES,Hitec City Financial District,Hyderabad,136170000.0
+12007.0,6,6,9,RES,Malabar Hill,Mumbai,377450000.0
+9714.0,0,3,10,LAND,Mansarovar,Jaipur,121300000.0
+11743.0,6,7,9,RES,Jubilee Hills,Hyderabad,208040000.0
+21217.0,11,11,12,RES,Worli Sea Face,Mumbai,646510000.0
+15606.0,8,9,2,RES,Hitec City Financial District,Hyderabad,287910000.0
+8654.0,4,4,3,RES,Baradari,Patiala,68820000.0
+3558.0,2,3,1,RES,Worli Sea Face,Mumbai,117780000.0
+17456.0,9,9,4,RES,C-Scheme,Jaipur,258630000.0
+11884.0,6,6,4,RES,"DLF Phase V, Golf Course Road",Gurgaon,281880000.0
+15155.0,8,9,14,RES,Bandra West,Mumbai,469010000.0
+19515.0,10,11,3,RES,Model Town,Patiala,158330000.0
+9500.0,5,5,4,RES,Juhu Tara Road,Mumbai,310940000.0
+10054.0,0,3,9,COM,Lake View Ridge,Kodaikanal Enclave,132460000.0
+9035.0,0,3,8,COM,Assagao Highlands,Goa,208330000.0
+14530.0,0,5,9,IND,"Awas Beach, Alibaug",Mumbai Enclave,365690000.0
+13100.0,7,7,4,RES,"Banjara Hills, Road No. 12",Hyderabad,236540000.0
+15554.0,8,9,11,RES,Sohna Road,Gurgaon,351490000.0
+12040.0,6,7,1,RES,Indiranagar,Bangalore,252710000.0
+16512.0,0,6,7,COM,C-Scheme,Jaipur,257150000.0
+10192.0,5,6,5,RES,Jor Bagh,New Delhi,312920000.0
+9273.0,5,6,2,RES,"Banjara Hills, Road No. 12",Hyderabad,173970000.0
+3169.0,2,3,0,RES,"Banjara Hills, Road No. 12",Hyderabad,61050000.0
+12873.0,0,4,4,LAND,Juhu Tara Road,Mumbai,387400000.0
+15219.0,8,8,2,RES,Juhu Tara Road,Mumbai,491690000.0
+3786.0,2,3,14,RES,Sarjapur Gated Sanctuary,Bangalore,74090000.0
+4443.0,0,1,0,LAND,Golf Links,New Delhi,128510000.0
+11085.0,0,4,10,IND,Indiranagar,Bangalore,186140000.0
+13352.0,7,8,1,RES,Sohna Road,Gurgaon,325400000.0
+6722.0,3,4,9,RES,Sector 9,Chandigarh,105510000.0
+20970.0,0,7,9,IND,Fateh Sagar Hills,Udaipur,322200000.0
+12687.0,6,6,6,RES,Bandra West,Mumbai,402720000.0
+15949.0,8,8,5,RES,Zirad,Mumbai Enclave,463280000.0
+12313.0,6,7,10,ENT,Zirad,Mumbai Enclave,381390000.0
+11227.0,6,6,5,ENT,Pillar Rocks Road,Kodaikanal Enclave,156450000.0
+20375.0,10,11,5,RES,Chhatarpur Farms,New Delhi,627700000.0
+5965.0,3,3,5,ENT,C-Scheme,Jaipur,95450000.0
+6604.0,3,4,11,RES,Juhu Tara Road,Mumbai,204260000.0
+20153.0,10,11,8,RES,Pillar Rocks Road,Kodaikanal Enclave,252590000.0
+2924.0,1,1,6,RES,Lake Pichola Enclave,Udaipur,52860000.0
+11702.0,6,6,1,RES,Whitefield Prestige Boulevard,Bangalore,248020000.0
+18543.0,9,9,3,RES,Pillar Rocks Road,Kodaikanal Enclave,231620000.0
+3368.0,2,3,4,ENT,Sector 10,Chandigarh,61510000.0
+16892.0,0,6,10,LAND,Koramangala,Bangalore,313430000.0
+4219.0,0,1,14,LAND,Bandra West,Mumbai,121130000.0
+12335.0,6,6,1,RES,Juhu Tara Road,Mumbai,402570000.0
+8569.0,4,4,7,RES,Fateh Sagar Hills,Udaipur,155620000.0
+14396.0,7,8,8,RES,Jor Bagh,New Delhi,430920000.0
+5538.0,3,4,3,RES,Zirad,Mumbai Enclave,163140000.0

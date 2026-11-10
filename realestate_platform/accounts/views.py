@@ -2,9 +2,11 @@ from functools import wraps
 from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Sum, Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 
 from properties.models import Property
@@ -13,6 +15,27 @@ from chat.models import Conversation, Appointment
 from .models import UserProfile
 
 User = get_user_model()
+
+
+class RoleBasedLoginView(auth_views.LoginView):
+    """
+    Intelligent role-directed authentication gateway:
+    - Platform Administrators land on Sovereign Command Center (/accounts/command-center/)
+    - Estate Proprietors land on Portfolio Listings (/properties/my-listings/)
+    - Accredited Buyers land on Luxury Residences Discovery (/properties/)
+    """
+    template_name = "accounts/login.html"
+
+    def get_success_url(self):
+        explicit_next = self.get_redirect_url()
+        if explicit_next:
+            return explicit_next
+        user = self.request.user
+        if user.is_staff or user.is_superuser or (hasattr(user, "profile") and user.profile.role == UserProfile.Role.ADMIN):
+            return reverse("platform_admin")
+        elif hasattr(user, "profile") and user.profile.role == UserProfile.Role.SELLER:
+            return reverse("my_listings")
+        return reverse("property_list")
 
 
 def platform_admin_required(view_func):

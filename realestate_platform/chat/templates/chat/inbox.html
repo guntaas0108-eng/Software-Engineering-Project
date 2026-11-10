@@ -37,7 +37,7 @@
                   {{ conversation.property.title }}
                 </h2>
                 <span class="badge badge-{{ conversation.property.barometer_key }}" style="font-size:0.65rem;">
-                  {{ conversation.property.barometer_label }}
+                  {{ conversation.property.barometer_display }}
                 </span>
                 {% if request.user.pk == conversation.buyer_id %}
                   <span class="badge" style="background:rgba(212,175,55,0.18); color:var(--gold); font-size:0.65rem; border:1px solid rgba(212,175,55,0.3);">

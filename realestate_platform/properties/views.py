@@ -2,7 +2,7 @@ from decimal import Decimal, InvalidOperation
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, Case, When
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -32,7 +32,12 @@ def home(request):
     of the newest active listings. No new write paths, no changed URLs for
     any existing view.
     """
-    featured = Property.objects.filter(status=Property.Status.ACTIVE).prefetch_related("images")[:6]
+    featured = Property.objects.filter(
+        Q(status=Property.Status.ACTIVE) | Q(status=Property.Status.SOLD)
+    ).prefetch_related("images").order_by(
+        Case(When(status=Property.Status.ACTIVE, then=0), default=1),
+        "-created_at"
+    )[:9]
     saved_ids = set()
     if request.user.is_authenticated:
         saved_ids = set(
@@ -45,16 +50,20 @@ def home(request):
 
 @login_required
 def submit_property(request):
+    """
+    Estate listing view. Strictly restricted to registered Sellers and Staff.
+    Buyers cannot list estates (standard real-estate platform role segregation).
+    """
     is_seller = (
         hasattr(request.user, "profile")
         and request.user.profile.role == UserProfile.Role.SELLER
     )
-    if not is_seller:
+    if not is_seller and not request.user.is_staff:
         messages.error(
             request,
-            "Access Restricted: Listing an estate is reserved exclusively for registered Estate Proprietors / Sellers."
+            "Access Restricted: Estate listing is reserved exclusively for registered Sellers. You are currently signed in as an Accredited Buyer."
         )
-        return redirect("property_list")
+        return redirect("buyer_dashboard")
 
     if request.method == "POST":
         form = PropertyForm(request.POST)
@@ -100,12 +109,15 @@ def submit_property(request):
 
 def property_list(request):
     """
-    Sprint 3 (Person 3): buyer-facing discovery — search + filter by
-    locality/title, category, and price range (proposal: "Property search
-    and filtering"). Filters are read from GET so the URL stays
-    bookmarkable/shareable.
+    Buyer-facing discovery: search + filter by locality/title, category, and price.
+    Displays active estates followed by archived sold estates (in grayscale).
     """
-    properties = Property.objects.filter(status=Property.Status.ACTIVE).prefetch_related("images")
+    properties = Property.objects.filter(
+        Q(status=Property.Status.ACTIVE) | Q(status=Property.Status.SOLD)
+    ).prefetch_related("images").order_by(
+        Case(When(status=Property.Status.ACTIVE, then=0), default=1),
+        "-created_at"
+    )
 
     query = request.GET.get("q", "").strip()
     category = request.GET.get("category", "").strip()
@@ -147,7 +159,45 @@ def property_detail(request, pk):
     is_saved = False
     if request.user.is_authenticated:
         is_saved = SavedProperty.objects.filter(buyer=request.user, property=property_obj).exists()
-    return render(request, "properties/detail.html", {"property": property_obj, "is_saved": is_saved})
+
+    # Determine buyer vs proprietor / seller side
+    is_proprietor = (
+        request.user.is_authenticated
+        and request.user.pk == property_obj.seller_id
+    )
+    user_is_seller_role = (
+        request.user.is_authenticated
+        and hasattr(request.user, "profile")
+        and request.user.profile.role == UserProfile.Role.SELLER
+    )
+    # The ML purchase timing advice is exclusively buyer intelligence
+    # It must NOT be visible to the seller of this estate or general seller-mode view
+    show_ml_buyer_intel = not is_proprietor and (
+        not request.user.is_authenticated
+        or not user_is_seller_role
+        or request.user.is_staff
+    )
+
+    ml_analysis = None
+    if show_ml_buyer_intel:
+        try:
+            ml_analysis = predictor.analyze_timing(property_obj)
+            if not property_obj.predicted_price and ml_analysis.get("predicted_price"):
+                property_obj.predicted_price = Decimal(str(ml_analysis["predicted_price"]))
+                Property.objects.filter(pk=property_obj.pk).update(predicted_price=property_obj.predicted_price)
+        except Exception as exc:
+            import logging
+            logging.getLogger(__name__).warning("ML timing analysis error for property %s: %s", pk, exc)
+
+    context = {
+        "property": property_obj,
+        "is_saved": is_saved,
+        "ml_analysis": ml_analysis,
+        "is_proprietor": is_proprietor,
+        "show_ml_buyer_intel": show_ml_buyer_intel,
+        "user_is_seller_role": user_is_seller_role,
+    }
+    return render(request, "properties/detail.html", context)
 
 
 @login_required
@@ -157,12 +207,12 @@ def my_listings(request):
         hasattr(request.user, "profile")
         and request.user.profile.role == UserProfile.Role.SELLER
     )
-    if not is_seller:
+    if not is_seller and not request.user.is_staff:
         messages.error(
             request,
-            "Access Restricted: Proprietor Listings dashboard is reserved exclusively for Sellers."
+            "Access Restricted: Proprietor Listings dashboard is reserved exclusively for registered Sellers. You are currently in an Accredited Buyer account."
         )
-        return redirect("property_list")
+        return redirect("buyer_dashboard")
     properties = Property.objects.filter(seller=request.user)
     return render(request, "properties/my_listings.html", {"properties": properties})
 
@@ -212,6 +262,28 @@ def delete_property(request, pk):
         messages.success(request, "Listing deleted.")
         return redirect("my_listings")
     return render(request, "properties/delete_confirm.html", {"property": property_obj})
+
+
+@login_required
+def mark_property_sold(request, pk):
+    """Allows the proprietor (or staff admin) to toggle the SOLD status of an estate."""
+    property_obj = get_object_or_404(Property, pk=pk)
+    if property_obj.seller_id != request.user.pk and not request.user.is_staff:
+        messages.error(request, "Access Denied: Only the registered proprietor or administrator can modify estate listing status.")
+        return redirect("property_detail", pk=pk)
+
+    if property_obj.status == Property.Status.SOLD:
+        property_obj.status = Property.Status.ACTIVE
+        messages.success(request, f"Estate '{property_obj.title}' is now re-activated as Active.")
+    else:
+        property_obj.status = Property.Status.SOLD
+        messages.success(request, f"Estate '{property_obj.title}' has been successfully marked as SOLD OUT.")
+
+    property_obj.save(update_fields=["status"])
+    referer = request.META.get("HTTP_REFERER") or ""
+    if "my-listings" in referer or "my_listings" in referer:
+        return redirect("my_listings")
+    return redirect("property_detail", pk=pk)
 
 
 @login_required
@@ -282,12 +354,12 @@ def seller_analytics(request):
         hasattr(request.user, "profile")
         and request.user.profile.role == UserProfile.Role.SELLER
     )
-    if not is_seller:
+    if not is_seller and not request.user.is_staff:
         messages.error(
             request,
-            "Access Restricted: Proprietor Analytics is reserved exclusively for Sellers."
+            "Access Restricted: Proprietor Analytics is reserved exclusively for registered Sellers. You are currently in an Accredited Buyer account."
         )
-        return redirect("property_list")
+        return redirect("buyer_dashboard")
     my_props = Property.objects.filter(seller=request.user).prefetch_related("images", "conversations", "saved_by")
     total_valuation = sum(p.listed_price for p in my_props)
     total_inquiries = sum(p.conversations.count() for p in my_props)

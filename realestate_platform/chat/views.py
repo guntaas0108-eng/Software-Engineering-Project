@@ -107,8 +107,7 @@ def messages_since(request, pk):
 def request_appointment(request, conversation_id):
     conversation = _participant_conversation(request.user, conversation_id)
     if request.user.pk != conversation.buyer_id:
-        messages.error(request, "Only the buyer can request an appointment.")
-        return redirect("chat_thread", pk=conversation.pk)
+        raise Http404
     if request.method != "POST":
         return redirect("chat_thread", pk=conversation.pk)
     form = AppointmentForm(request.POST)
@@ -141,16 +140,14 @@ def update_appointment(request, pk, action):
     previous_status = appointment.status
     if action == "confirm":
         if request.user.pk != conversation.seller_id:
-            messages.error(request, "Only the seller can confirm appointments.")
-            return redirect("chat_thread", pk=conversation.pk)
+            raise Http404
         if previous_status != Appointment.Status.REQUESTED:
             messages.error(request, "Only requested appointments can be confirmed.")
             return redirect("chat_thread", pk=conversation.pk)
         new_status = Appointment.Status.CONFIRMED
     elif action == "decline":
         if request.user.pk != conversation.seller_id:
-            messages.error(request, "Only the seller can decline appointments.")
-            return redirect("chat_thread", pk=conversation.pk)
+            raise Http404
         new_status = Appointment.Status.DECLINED
     elif action == "cancel":
         new_status = Appointment.Status.CANCELLED

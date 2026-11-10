@@ -1,4 +1,7 @@
+import hashlib
+import hmac
 import json
+import logging
 import uuid
 from decimal import Decimal
 from django.conf import settings
@@ -17,14 +20,40 @@ from properties.models import Property
 from .models import Payment
 from .services import razorpay_client
 
+logger = logging.getLogger("security.audit")
+
 
 @login_required
 def checkout_property(request, property_id):
     """Checkout page for placing a Token Escrow Deposit to reserve an estate."""
     estate = get_object_or_404(Property.objects.select_related("seller"), pk=property_id)
-    if estate.seller_id == request.user.pk:
-        messages.error(request, "You cannot place an escrow deposit on your own listing.")
+    
+    # Security Rule 1: Estate already sold check
+    if estate.status == Property.Status.SOLD:
+        messages.warning(
+            request,
+            f"This estate ('{estate.title}') has already been acquired and is no longer available for reservation."
+        )
         return redirect("property_detail", pk=estate.pk)
+
+    # Security Rule 2: Prevent self-dealing (seller acquiring own listing)
+    if estate.seller_id == request.user.pk:
+        messages.error(request, "Security Policy: You cannot place an escrow deposit on your own listing.")
+        return redirect("property_detail", pk=estate.pk)
+
+    # Security Rule 3: Administrative accounts cannot purchase properties (auditor isolation)
+    is_admin = bool(
+        request.user.is_staff
+        or request.user.is_superuser
+        or (hasattr(request.user, "profile") and request.user.profile.role == "ADMIN")
+    )
+    if is_admin:
+        messages.error(request, "Governance Policy: Administrative auditor accounts are restricted from placing escrow deposits or acquiring estates.")
+        return redirect("property_detail", pk=estate.pk)
+
+    # Generate transaction idempotency token
+    idempotency_key = f"IDEM_{uuid.uuid4().hex[:16]}"
+    request.session["order_idempotency_token"] = idempotency_key
 
     # Default token deposit: 0.1% of listed price capped at ₹1,00,000, minimum ₹25,000
     suggested_deposit = min(Decimal(100000), max(Decimal(25000), round(estate.listed_price * Decimal("0.001"))))
@@ -35,6 +64,7 @@ def checkout_property(request, property_id):
         "default_amount": suggested_deposit,
         "base_amount": round(suggested_deposit / Decimal("1.18"), 2),
         "gst_amount": round(suggested_deposit - (suggested_deposit / Decimal("1.18")), 2),
+        "idempotency_key": idempotency_key,
     }
     return render(request, "payments/checkout.html", context)
 
@@ -49,6 +79,9 @@ def checkout_appointment(request, appointment_id):
     if appointment.conversation.buyer_id != request.user.pk:
         raise Http404
 
+    idempotency_key = f"IDEM_{uuid.uuid4().hex[:16]}"
+    request.session["order_idempotency_token"] = idempotency_key
+
     fee = Decimal("500.00")
     context = {
         "appointment": appointment,
@@ -57,6 +90,7 @@ def checkout_appointment(request, appointment_id):
         "default_amount": fee,
         "base_amount": round(fee / Decimal("1.18"), 2),
         "gst_amount": round(fee - (fee / Decimal("1.18")), 2),
+        "idempotency_key": idempotency_key,
     }
     return render(request, "payments/checkout.html", context)
 
@@ -65,8 +99,12 @@ def checkout_appointment(request, appointment_id):
 @transaction.atomic
 def process_payment(request):
     """
-    Processes payment via selected professional method (Card, UPI, NetBanking, Wire, Sandbox).
-    Secures funds into PropertyPulse Escrow and issues official invoice.
+    Processes payment via selected method with rigorous order-app security:
+    - Double-purchase / sold listing prevention
+    - Self-dealing prevention
+    - Idempotency / replay attack defense
+    - Cryptographic HMAC-SHA256 digital signature
+    - Automatic estate status update to SOLD
     """
     if request.method != "POST":
         return redirect("home")
@@ -77,6 +115,7 @@ def process_payment(request):
     payment_method = request.POST.get("payment_method", Payment.Method.CARD)
     amount_str = request.POST.get("amount", "50000")
     agree_terms = request.POST.get("agree_terms")
+    idem_token = request.POST.get("idempotency_key", "").strip()
 
     if not agree_terms:
         messages.error(request, "You must accept the Escrow Terms & Conditions to proceed.")
@@ -85,6 +124,14 @@ def process_payment(request):
         elif appointment_id:
             return redirect("payment_checkout_appointment", appointment_id=appointment_id)
         return redirect("home")
+
+    # Order Idempotency Defense: Check if token already processed in session
+    processed_tokens = request.session.get("processed_order_tokens", [])
+    if idem_token and idem_token in processed_tokens:
+        existing = Payment.objects.filter(notes__contains=idem_token).first()
+        if existing:
+            messages.info(request, "Transaction already securely processed. Showing your verified receipt.")
+            return redirect("payment_receipt", public_id=existing.public_id)
 
     try:
         amount_rupees = Decimal(amount_str)
@@ -97,7 +144,30 @@ def process_payment(request):
 
     estate = None
     if property_id:
-        estate = get_object_or_404(Property, pk=property_id)
+        estate = get_object_or_404(Property.objects.select_for_update(), pk=property_id)
+
+        # Security Check: Sold Property Protection
+        if estate.status == Property.Status.SOLD:
+            messages.error(
+                request,
+                f"Security Notice: Transaction rejected. '{estate.title}' has already been sold and secured in escrow."
+            )
+            return redirect("property_detail", pk=estate.pk)
+
+        # Security Check: Self-dealing protection
+        if estate.seller_id == request.user.pk:
+            messages.error(request, "Security Policy: You cannot place an escrow deposit on your own listing.")
+            return redirect("property_detail", pk=estate.pk)
+
+        # Security Check: Admin cannot purchase
+        is_admin = bool(
+            request.user.is_staff
+            or request.user.is_superuser
+            or (hasattr(request.user, "profile") and request.user.profile.role == "ADMIN")
+        )
+        if is_admin:
+            messages.error(request, "Governance Policy: Administrative auditor accounts are restricted from acquiring estates.")
+            return redirect("property_detail", pk=estate.pk)
 
     appointment = None
     if appointment_id:
@@ -105,11 +175,21 @@ def process_payment(request):
         if not estate:
             estate = appointment.conversation.property
 
-    # Generate transaction reference
-    txn_ref = f"TXN-{uuid.uuid4().hex[:10].upper()}"
-    notes = f"Processed via {payment_method}. Authorized escrow lock."
+    # Cryptographic HMAC-SHA256 signature for tamper verification
+    payment_public_id = uuid.uuid4()
+    now_ts = timezone.now()
+    sig_payload = f"{payment_public_id}:{amount_paise}:{request.user.pk}:{now_ts.isoformat()}"
+    secret_key = getattr(settings, "SECRET_KEY", "propertypulse-sec")
+    sec_sig = hmac.new(secret_key.encode(), sig_payload.encode(), hashlib.sha256).hexdigest()[:16].upper()
+
+    txn_ref = f"TXN-{uuid.uuid4().hex[:8].upper()}-{sec_sig[:6]}"
+    notes = (
+        f"Processed via {payment_method}. Authorized escrow lock. "
+        f"HMAC-SHA256:{sec_sig}. IdemToken:{idem_token or 'N/A'}"
+    )
 
     payment = Payment.objects.create(
+        public_id=payment_public_id,
         estate=estate,
         appointment=appointment,
         buyer=request.user,
@@ -120,9 +200,23 @@ def process_payment(request):
         transaction_reference=txn_ref,
         provider_payment_id=f"PAY_{uuid.uuid4().hex[:12].upper()}",
         provider_order_id=f"ORD_{uuid.uuid4().hex[:10].upper()}",
-        paid_at=timezone.now(),
+        paid_at=now_ts,
         notes=notes,
     )
+
+    # Register processed idempotency token
+    if idem_token:
+        processed_tokens.append(idem_token)
+        request.session["processed_order_tokens"] = processed_tokens[-25:]
+
+    # AUTOMATICALLY UPDATE ESTATE STATUS TO SOLD UPON SUCCESSFUL TRANSACTION
+    if estate and payment_type == Payment.PaymentType.ESCROW_DEPOSIT:
+        estate.status = Property.Status.SOLD
+        estate.save(update_fields=["status"])
+        logger.info(
+            "SECURITY AUDIT: Estate %s (ID %s) marked SOLD to buyer %s via payment %s",
+            estate.title, estate.pk, request.user.username, payment.public_id
+        )
 
     messages.success(
         request,
@@ -244,8 +338,9 @@ def verify_payment(request):
 
 
 @login_required
-@staff_member_required
 def admin_dashboard(request):
+    if not request.user.is_staff:
+        raise Http404
     payments = Payment.objects.select_related("buyer", "appointment", "estate")
     context = {
         "total_payments": payments.count(),

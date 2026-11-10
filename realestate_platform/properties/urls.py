@@ -12,5 +12,6 @@ urlpatterns = [
     path("<int:pk>/", views.property_detail, name="property_detail"),
     path("<int:pk>/edit/", views.edit_property, name="edit_property"),
     path("<int:pk>/delete/", views.delete_property, name="delete_property"),
+    path("<int:pk>/toggle-sold/", views.mark_property_sold, name="toggle_property_sold"),
     path("<int:pk>/save/", views.toggle_save_property, name="toggle_save_property"),
 ]

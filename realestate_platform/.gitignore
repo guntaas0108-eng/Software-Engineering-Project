@@ -5,7 +5,8 @@ db.sqlite3
 venv/
 env/
 *.egg-info/
-media/
+media/*
+!media/property_images/
 staticfiles/
 .DS_Store
 node_modules/

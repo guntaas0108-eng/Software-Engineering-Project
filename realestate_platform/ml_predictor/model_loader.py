@@ -1,30 +1,24 @@
 """
-This is where the Django app plugs into the model Person 1 trains and
-pushes to Hugging Face (see ml_predictor/train/train_model.py and
-push_to_hf.py).
-
-How it works:
-1. Person 1 trains a model and runs push_to_hf.py, which uploads a single
-   file — model.joblib — to a Hugging Face Hub *model* repo, e.g.
-   "yourusername/realestate-price-predictor".
-2. That repo ID goes into .env as HF_MODEL_REPO_ID (see .env.example).
-3. The first time a prediction is requested, load_model() below downloads
-   model.joblib via huggingface_hub, caches it on disk (huggingface_hub's
-   own cache — usually ~/.cache/huggingface), and keeps the deserialized
-   object in memory (via lru_cache) for the lifetime of the process.
-   Every prediction after that is a local, no-network call.
-4. If the repo is private, set HF_TOKEN in .env too.
-
-Nothing else in the codebase needs to change when Person 1 pushes an
-improved model — just re-run push_to_hf.py and restart the server (or
-call load_model.cache_clear() to pick up the new version without a
-restart).
+Model loader for PropertyPulse ML Price Predictor.
+Plugs into Hugging Face Hub (Haneesh112/propertypulse-price-predictor)
+with seamless local caching and resilient fallback.
 """
 from functools import lru_cache
+import logging
+import os
+from pathlib import Path
 
 import joblib
 from django.conf import settings
 from huggingface_hub import hf_hub_download
+from huggingface_hub.errors import HfHubHTTPError, GatedRepoError
+
+logger = logging.getLogger(__name__)
+
+
+def _get_local_model_path() -> Path:
+    base_dir = getattr(settings, "BASE_DIR", Path(__file__).resolve().parent.parent)
+    return Path(base_dir) / "ml_predictor" / "model.joblib"
 
 
 @lru_cache(maxsize=1)
@@ -32,20 +26,44 @@ def load_model():
     """
     Downloads (once) and returns the trained model bundle:
         {"model": <sklearn LinearRegression>, "encoders": {...}, "feature_order": [...]}
+    First attempts Hugging Face Hub download. If unauthorized (gated repo) or offline,
+    resiliently falls back to local cached model.joblib.
     """
-    repo_id = settings.HF_MODEL_REPO_ID
-    filename = settings.HF_MODEL_FILENAME
-    token = settings.HF_TOKEN or None
+    repo_id = getattr(settings, "HF_MODEL_REPO_ID", "")
+    filename = getattr(settings, "HF_MODEL_FILENAME", "model.joblib")
+    token = getattr(settings, "HF_TOKEN", "") or None
+    local_fallback = _get_local_model_path()
 
-    if not repo_id:
-        raise RuntimeError(
-            "HF_MODEL_REPO_ID is not set. Once Person 1 has trained a model "
-            "and pushed it with ml_predictor/train/push_to_hf.py, add the "
-            "repo id (e.g. 'yourusername/realestate-price-predictor') to .env."
-        )
+    # 1. Try Hugging Face Hub if repo_id is configured
+    if repo_id:
+        try:
+            logger.info("Attempting to load model '%s' from Hugging Face Hub repo '%s'...", filename, repo_id)
+            hf_path = hf_hub_download(repo_id=repo_id, filename=filename, token=token)
+            logger.info("Successfully fetched model from Hugging Face Hub: %s", hf_path)
+            return joblib.load(hf_path)
+        except (GatedRepoError, HfHubHTTPError, Exception) as err:
+            logger.warning(
+                "Could not pull '%s' from Hugging Face Hub repo '%s' (%s). "
+                "Checking for local fallback model at %s...",
+                filename, repo_id, err, local_fallback
+            )
 
-    local_path = hf_hub_download(repo_id=repo_id, filename=filename, token=token)
-    return joblib.load(local_path)
+    # 2. Local fallback model
+    if local_fallback.exists():
+        logger.info("Loading local model from %s", local_fallback)
+        return joblib.load(local_fallback)
+
+    # 3. If neither HF nor local file exists, generate and train on the fly
+    logger.info("Local model not found. Generating and training baseline model bundle...")
+    from .train.generate_dataset_and_train import generate_data, train_and_save
+    df = generate_data()
+    train_and_save(df)
+    if local_fallback.exists():
+        return joblib.load(local_fallback)
+
+    raise RuntimeError(
+        f"Unable to load model from Hugging Face Hub ('{repo_id}') or local path ('{local_fallback}')."
+    )
 
 
 def reload_model():

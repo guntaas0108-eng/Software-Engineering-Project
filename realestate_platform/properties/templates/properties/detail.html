@@ -3,25 +3,56 @@
 {% block content %}
 <div class="container pp-section-tight">
 
+    {% if property.status == 'SOLD' %}
+    <!-- Prominent SOLD OUT Banner -->
+    <div class="alert mb-4 p-3 text-center" style="background:#1F2937; border:2px solid #DC2626; border-radius:6px; box-shadow:0 8px 24px rgba(0,0,0,0.45);">
+        <div class="d-flex align-items-center justify-content-center gap-2">
+            <span style="font-size:1.4rem;">&#128391;</span>
+            <span style="font-size:1.25rem; font-weight:800; letter-spacing:0.15em; text-transform:uppercase; color:#EF4444;">
+                ESTATE SOLD OUT / ACQUIRED
+            </span>
+        </div>
+        <div class="small mt-1" style="color:#D1D5DB; font-size:0.85rem;">
+            This luxury estate has completed escrow settlement and legal transfer. Acquisition deposit and reservation channels are closed.
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Top Breadcrumb & Action bar -->
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
         <a href="{% url 'property_list' %}" class="btn btn-outline-secondary btn-sm">
             &larr; Back to Residences
         </a>
         <div class="d-flex gap-2">
+            {% if is_platform_admin %}
+            <a href="{% url 'platform_admin' %}" class="btn btn-outline-warning line btn-sm d-inline-flex align-items-center gap-1">
+                <span>&#128737;</span>
+                <span>Command Center</span>
+            </a>
+            <a href="{% url 'admin_run_diagnostics' %}" class="btn btn-outline-secondary btn-sm">
+                &#128302; Run Audit Scan
+            </a>
+            {% else %}
             <a href="{% url 'compare_properties' %}?p1={{ property.pk }}" class="btn btn-outline-primary line btn-sm">
                 &#9878; Compare Estate
             </a>
             <a href="{% url 'mortgage_calculator' %}?estate_id={{ property.pk }}" class="btn btn-outline-primary line btn-sm">
                 &#128181; Financing EMI
             </a>
+            {% endif %}
         </div>
     </div>
 
     <div class="row g-4">
-        <!-- Gallery Column -->
+        <!-- Main Content Column -->
         <div class="col-12 col-lg-7">
-            <div class="pp-gallery-main">
+            <!-- Gallery -->
+            <div class="pp-gallery-main position-relative" {% if property.status == 'SOLD' %}style="filter: grayscale(0.85); opacity: 0.85;"{% endif %}>
+                {% if property.status == 'SOLD' %}
+                <div class="position-absolute top-0 end-0 m-3 px-3 py-1 fw-bold text-uppercase" style="background:#DC2626; color:#FFF; font-size:0.85rem; letter-spacing:0.15em; border-radius:4px; z-index:15; box-shadow:0 4px 14px rgba(0,0,0,0.7);">
+                    &#128391; SOLD OUT
+                </div>
+                {% endif %}
                 {% with imgs=property.images.all %}
                 {% if imgs %}
                     <img src="{{ imgs.0.image.url }}" alt="{{ property.title }}" id="pp-main-img">
@@ -33,7 +64,7 @@
                 {% endwith %}
             </div>
             {% if property.images.all|length > 1 %}
-            <div class="pp-gallery-thumbs">
+            <div class="pp-gallery-thumbs" {% if property.status == 'SOLD' %}style="filter: grayscale(0.85); opacity: 0.85;"{% endif %}>
                 {% for img in property.images.all %}
                     <img src="{{ img.image.url }}" alt="{{ property.title }}" onclick="document.getElementById('pp-main-img').src=this.src" role="button">
                 {% endfor %}
@@ -85,14 +116,271 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ======================================================== -->
+            <!-- ML PURCHASE TIMING & BUYER BAROMETER INTELLIGENCE SECTION -->
+            <!-- Exclusively visible to Buyer side (prospective buyers/guests) -->
+            <!-- ======================================================== -->
+            {% if show_ml_buyer_intel and ml_analysis and property.status != 'SOLD' %}
+            <div class="mt-5 p-4" style="background:#091913; border:1px solid rgba(212,175,55,0.3); border-radius:8px; box-shadow:0 12px 32px rgba(0,0,0,0.4);">
+                <!-- Header with AI Badge -->
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <div>
+                        <div class="eyebrow mb-1" style="font-size:0.72rem; letter-spacing:0.25em; color:var(--gold);">
+                            &#129302; ML Algorithmic Market Intelligence
+                        </div>
+                        <h2 class="h4 mb-0" style="font-family:var(--serif); color:var(--ivory);">
+                            Purchase Timing &amp; Future Valuation Horizon
+                        </h2>
+                    </div>
+                    <span class="badge" style="background:rgba(212,175,55,0.15); color:var(--gold); border:1px solid rgba(212,175,55,0.4); font-size:0.72rem; letter-spacing:0.1em;">
+                        &#10004; {{ ml_analysis.confidence_score }}% ML Confidence (R&sup2; = 0.897)
+                    </span>
+                </div>
+
+                <!-- Prominent BUY NOW OR WAIT Decision Banner -->
+                <div class="p-3 mb-4 d-flex align-items-center justify-content-between flex-wrap gap-3" 
+                     style="background:rgba(7,19,15,0.9); border:2px solid {% if ml_analysis.verdict == 'BUY NOW' %}#10B981{% elif 'NEGOTIATE' in ml_analysis.verdict %}#F59E0B{% else %}#EF4444{% endif %}; border-radius:6px;">
+                    <div>
+                        <div class="small text-uppercase" style="letter-spacing:0.18em; color:var(--sage); font-size:0.7rem;">
+                            AI Investment Timing Verdict
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mt-1">
+                            <span style="font-size:1.8rem;">{{ ml_analysis.timing_emoji }}</span>
+                            <span class="fw-bold" style="font-family:var(--serif); font-size:1.65rem; color:{% if ml_analysis.verdict == 'BUY NOW' %}#34D399{% elif 'NEGOTIATE' in ml_analysis.verdict %}#FBBF24{% else %}#F87171{% endif %};">
+                                {{ ml_analysis.timing_badge }}
+                            </span>
+                        </div>
+                        <p class="small mb-0 mt-1" style="color:var(--ivory); font-size:0.85rem; line-height:1.4;">
+                            {{ ml_analysis.summary_headline }}
+                        </p>
+                    </div>
+                    <div class="text-end">
+                        <div class="small" style="color:var(--sage); font-size:0.7rem; text-transform:uppercase;">1-Year Cost of Delay</div>
+                        <div style="font-family:var(--serif); font-size:1.4rem; font-weight:700; color:{% if ml_analysis.cost_of_delay_1yr > 0 %}#34D399{% else %}#F87171{% endif %};">
+                            {% if ml_analysis.cost_of_delay_1yr > 0 %}+{% endif %}&#8377;{{ ml_analysis.cost_of_delay_1yr|floatformat:0 }}
+                        </div>
+                        <div class="small" style="font-size:0.72rem; color:var(--gold);">
+                            {% if ml_analysis.cost_of_delay_1yr > 0 %}Save by acquiring today{% else %}Correction expected{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 Quick Metric Cards -->
+                <div class="row g-2 mb-4">
+                    <div class="col-6 col-md-3">
+                        <div class="p-2 text-center" style="background:#07130F; border:1px solid rgba(212,175,55,0.18); border-radius:4px;">
+                            <div class="small" style="color:var(--sage); font-size:0.68rem; text-transform:uppercase;">Listed Asking</div>
+                            <div class="fw-bold mt-1" style="color:var(--ivory); font-size:1.05rem;">&#8377;{{ ml_analysis.listed_price|floatformat:0 }}</div>
+                            <div class="small" style="color:var(--sage); font-size:0.68rem;">&#8377;{{ ml_analysis.listed_psf }}/sqft</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-2 text-center" style="background:#07130F; border:1px solid rgba(212,175,55,0.18); border-radius:4px;">
+                            <div class="small" style="color:var(--gold); font-size:0.68rem; text-transform:uppercase;">ML Fair Valuation</div>
+                            <div class="fw-bold mt-1" style="color:var(--gold); font-size:1.05rem;">&#8377;{{ ml_analysis.predicted_price|floatformat:0 }}</div>
+                            <div class="small" style="color:var(--sage); font-size:0.68rem;">&#8377;{{ ml_analysis.fair_psf }}/sqft</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-2 text-center" style="background:#07130F; border:1px solid rgba(212,175,55,0.18); border-radius:4px;">
+                            <div class="small" style="color:var(--sage); font-size:0.68rem; text-transform:uppercase;">1-Year Projection</div>
+                            <div class="fw-bold mt-1" style="color:#34D399; font-size:1.05rem;">&#8377;{{ ml_analysis.projections.2.projected_price|floatformat:0 }}</div>
+                            <div class="small" style="color:var(--sage); font-size:0.68rem;">+{{ ml_analysis.annual_growth_rate }}% CAGR</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-2 text-center" style="background:#07130F; border:1px solid rgba(212,175,55,0.18); border-radius:4px;">
+                            <div class="small" style="color:var(--sage); font-size:0.68rem; text-transform:uppercase;">Price Spread</div>
+                            <div class="fw-bold mt-1" style="color:{% if ml_analysis.valuation_gap_pct <= 0 %}#34D399{% else %}#FBBF24{% endif %}; font-size:1.05rem;">
+                                {{ ml_analysis.valuation_gap_pct }}%
+                            </div>
+                            <div class="small" style="color:var(--sage); font-size:0.68rem;">
+                                {% if ml_analysis.valuation_gap_pct <= 0 %}Bargain Discount{% else %}Premium{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================================== -->
+                <!-- VISUAL BUYER BAROMETER SPEEDOMETER WITH EMOJIS -->
+                <!-- ============================================== -->
+                <div class="p-3 mb-4" style="background:#07130F; border:1px solid rgba(212,175,55,0.22); border-radius:6px;">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="small fw-bold text-uppercase" style="letter-spacing:0.12em; color:var(--ivory); font-size:0.75rem;">
+                            Buyer Barometer Gauge Index
+                        </span>
+                        <span class="pp-card-badge badge-{{ property.barometer_key }} mb-0" style="font-size:0.72rem;">
+                            {{ property.barometer_display }} &middot; Score: {{ ml_analysis.barometer_score }}/100
+                        </span>
+                    </div>
+
+                    <!-- Progress Bar Track with Gradient Zones -->
+                    <div class="position-relative my-3" style="height:14px; background:linear-gradient(90deg, #EF4444 0%, #F59E0B 45%, #10B981 75%, #059669 100%); border-radius:7px;">
+                        <!-- Pointer Pin -->
+                        <div class="position-absolute" style="left:{{ ml_analysis.barometer_score }}%; top:-7px; transform:translateX(-50%); transition:left 0.8s ease;">
+                            <div style="width:28px; height:28px; background:#D4AF37; border:2px solid #FFFFFF; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 0 10px #D4AF37;">
+                                <span style="font-size:12px; line-height:1;">&#9660;</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gauge Zone Labels with Emojis -->
+                    <div class="d-flex justify-content-between small text-muted mt-2" style="font-size:0.7rem;">
+                        <span style="color:#F87171;">&#9203; Overpriced · Wait (0-45)</span>
+                        <span style="color:#FBBF24;">&#9878;&#65039; Fair Market (46-75)</span>
+                        <span style="color:#34D399;">&#128640; Great Deal · Buy Now (76-100)</span>
+                    </div>
+                </div>
+
+                <!-- ============================================== -->
+                <!-- VISUALIZATION: INTERACTIVE CHART (CHART.JS)   -->
+                <!-- ============================================== -->
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                        <h4 class="h6 mb-0" style="color:var(--ivory); letter-spacing:0.08em; text-transform:uppercase; font-size:0.85rem;">
+                            &#128200; Projected Valuation Trajectory (Now vs Future Horizons)
+                        </h4>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" class="btn btn-outline-secondary btn-sm active" id="btn-chart-line" onclick="switchChartType('line')">Line Horizon</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-chart-bar" onclick="switchChartType('bar')">Bar Benchmark</button>
+                        </div>
+                    </div>
+
+                    <div class="p-3" style="background:#07130F; border:1px solid rgba(212,175,55,0.2); border-radius:6px; min-height:260px;">
+                        <canvas id="timingChart" height="130"></canvas>
+                    </div>
+                    <div class="small text-center mt-1" style="color:var(--sage); font-size:0.72rem;">
+                        Comparing constant listed price vs compound algorithmic valuation ({{ ml_analysis.annual_growth_rate }}% annualized growth).
+                    </div>
+                </div>
+
+                <!-- ============================================== -->
+                <!-- TABLE: TIMELINE PROJECTION & DECISION MATRIX   -->
+                <!-- ============================================== -->
+                <div class="mb-4">
+                    <h4 class="h6 mb-2" style="color:var(--ivory); letter-spacing:0.08em; text-transform:uppercase; font-size:0.85rem;">
+                        &#128197; Time-Horizon Valuation &amp; Delay Cost Matrix
+                    </h4>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-sm mb-0" style="background:#07130F; border:1px solid rgba(212,175,55,0.2); font-size:0.8rem;">
+                            <thead>
+                                <tr style="border-bottom:1px solid rgba(212,175,55,0.3); color:var(--gold); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;">
+                                    <th>Horizon</th>
+                                    <th>Projected Valuation</th>
+                                    <th>Growth vs Listed</th>
+                                    <th>Rate / sqft</th>
+                                    <th>Optimal Strategy</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for p in ml_analysis.projections %}
+                                <tr style="border-bottom:1px solid rgba(212,175,55,0.08);">
+                                    <td class="fw-semibold" style="color:var(--ivory);">{{ p.horizon }}</td>
+                                    <td style="color:var(--gold); font-family:var(--serif); font-size:0.95rem;">&#8377;{{ p.projected_price|floatformat:0 }}</td>
+                                    <td style="color:{% if p.diff_from_listed >= 0 %}#34D399{% else %}#F87171{% endif %};">
+                                        {% if p.diff_from_listed >= 0 %}+{% endif %}&#8377;{{ p.diff_from_listed|floatformat:0 }} ({{ p.pct_from_listed }}%)
+                                    </td>
+                                    <td style="color:var(--sage);">&#8377;{{ p.psf }}</td>
+                                    <td>
+                                        {% if p.horizon == 'Today' %}
+                                            <span class="badge bg-{{ ml_analysis.badge_color }} p-1" style="font-size:0.65rem;">
+                                                {{ ml_analysis.timing_emoji }} {{ ml_analysis.verdict }}
+                                            </span>
+                                        {% elif p.diff_from_listed > 0 %}
+                                            <span class="badge" style="background:rgba(16,185,129,0.15); color:#34D399; font-size:0.65rem; border:1px solid #10B981;">
+                                                Delay Cost: +{{ p.pct_from_listed }}%
+                                            </span>
+                                        {% else %}
+                                            <span class="badge" style="background:rgba(239,68,68,0.15); color:#F87171; font-size:0.65rem; border:1px solid #EF4444;">
+                                                Correction Zone
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Strategic Decision Reasons (ML Economic Drivers) -->
+                <div>
+                    <h4 class="h6 mb-2" style="color:var(--gold); font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;">
+                        &#128161; ML Pricing Rationale &amp; Strategic Advisory
+                    </h4>
+                    <ul class="list-unstyled mb-0" style="font-size:0.82rem; color:var(--sage); line-height:1.6;">
+                        {% for reason in ml_analysis.reasons %}
+                        <li class="d-flex align-items-start gap-2 mb-1">
+                            <span style="color:var(--gold); font-size:0.9rem;">&#9670;</span>
+                            <span>{{ reason }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% elif is_proprietor %}
+            <!-- Proprietor Listing Management Console (Proprietor view) -->
+            <div class="mt-5 p-4" style="background:#091913; border:1px solid rgba(212,175,55,0.3); border-radius:8px; box-shadow:0 12px 32px rgba(0,0,0,0.4);">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <div>
+                        <div class="eyebrow mb-1" style="font-size:0.72rem; letter-spacing:0.25em; color:var(--gold);">
+                            &#128081; Registered Proprietor Controls
+                        </div>
+                        <h2 class="h4 mb-0" style="font-family:var(--serif); color:var(--ivory);">
+                            Estate Custody &amp; Dossier Management
+                        </h2>
+                    </div>
+                    <span class="badge py-2 px-3" style="background:{% if property.status == 'SOLD' %}#DC2626{% else %}#059669{% endif %}; color:#FFFFFF; font-size:0.75rem; letter-spacing:0.1em;">
+                        {% if property.status == 'SOLD' %}&#10006; SOLD OUT / ARCHIVED{% else %}&#10004; ACTIVE ON MARKET{% endif %}
+                    </span>
+                </div>
+                <p class="small mb-3" style="color:var(--sage); line-height:1.6;">
+                    You are the registered owner of this listing. Algorithmic purchase timing indicators, valuation projections, and buyer-side negotiation advisories are strictly restricted to prospective buyers.
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <form method="post" action="{% url 'toggle_property_sold' property.pk %}" class="d-inline">
+                        {% csrf_token %}
+                        {% if property.status == 'SOLD' %}
+                        <button type="submit" class="btn btn-sm btn-outline-success">
+                            &#128260; Re-List as Active Market Listing
+                        </button>
+                        {% else %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Mark this estate as Sold Out? It will be rendered in grayscale with reservation disabled.');">
+                            &#128391; Mark Estate as Sold Out
+                        </button>
+                        {% endif %}
+                    </form>
+                    <a href="{% url 'edit_property' property.pk %}" class="btn btn-sm btn-outline-primary line">
+                        &#9998; Edit Listing Narrative &amp; Price
+                    </a>
+                    <a href="{% url 'seller_analytics' %}" class="btn btn-sm btn-outline-secondary">
+                        &#128202; View Inquiries &amp; Portfolio Analytics
+                    </a>
+                </div>
+            </div>
+            {% elif property.status == 'SOLD' %}
+            <!-- Sold out archive notification for visitors -->
+            <div class="mt-5 p-4 text-center" style="background:#07130F; border:1px solid rgba(220,38,38,0.3); border-radius:8px;">
+                <div style="font-size:2rem;">&#128391;</div>
+                <h4 class="h5 mt-2" style="color:var(--ivory); font-family:var(--serif);">Historical Estate Archive</h4>
+                <p class="small mb-0 text-muted" style="color:var(--sage);">
+                    This property has been marked as <strong>SOLD OUT</strong>. Algorithmic purchase timing and valuation trajectories are archived upon completed acquisition.
+                </p>
+            </div>
+            {% endif %}
+            <!-- ======================================================== -->
+            <!-- END ML PURCHASE TIMING & BUYER BAROMETER SECTION         -->
+            <!-- ======================================================== -->
+
         </div>
 
-        <!-- Sticky Action & Valuation Box -->
+        <!-- Sticky Action & Valuation Box Column -->
         <div class="col-12 col-lg-5">
             <div class="pp-form-section sticky-top" style="top:2rem;">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="pp-card-badge badge-{{ property.barometer_key }} mb-0">{{ property.barometer_label }}</span>
-                    {% if user.is_authenticated %}
+                    <span class="pp-card-badge badge-{{ property.barometer_key }} mb-0">{{ property.barometer_display }}</span>
+                    {% if user.is_authenticated and not is_platform_admin and not is_proprietor %}
                     <form method="post" action="{% url 'toggle_save_property' property.pk %}" class="d-inline">
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ request.get_full_path }}">
@@ -106,6 +394,7 @@
                 <h1 class="mt-2 mb-1" style="font-size:1.85rem; font-family:var(--serif);">{{ property.title }}</h1>
                 <p class="pp-muted mb-3">{{ property.locality }}, {{ property.city }} &middot; Proprietor: <strong>{{ property.seller.username }}</strong></p>
 
+                <!-- Listed Asking Price Box -->
                 <div class="p-3 mb-3" style="background:#07130F; border:1px solid rgba(212,175,55,0.25); border-radius:4px;">
                     <div class="pp-price-label">Official Listed Valuation</div>
                     <div class="pp-price" style="font-size:2.2rem;">&#8377;{{ property.listed_price|floatformat:0 }}</div>
@@ -121,6 +410,22 @@
                     {% endif %}
                 </div>
 
+                <!-- Quick Timing Verdict Capsule in Sidebar -->
+                {% if show_ml_buyer_intel and ml_analysis and property.status != 'SOLD' %}
+                <div class="p-2 mb-3 text-center" style="background:rgba(212,175,55,0.06); border:1px solid rgba(212,175,55,0.25); border-radius:4px;">
+                    <div class="small fw-bold" style="color:{% if ml_analysis.verdict == 'BUY NOW' %}#34D399{% elif 'NEGOTIATE' in ml_analysis.verdict %}#FBBF24{% else %}#F87171{% endif %}; font-size:0.85rem;">
+                        {{ ml_analysis.timing_badge }}
+                    </div>
+                    <div class="small mt-1" style="color:var(--sage); font-size:0.72rem;">
+                        {% if ml_analysis.cost_of_delay_1yr > 0 %}
+                            1-Yr Waiting Cost: <strong style="color:var(--ivory);">+&#8377;{{ ml_analysis.cost_of_delay_1yr|floatformat:0 }}</strong>
+                        {% else %}
+                            Price negotiation recommended before finalizing
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
                 {% if property.possible_duplicate_of %}
                 <div class="alert alert-warning small py-2 mb-3">
                     Verified Duplicate Filter: Flagged for mutual address verification.
@@ -129,7 +434,61 @@
 
                 <!-- Primary Action Buttons -->
                 <div class="d-grid gap-2 mt-4">
-                    {% if request.user.is_authenticated and request.user.pk != property.seller_id %}
+                    {% if property.status == 'SOLD' %}
+                        <!-- SOLD OUT STATE -->
+                        <div class="p-3 text-center" style="background:rgba(239,68,68,0.12); border:2px solid #EF4444; border-radius:6px;">
+                            <div style="font-size:1.15rem; font-weight:700; color:#EF4444; letter-spacing:0.12em; text-transform:uppercase;">
+                                &#128391; Sold Out
+                            </div>
+                            <div class="small text-muted mt-1" style="font-size:0.75rem;">
+                                Ownership transacted and settled via Sovereign Escrow.
+                            </div>
+                            <button class="btn btn-secondary w-100 mt-2 py-2 fw-semibold" disabled style="opacity:0.65; cursor:not-allowed;">
+                                Acquisition Finalized &middot; Sold Out
+                            </button>
+                            {% if is_proprietor %}
+                            <form method="post" action="{% url 'toggle_property_sold' property.pk %}" class="mt-2">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-success btn-sm w-100">
+                                    &#128260; Re-List Estate as Active
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    {% elif is_platform_admin %}
+                        <!-- ADMINISTRATIVE REGULATORY OVERSIGHT CONSOLE (AUDITOR MODE) -->
+                        <div class="p-3 my-2" style="background:#07130F; border:1px solid var(--gold); border-radius:6px; box-shadow:0 0 16px rgba(212,175,55,0.25);">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge" style="background:rgba(212,175,55,0.18); color:var(--gold-lt); font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase;">
+                                    🛡️ Regulatory Oversight
+                                </span>
+                                <span class="small" style="color:var(--sage); font-size:0.72rem;">Asset #{{ property.pk }}</span>
+                            </div>
+                            <div class="small mb-3" style="color:var(--ivory); font-size:0.82rem; line-height:1.5;">
+                                <strong>System Auditor View:</strong> You are browsing with sovereign administrator credentials. Property reservation &amp; escrow deposits are restricted to accredited buyers.
+                            </div>
+                            <div class="d-grid gap-2">
+                                <form method="post" action="{% url 'admin_toggle_property_status' property.pk %}">
+                                    {% csrf_token %}
+                                    {% if property.status == 'ACTIVE' %}
+                                    <button type="submit" class="btn btn-outline-warning btn-sm w-100" onclick="return confirm('Suspend this listing from the public marketplace?');">
+                                        ⏸️ Suspend Estate from Market
+                                    </button>
+                                    {% else %}
+                                    <button type="submit" class="btn btn-outline-success btn-sm w-100">
+                                        ▶️ Reinstate Estate to Market
+                                    </button>
+                                    {% endif %}
+                                </form>
+                                <a href="{% url 'platform_admin' %}" class="btn btn-primary gold btn-sm py-2 fw-semibold text-center">
+                                    🛡️ Open Command Center Audit
+                                </a>
+                                <a href="/admin/properties/property/{{ property.pk }}/change/" target="_blank" class="btn btn-outline-secondary btn-sm text-center">
+                                    ⚙️ Django Core Admin Record &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    {% elif request.user.is_authenticated and request.user.pk != property.seller_id %}
                         <a class="btn btn-primary gold py-3 fw-bold" href="{% url 'payment_checkout_property' property.pk %}" style="letter-spacing:0.2em;">
                             Place Escrow Token Deposit &rarr;
                         </a>
@@ -147,6 +506,12 @@
                         <a href="{% url 'edit_property' property.pk %}" class="btn btn-outline-primary line py-2">
                             Edit Listing Dossier
                         </a>
+                        <form method="post" action="{% url 'toggle_property_sold' property.pk %}" class="mt-1">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100" onclick="return confirm('Mark this estate as Sold Out?');">
+                                &#128391; Mark as Sold Out
+                            </button>
+                        </form>
                     {% endif %}
                 </div>
 
@@ -164,4 +529,143 @@
         </div>
     </div>
 </div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% if show_ml_buyer_intel and ml_analysis and property.status != 'SOLD' %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('timingChart').getContext('2d');
+    var chartLabels = {{ ml_analysis.chart_labels|safe }};
+    var fairPrices = {{ ml_analysis.chart_fair_prices|safe }};
+    var listedPrices = {{ ml_analysis.chart_listed_prices|safe }};
+
+    var lineGradient = ctx.createLinearGradient(0, 0, 0, 260);
+    lineGradient.addColorStop(0, 'rgba(16, 185, 129, 0.45)');
+    lineGradient.addColorStop(1, 'rgba(16, 185, 129, 0.02)');
+
+    var chartConfig = {
+        type: 'line',
+        data: {
+            labels: chartLabels,
+            datasets: [
+                {
+                    label: 'Projected Fair Market Value (₹)',
+                    data: fairPrices,
+                    borderColor: '#10B981',
+                    backgroundColor: lineGradient,
+                    borderWidth: 2.5,
+                    fill: true,
+                    tension: 0.35,
+                    pointBackgroundColor: '#10B981',
+                    pointBorderColor: '#FFFFFF',
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                },
+                {
+                    label: 'Current Listed Asking Price (₹)',
+                    data: listedPrices,
+                    borderColor: '#D4AF37',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    fill: false,
+                    pointBackgroundColor: '#D4AF37',
+                    pointRadius: 3,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#E8ECE9',
+                        font: { family: 'Jost, sans-serif', size: 11 }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(7, 19, 15, 0.95)',
+                    titleColor: '#D4AF37',
+                    bodyColor: '#FFFFFF',
+                    borderColor: 'rgba(212, 175, 55, 0.3)',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: function(context) {
+                            var val = context.parsed.y;
+                            return context.dataset.label + ': ₹' + Number(val).toLocaleString('en-IN');
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: 'rgba(212, 175, 55, 0.08)' },
+                    ticks: { color: '#9DB2A7', font: { family: 'Jost, sans-serif' } }
+                },
+                y: {
+                    grid: { color: 'rgba(212, 175, 55, 0.08)' },
+                    ticks: {
+                        color: '#9DB2A7',
+                        font: { family: 'Jost, sans-serif' },
+                        callback: function(value) {
+                            if (value >= 10000000) {
+                                return '₹' + (value / 10000000).toFixed(1) + ' Cr';
+                            } else if (value >= 100000) {
+                                return '₹' + (value / 100000).toFixed(0) + ' L';
+                            }
+                            return '₹' + value;
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    window.myTimingChart = new Chart(ctx, chartConfig);
+
+    window.switchChartType = function(type) {
+        var btnLine = document.getElementById('btn-chart-line');
+        var btnBar = document.getElementById('btn-chart-bar');
+        if (type === 'bar') {
+            btnBar.classList.add('active');
+            btnLine.classList.remove('active');
+            window.myTimingChart.destroy();
+            window.myTimingChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Current Asking', 'ML Fair Value', '1-Yr Projected', '2-Yr Projected', '3-Yr Projected'],
+                    datasets: [{
+                        label: 'Valuation Benchmark (₹)',
+                        data: [
+                            listedPrices[0],
+                            fairPrices[0],
+                            fairPrices[2],
+                            fairPrices[3],
+                            fairPrices[4]
+                        ],
+                        backgroundColor: [
+                            'rgba(212, 175, 55, 0.7)',
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(52, 211, 153, 0.7)',
+                            'rgba(5, 150, 105, 0.7)',
+                            'rgba(4, 120, 87, 0.7)'
+                        ],
+                        borderColor: '#D4AF37',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: chartConfig.options
+            });
+        } else {
+            btnLine.classList.add('active');
+            btnBar.classList.remove('active');
+            window.myTimingChart.destroy();
+            window.myTimingChart = new Chart(ctx, chartConfig);
+        }
+    };
+});
+</script>
+{% endif %}
 {% endblock %}

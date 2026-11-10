@@ -76,8 +76,16 @@
             <div class="navbar-nav ms-lg-3">
                 <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
                 <a class="nav-link {% if request.resolver_match.url_name == 'property_list' %}active{% endif %}" href="{% url 'property_list' %}">Residences</a>
+                {% if is_platform_admin %}
+                <a class="nav-link {% if request.resolver_match.url_name == 'platform_admin' %}active{% endif %}" href="{% url 'platform_admin' %}" style="color:var(--gold-lt); font-weight:600;">&#128737; Command Center</a>
+                <a class="nav-link" href="{% url 'admin_run_diagnostics' %}">&#128302; Audit Scan</a>
+                {% elif is_seller %}
+                <a class="nav-link {% if request.resolver_match.url_name == 'submit_property' %}active{% endif %}" href="{% url 'submit_property' %}" style="color:var(--gold-lt); font-weight:500;">+ List Estate</a>
+                <a class="nav-link {% if request.resolver_match.url_name == 'seller_analytics' %}active{% endif %}" href="{% url 'seller_analytics' %}">Analytics</a>
+                {% else %}
                 <a class="nav-link {% if request.resolver_match.url_name == 'compare_properties' %}active{% endif %}" href="{% url 'compare_properties' %}">Compare</a>
                 <a class="nav-link {% if request.resolver_match.url_name == 'mortgage_calculator' %}active{% endif %}" href="{% url 'mortgage_calculator' %}">Financing</a>
+                {% endif %}
                 <a class="nav-link {% if request.resolver_match.url_name == 'estate_advisor' %}active{% endif %}" href="{% url 'estate_advisor' %}">
                   AI Advisor <span class="badge" style="background:var(--gold); color:#07130F; font-size:0.6rem; padding:2px 5px;">NEW</span>
                 </a>
@@ -100,13 +108,6 @@
                         <span style="font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase;">Messages</span>
                         <span id="nav-msg-badge" class="badge rounded-pill bg-danger d-none" style="font-size:0.65rem; padding:2px 6px;">0</span>
                     </a>
-
-                    <!-- List Estate Link (EXCLUSIVELY FOR REGISTERED SELLERS) -->
-                    {% if is_seller %}
-                    <a class="nav-link {% if request.resolver_match.url_name == 'submit_property' %}active{% endif %}" href="{% url 'submit_property' %}" style="font-size:0.75rem; color:var(--gold-lt);">
-                        + List Estate
-                    </a>
-                    {% endif %}
 
                     <!-- User Account Dropdown (Cleans navbar, keeps all features in 1 click) -->
                     <div class="nav-item dropdown">
@@ -256,7 +257,8 @@
         <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Review duplicate listing risks">Duplicates</button>
         <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Audit escrow balance and custody settlements">Escrow Audit</button>
       {% else %}
-        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Which estates are Great Deals?">Great Deals</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Is now the best time to buy or wait?">&#128640; Buy Now or Wait?</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Which estates are Great Deals?">&#128293; Great Deals</button>
         <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Estates with infinity pool">Pool Estates</button>
         <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Calculate EMI for 15 Cr loan">EMI 15 Cr</button>
         <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 w-chip" style="font-size:0.68rem;" data-msg="Check my messages and alerts">My Alerts</button>
