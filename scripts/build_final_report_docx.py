@@ -2,7 +2,7 @@ import os
 import docx
 from docx import Document
 from docx.shared import Inches, Pt, RGBColor
-from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_TAB_ALIGNMENT, WD_TAB_LEADER
 from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
@@ -100,8 +100,46 @@ def create_report():
 
     def add_p(text, bold=False, italic=False, align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=6, font_size=12):
         p = doc.add_paragraph()
-        p.alignment = align
         p.paragraph_format.line_spacing = 1.5
+        
+        # Check if text is a bullet item
+        if text.startswith('• ') or text.startswith('- '):
+            p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+            p.paragraph_format.left_indent = Inches(0.3)
+            p.paragraph_format.first_line_indent = Inches(-0.2)
+            p.paragraph_format.space_after = Pt(4)
+            
+            r_bullet = p.add_run('• ')
+            r_bullet.font.name = 'Times New Roman'
+            r_bullet.font.size = Pt(font_size)
+            r_bullet.font.bold = True
+            r_bullet.font.color.rgb = RGBColor(0, 0, 0)
+            
+            content = text[2:].strip()
+            if ': ' in content and not content.startswith('http'):
+                label, desc = content.split(': ', 1)
+                r_lbl = p.add_run(label + ': ')
+                r_lbl.font.name = 'Times New Roman'
+                r_lbl.font.size = Pt(font_size)
+                r_lbl.font.bold = True
+                r_lbl.font.color.rgb = RGBColor(0, 0, 0)
+                
+                r_desc = p.add_run(desc)
+                r_desc.font.name = 'Times New Roman'
+                r_desc.font.size = Pt(font_size)
+                r_desc.font.bold = bold
+                r_desc.font.italic = italic
+                r_desc.font.color.rgb = RGBColor(0, 0, 0)
+            else:
+                r_txt = p.add_run(content)
+                r_txt.font.name = 'Times New Roman'
+                r_txt.font.size = Pt(font_size)
+                r_txt.font.bold = bold
+                r_txt.font.italic = italic
+                r_txt.font.color.rgb = RGBColor(0, 0, 0)
+            return p
+            
+        p.alignment = align
         p.paragraph_format.space_after = Pt(space_after)
         run = p.add_run(text)
         run.font.name = 'Times New Roman'
@@ -154,6 +192,7 @@ def create_report():
         if os.path.exists(img_path):
             p_img = doc.add_paragraph()
             p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p_img.paragraph_format.space_before = Pt(8)
             p_img.paragraph_format.space_after = Pt(4)
             p_img.paragraph_format.keep_with_next = True
             run_img = p_img.add_run()
@@ -161,29 +200,36 @@ def create_report():
             
             p_cap = doc.add_paragraph()
             p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
-            p_cap.paragraph_format.space_after = Pt(12)
+            p_cap.paragraph_format.space_before = Pt(0)
+            p_cap.paragraph_format.space_after = Pt(14)
             run_cap = p_cap.add_run(caption)
             run_cap.font.name = 'Times New Roman'
-            run_cap.font.size = Pt(12)
+            run_cap.font.size = Pt(11)
             run_cap.font.italic = True
+            run_cap.font.bold = True
             run_cap.font.color.rgb = RGBColor(0, 0, 0)
 
     def style_table(table, col_widths, headers, data):
         table.alignment = WD_TABLE_ALIGNMENT.CENTER
-        set_table_borders(table, color="CCCCCC", sz="4", val="single")
+        set_table_borders(table, color="B8B8B8", sz="4", val="single")
+        
+        # Repeat header on every page
+        trPr = table.rows[0]._tr.get_or_add_trPr()
+        trPr.append(OxmlElement('w:tblHeader'))
+        
         # Header row
         hdr_cells = table.rows[0].cells
         for idx, text in enumerate(headers):
             hdr_cells[idx].text = text
-            set_cell_background(hdr_cells[idx], "EAEAEA")
-            set_cell_margins(hdr_cells[idx], top=120, bottom=120, left=150, right=150)
+            set_cell_background(hdr_cells[idx], "E8E8E8")
+            set_cell_margins(hdr_cells[idx], top=100, bottom=100, left=140, right=140)
             p = hdr_cells[idx].paragraphs[0]
             p.alignment = WD_ALIGN_PARAGRAPH.CENTER
             p.paragraph_format.line_spacing = 1.0
             p.paragraph_format.space_after = Pt(0)
             for r in p.runs:
                 r.font.name = 'Times New Roman'
-                r.font.size = Pt(10.5)
+                r.font.size = Pt(10)
                 r.font.bold = True
                 r.font.color.rgb = RGBColor(0, 0, 0)
 
@@ -191,34 +237,49 @@ def create_report():
             row_cells = table.add_row().cells
             for idx, text in enumerate(row_data):
                 row_cells[idx].text = str(text)
-                set_cell_margins(row_cells[idx], top=80, bottom=80, left=150, right=150)
+                set_cell_margins(row_cells[idx], top=70, bottom=70, left=140, right=140)
                 p = row_cells[idx].paragraphs[0]
                 p.alignment = WD_ALIGN_PARAGRAPH.LEFT if idx > 0 else WD_ALIGN_PARAGRAPH.CENTER
                 p.paragraph_format.line_spacing = 1.15
                 p.paragraph_format.space_after = Pt(0)
                 for r in p.runs:
                     r.font.name = 'Times New Roman'
-                    r.font.size = Pt(10)
+                    r.font.size = Pt(9.5)
                     r.font.color.rgb = RGBColor(0, 0, 0)
 
         for row in table.rows:
+            trPr = row._tr.get_or_add_trPr()
+            trPr.append(OxmlElement('w:cantSplit'))
             for idx, width in enumerate(col_widths):
                 row.cells[idx].width = Inches(width)
 
     # =========================================================================
     # PRELIMINARY PAGES: TITLE PAGE
     # =========================================================================
-    add_p("PropertyPulse: Curated Luxury Real Estate Marketplace, AI-Powered Valuation Barometer & Fiduciary Escrow Platform", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=10, font_size=18)
-    add_p("Final Project Report", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=6, font_size=16)
-    add_p("Submitted for the End Semester Evaluation of\nUCS503 Software Engineering Lab", bold=False, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=18, font_size=13)
+    add_p("THAPAR INSTITUTE OF ENGINEERING AND TECHNOLOGY", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=2, font_size=13)
+    add_p("(Deemed to be University)", italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=2, font_size=9.5)
+    add_p("DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=12, font_size=11)
     
-    add_p("Submitted by:", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=4, font_size=12)
-    add_p("Team PropertyPulse (Group 3C14)", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=8, font_size=13)
+    if os.path.exists('docs/images/thapar_logo.png'):
+        p_logo = doc.add_paragraph()
+        p_logo.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_logo.paragraph_format.space_before = Pt(2)
+        p_logo.paragraph_format.space_after = Pt(10)
+        run_logo = p_logo.add_run()
+        run_logo.add_picture('docs/images/thapar_logo.png', width=Inches(2.5))
+
+    add_p("END-SEMESTER FINAL PROJECT REPORT", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=4, font_size=14)
+    add_p("UCS503 / UCS503P: SOFTWARE ENGINEERING LAB", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=12, font_size=12)
+    
+    add_p("PROPERTYPULSE", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=4, font_size=20)
+    add_p("A Curated Luxury Real Estate Marketplace with Algorithmic AI Pricing Barometer and Fiduciary Escrow Settlement Platform", bold=True, italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=14, font_size=11)
+    
+    add_p("Submitted by:", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=3, font_size=11)
     
     team_p = doc.add_paragraph()
     team_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    team_p.paragraph_format.line_spacing = 1.3
-    team_p.paragraph_format.space_after = Pt(18)
+    team_p.paragraph_format.line_spacing = 1.15
+    team_p.paragraph_format.space_after = Pt(10)
     members = [
         ("Guntaas Singh", "1024030108"),
         ("Haneesh", "1024030112"),
@@ -226,25 +287,19 @@ def create_report():
         ("Atiksh Gupta", "102303133")
     ]
     for m, r in members:
-        run = team_p.add_run(f"{m}    —    Roll No: {r}\n")
+        run = team_p.add_run(f"{m}   —   Roll No: {r}\n")
         run.font.name = 'Times New Roman'
-        run.font.size = Pt(11.5)
+        run.font.size = Pt(11)
         run.font.bold = True
         run.font.color.rgb = RGBColor(0, 0, 0)
 
-    add_p("Class: 3C14    |    Programme: B.E. Computer Engineering (COE)    |    Semester: 5th", align=WD_ALIGN_PARAGRAPH.CENTER, space_after=18, font_size=11.5)
+    add_p("Group: 3C14    |    Programme: B.E. Computer Engineering (COE)    |    Semester: 5th", align=WD_ALIGN_PARAGRAPH.CENTER, space_after=12, font_size=10.5)
     
-    add_p("Submitted to:", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=4, font_size=12)
-    add_p("Sukhpal Singh", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=18, font_size=14)
+    add_p("Submitted to:", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=2, font_size=11)
+    add_p("Anushka", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=2, font_size=13)
+    add_p("Faculty Evaluator\nDepartment of Computer Science and Engineering", italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=12, font_size=10)
     
-    if os.path.exists('docs/images/thapar_logo.png'):
-        p_logo = doc.add_paragraph()
-        p_logo.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p_logo.paragraph_format.space_after = Pt(10)
-        run_logo = p_logo.add_run()
-        run_logo.add_picture('docs/images/thapar_logo.png', width=Inches(3.2))
-
-    add_p("COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\nTHAPAR INSTITUTE OF ENGINEERING AND TECHNOLOGY\nPATIALA 147004\nNovember 2026", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=0, font_size=12)
+    add_p("Thapar Institute of Engineering and Technology, Patiala 147004\nNovember 2026", bold=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=0, font_size=10.5)
 
     doc.add_page_break()
 
@@ -259,7 +314,7 @@ def create_report():
     doc.add_page_break()
 
     # =========================================================================
-    # PRELIMINARY LISTS: TABLE OF CONTENTS, FIGURES, TABLES, ABBREVIATIONS
+    # PRELIMINARY LISTS: TABLE OF CONTENTS
     # =========================================================================
     add_h1("Table of Contents")
     toc_items = [
@@ -316,22 +371,27 @@ def create_report():
     ]
     for item, page in toc_items:
         p_toc = doc.add_paragraph()
+        p_toc.paragraph_format.tab_stops.add_tab_stop(Inches(6.5), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
         p_toc.paragraph_format.line_spacing = 1.15
         p_toc.paragraph_format.space_after = Pt(2)
+        is_chapter = not item.startswith("    ")
         r1 = p_toc.add_run(item)
         r1.font.name = 'Times New Roman'
         r1.font.size = Pt(11)
-        # Dot leader
-        dots = " " + "." * max(2, (68 - len(item) * 2)) + " "
-        r_dots = p_toc.add_run(dots)
-        r_dots.font.name = 'Times New Roman'
-        r_dots.font.size = Pt(11)
-        r2 = p_toc.add_run(page)
+        if is_chapter:
+            r1.font.bold = True
+        r2 = p_toc.add_run(f"	{page}")
         r2.font.name = 'Times New Roman'
         r2.font.size = Pt(11)
-        r2.font.bold = True
+        if is_chapter:
+            r2.font.bold = True
 
-    add_h2("List of Figures")
+    doc.add_page_break()
+
+    # =========================================================================
+    # PRELIMINARY LISTS: LIST OF FIGURES & LIST OF TABLES
+    # =========================================================================
+    add_h1("List of Figures")
     figures = [
         ("Figure 2.2.1: System UML Use Case Diagram", "11"),
         ("Figure 2.4.1a: Activity Diagram — Buyer Lifecycle", "14"),
@@ -354,17 +414,18 @@ def create_report():
     ]
     for fig_title, page in figures:
         p_fig = doc.add_paragraph()
+        p_fig.paragraph_format.tab_stops.add_tab_stop(Inches(6.5), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
         p_fig.paragraph_format.line_spacing = 1.15
         p_fig.paragraph_format.space_after = Pt(2)
         r1 = p_fig.add_run(fig_title)
         r1.font.name = 'Times New Roman'
         r1.font.size = Pt(11)
-        dots = " " + "." * max(2, (65 - len(fig_title) * 2)) + " "
-        p_fig.add_run(dots)
-        r2 = p_fig.add_run(page)
+        r2 = p_fig.add_run(f"	{page}")
+        r2.font.name = 'Times New Roman'
+        r2.font.size = Pt(11)
         r2.font.bold = True
 
-    add_h2("List of Tables")
+    add_h1("List of Tables")
     tables_list = [
         ("Table 1.1: Stakeholder Roles and Access Rights", "6"),
         ("Table 2.1: Functional Requirements Specification", "9"),
@@ -379,17 +440,23 @@ def create_report():
     ]
     for tbl_title, page in tables_list:
         p_tbl = doc.add_paragraph()
+        p_tbl.paragraph_format.tab_stops.add_tab_stop(Inches(6.5), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
         p_tbl.paragraph_format.line_spacing = 1.15
         p_tbl.paragraph_format.space_after = Pt(2)
         r1 = p_tbl.add_run(tbl_title)
         r1.font.name = 'Times New Roman'
         r1.font.size = Pt(11)
-        dots = " " + "." * max(2, (65 - len(tbl_title) * 2)) + " "
-        p_tbl.add_run(dots)
-        r2 = p_tbl.add_run(page)
+        r2 = p_tbl.add_run(f"	{page}")
+        r2.font.name = 'Times New Roman'
+        r2.font.size = Pt(11)
         r2.font.bold = True
 
-    add_h2("List of Abbreviations")
+    doc.add_page_break()
+
+    # =========================================================================
+    # PRELIMINARY LISTS: LIST OF ABBREVIATIONS
+    # =========================================================================
+    add_h1("List of Abbreviations")
     abbreviations = [
         ("API", "Application Programming Interface"),
         ("ASGI", "Asynchronous Server Gateway Interface"),
@@ -417,17 +484,11 @@ def create_report():
         ("WAL", "Write-Ahead Logging"),
         ("WSGI", "Web Server Gateway Interface")
     ]
-    for abb, desc in abbreviations:
-        p_abb = doc.add_paragraph()
-        p_abb.paragraph_format.line_spacing = 1.15
-        p_abb.paragraph_format.space_after = Pt(2)
-        r1 = p_abb.add_run(f"{abb.ljust(8)} : ")
-        r1.font.name = 'Times New Roman'
-        r1.font.size = Pt(11)
-        r1.font.bold = True
-        r2 = p_abb.add_run(desc)
-        r2.font.name = 'Times New Roman'
-        r2.font.size = Pt(11)
+    table_abb = doc.add_table(rows=1, cols=2)
+    abb_headers = ["Abbreviation", "Full Term / Definition"]
+    abb_data = [[abbr, desc] for abbr, desc in abbreviations]
+    style_table(table_abb, [1.8, 4.7], abb_headers, abb_data)
+    add_p("Table 0.1: Engineering Acronyms and Technical Abbreviations", italic=True, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=12)
 
     doc.add_page_break()
 
@@ -572,10 +633,10 @@ def create_report():
     add_h2("2.4 Workflow and Data Flow Models")
     add_h3("2.4.1 Activity and Swimlane Diagrams")
     add_p("System workflows are modeled to demonstrate operational transitions across users and algorithmic components. Figure 2.4.1a illustrates the complete Buyer journey from discovery to escrow commitment:")
-    add_img('docs/images/fig_page_6_1.png', "Figure 2.4.1a: Activity Diagram — Buyer Lifecycle", width=5.2)
+    add_img('docs/images/fig_page_6_1.png', "Figure 2.4.1a: Activity Diagram — Buyer Lifecycle", width=4.6)
 
     add_p("Figure 2.4.1b details the Seller listing intake lifecycle, including automated feature extraction, regression valuation, and duplicate detection gating:")
-    add_img('docs/images/fig_page_7_1.jpeg', "Figure 2.4.1b: Activity Diagram — Seller Lifecycle with ML Validation", width=5.2)
+    add_img('docs/images/fig_page_7_1.jpeg', "Figure 2.4.1b: Activity Diagram — Seller Lifecycle with ML Validation", width=4.4)
 
     add_p("To illustrate multi-party concurrency, Figure 2.3.1 displays the cross-functional swimlane workflow partitioned across Buyer, Controller, ML Engine, and Seller:")
     add_img('docs/images/fig_swimlane.png', "Figure 2.3.1: Multi-Role Swimlane Activity Workflow", width=5.5)
@@ -658,7 +719,7 @@ def create_report():
     add_h2("3.2 Class Diagrams")
     add_h3("3.2.1 Relational Domain Entity Model")
     add_p("Figure 3.2.1 documents the primary domain entity classes, their internal member attributes, operations, and relational cardinalities:")
-    add_img('docs/images/fig_page_9_1.png', "Figure 3.2.1: UML Class Diagram — Relational Domain Entities", width=5.2)
+    add_img('docs/images/fig_page_9_1.png', "Figure 3.2.1: UML Class Diagram — Relational Domain Entities", width=4.2)
 
     add_h3("3.2.2 Service & Algorithmic Intelligence Architecture")
     add_p("Figure 3.2.2 models the service layer, including the Machine Learning PricePredictor, the multi-persona ChatbotEngine, the DuplicateDetector, and the EscrowFiduciaryService:")
@@ -667,7 +728,7 @@ def create_report():
     add_h2("3.3 Sequence Diagrams")
     add_h3("3.3.1 Sequence Scenario 1: Seller Intake & ML Barometer Valuation")
     add_p("Figure 3.3.1 illustrates the chronological sequence of interactions occurring during property submission, automated feature scaling, regression inference, and duplicate checking:")
-    add_img('docs/images/fig_page_10_1.png', "Figure 3.3.1: Sequence Diagram — Seller Intake & ML Barometer Valuation", width=5.0)
+    add_img('docs/images/fig_page_10_1.png', "Figure 3.3.1: Sequence Diagram — Seller Intake & ML Barometer Valuation", width=4.4)
 
     add_h3("3.3.2 Sequence Scenario 2: Buyer Negotiation & Escrow Settlement")
     add_p("Figure 3.3.2 illustrates the sequence of interactions connecting the buyer, conversation controller, appointment state machine, and multi-rail escrow checkout:")
@@ -892,6 +953,7 @@ def create_report():
         run_ref.font.name = 'Times New Roman'
         run_ref.font.size = Pt(10.5)
 
+    doc.add_page_break()
     add_h1("Appendices")
     add_h2("Appendix A: Technical Glossary")
     add_p("• ASGI (Asynchronous Server Gateway Interface): The spiritual successor to WSGI, providing a standard interface between async Python web servers and applications.")

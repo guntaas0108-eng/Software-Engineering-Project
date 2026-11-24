@@ -14,16 +14,18 @@ def save_fig(fig, filename):
 
 # ==================== 1. THAPAR LOGO ====================
 def gen_thapar_logo():
-    fig, ax = plt.subplots(figsize=(6, 3), dpi=200)
+    fig, ax = plt.subplots(figsize=(6, 2.5), dpi=200)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
     ax.axis('off')
     
     # Red background box / icon
     # Drawing stylized 'ti'
-    ax.text(0.5, 0.70, "ti", fontsize=58, fontweight='bold', color='#B81D24', ha='center', va='center', fontfamily='serif')
-    ax.plot([0.25, 0.75], [0.50, 0.50], color='#B81D24', lw=2)
-    ax.text(0.5, 0.38, "THAPAR INSTITUTE", fontsize=15, fontweight='bold', color='#1A1A1A', ha='center', va='center', fontfamily='serif')
-    ax.text(0.5, 0.25, "OF ENGINEERING & TECHNOLOGY", fontsize=12, fontweight='bold', color='#1A1A1A', ha='center', va='center', fontfamily='serif')
-    ax.text(0.5, 0.14, "(Deemed to be University)", fontsize=10, fontstyle='italic', color='#555555', ha='center', va='center', fontfamily='serif')
+    ax.text(0.5, 0.75, "ti", fontsize=52, fontweight='bold', color='#B81D24', ha='center', va='center', fontfamily='serif')
+    ax.plot([0.3, 0.7], [0.55, 0.55], color='#B81D24', lw=2.5)
+    ax.text(0.5, 0.42, "THAPAR INSTITUTE", fontsize=14, fontweight='bold', color='#1A1A1A', ha='center', va='center', fontfamily='serif')
+    ax.text(0.5, 0.28, "OF ENGINEERING & TECHNOLOGY", fontsize=11, fontweight='bold', color='#1A1A1A', ha='center', va='center', fontfamily='serif')
+    ax.text(0.5, 0.14, "(Deemed to be University)", fontsize=9, fontstyle='italic', color='#555555', ha='center', va='center', fontfamily='serif')
     
     save_fig(fig, 'thapar_logo.png')
 

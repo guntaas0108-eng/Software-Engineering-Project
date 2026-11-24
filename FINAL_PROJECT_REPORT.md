@@ -2,42 +2,48 @@
 
 **Course**: UCS503 / UCS503P — Software Engineering Lab  
 **Academic Institution**: Computer Science and Engineering Department, Thapar Institute of Engineering and Technology, Patiala  
-**Evaluator / Faculty Supervisor**: Sukhpal Singh  
+**Evaluator / Faculty Supervisor**: Anushka  
 **Laboratory Group**: Group 3C14  
 **Student Authors**:  
-- Guntaas Singh (Roll No. 1024030108)  
-- Haneesh (Roll No. 1024030112)  
-- Dhruv Rajput (Roll No. 1024030538)  
-- Atiksh Gupta (Roll No. 102303133)  
+- Guntaas Singh (Roll No. `1024030108`)  
+- Haneesh (Roll No. `1024030112`)  
+- Dhruv Rajput (Roll No. `1024030538`)  
+- Atiksh Gupta (Roll No. `102303133`)  
 **Academic Semester**: End-Semester Evaluation (November 2026)
 
 ---
 
-PropertyPulse: Curated Luxury Real Estate Marketplace, AI-Powered Valuation Barometer & Fiduciary Escrow Platform
+THAPAR INSTITUTE OF ENGINEERING AND TECHNOLOGY
 
-Final Project Report
+(Deemed to be University)
 
-Submitted for the End Semester Evaluation of
-UCS503 Software Engineering Lab
+DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING
+
+END-SEMESTER FINAL PROJECT REPORT
+
+UCS503 / UCS503P: SOFTWARE ENGINEERING LAB
+
+PROPERTYPULSE
+
+A Curated Luxury Real Estate Marketplace with Algorithmic AI Pricing Barometer and Fiduciary Escrow Settlement Platform
 
 Submitted by:
 
-Team PropertyPulse (Group 3C14)
+Guntaas Singh   —   Roll No: 1024030108
+Haneesh   —   Roll No: 1024030112
+Dhruv Rajput   —   Roll No: 1024030538
+Atiksh Gupta   —   Roll No: 102303133
 
-Guntaas Singh    —    Roll No: 1024030108
-Haneesh    —    Roll No: 1024030112
-Dhruv Rajput    —    Roll No: 1024030538
-Atiksh Gupta    —    Roll No: 102303133
-
-Class: 3C14    |    Programme: B.E. Computer Engineering (COE)    |    Semester: 5th
+Group: 3C14    |    Programme: B.E. Computer Engineering (COE)    |    Semester: 5th
 
 Submitted to:
 
-Sukhpal Singh
+Anushka
 
-COMPUTER SCIENCE AND ENGINEERING DEPARTMENT
-THAPAR INSTITUTE OF ENGINEERING AND TECHNOLOGY
-PATIALA 147004
+Faculty Evaluator
+Department of Computer Science and Engineering
+
+Thapar Institute of Engineering and Technology, Patiala 147004
 November 2026
 
 
@@ -52,177 +58,232 @@ Crucially, PropertyPulse enforces strict role-based operational segregation acro
 
 # Table of Contents
 
-1 Project Overview and Context ........ 4
+1 Project Overview and Context	4
 
-1.1 Software Bid and Selection .. 4
+1.1 Software Bid and Selection	4
 
-1.2 Problem Purpose and Objectives .. 4
+1.2 Problem Purpose and Objectives	4
 
-1.3 Scope and System Boundary .. 5
+1.3 Scope and System Boundary	5
 
-1.4 Product Perspective .............. 5
+1.4 Product Perspective	5
 
-1.5 Stakeholders and Users ........ 6
+1.5 Stakeholders and Users	6
 
-1.6 Operating Environment .......... 6
+1.6 Operating Environment	6
 
-1.7 Constraints .............................. 7
+1.7 Constraints	7
 
-1.8 Assumptions and Dependencies .. 7
+1.8 Assumptions and Dependencies	7
 
-1.9 Terminology and Report Guide .. 8
+1.9 Terminology and Report Guide	8
 
-2 Requirements and Analysis .............. 9
+2 Requirements and Analysis	9
 
-2.1 Functional Requirements ...... 9
+2.1 Functional Requirements	9
 
-2.2 Use Cases (Overview & Templates) .. 11
+2.2 Use Cases (Overview & Templates)	11
 
-2.3 User Stories and Story Cards .. 13
+2.3 User Stories and Story Cards	13
 
-2.4 Workflow and Data Flow Models (Activity, Swimlane, DFD Levels 0, 1, 2) .. 14
+2.4 Workflow and Data Flow Models (Activity, Swimlane, DFD Levels 0, 1, 2)	14
 
-2.5 External Interface Requirements .. 17
+2.5 External Interface Requirements	17
 
-2.6 Data Requirements .................. 18
+2.6 Data Requirements	18
 
-2.7 Quality and Operational Requirements .. 19
+2.7 Quality and Operational Requirements	19
 
-2.8 Business Rules ........................ 20
+2.8 Business Rules	20
 
-2.9 Priorities Acceptance and Traceability Matrix .. 21
+2.9 Priorities Acceptance and Traceability Matrix	21
 
-3 System Design ...................................... 22
+3 System Design	22
 
-3.1 Architecture and Design Decisions .. 22
+3.1 Architecture and Design Decisions	22
 
-3.2 Class Diagrams (Domain & Service Layer) .. 23
+3.2 Class Diagrams (Domain & Service Layer)	23
 
-3.3 Sequence Diagrams (Listing & Escrow Workflows) .. 25
+3.3 Sequence Diagrams (Listing & Escrow Workflows)	25
 
-3.4 Collaboration Diagrams (Tour Scheduling & Escrow Settlement) .. 27
+3.4 Collaboration Diagrams (Tour Scheduling & Escrow Settlement)	27
 
-3.5 State Chart Diagrams (Property Lifecycle & Escrow State Machine) .. 28
+3.5 State Chart Diagrams (Property Lifecycle & Escrow State Machine)	28
 
-4 Implementation and Delivery .......... 29
+4 Implementation and Delivery	29
 
-4.1 Component Diagram .................. 29
+4.1 Component Diagram	29
 
-4.2 Deployment Diagram ................ 30
+4.2 Deployment Diagram	30
 
-4.3 Frontend, Backend, and Interfaces .. 31
+4.3 Frontend, Backend, and Interfaces	31
 
-4.4 Database and Storage Design (Relational ER Model) .. 32
+4.4 Database and Storage Design (Relational ER Model)	32
 
-4.5 Screenshots and Evidence of Working Features .. 34
+4.5 Screenshots and Evidence of Working Features	34
 
-4.6 Build Configuration and Release .. 35
+4.6 Build Configuration and Release	35
 
-4.7 User Documentation and Access .. 36
+4.7 User Documentation and Access	36
 
-4.8 Iterations and Evolution Since Prototype .. 37
+4.8 Iterations and Evolution Since Prototype	37
 
-5 Testing and Validation .................... 38
+5 Testing and Validation	38
 
-5.1 Test Plan and Framework ...... 38
+5.1 Test Plan and Framework	38
 
-5.2 Test Cases (10 Distinct Cases) .. 38
+5.2 Test Cases (10 Distinct Cases)	38
 
-5.3 Test Execution Reports ........ 40
+5.3 Test Execution Reports	40
 
-5.4 Defects, Fixes, and Retesting .. 41
+5.4 Defects, Fixes, and Retesting	41
 
-5.5 Coverage and Traceability Acceptance .. 42
+5.5 Coverage and Traceability Acceptance	42
 
-6 Results and Conclusion .................... 43
+6 Results and Conclusion	43
 
-6.1 Results and Objective Evaluation .. 43
+6.1 Results and Objective Evaluation	43
 
-6.2 Challenges and Implemented Solutions .. 44
+6.2 Challenges and Implemented Solutions	44
 
-6.3 Limitations and Scalability Strategy .. 45
+6.3 Limitations and Scalability Strategy	45
 
-6.4 Individual Team Member Contributions .. 46
+6.4 Individual Team Member Contributions	46
 
-6.5 Conclusion and Lessons Learned .. 47
+6.5 Conclusion and Lessons Learned	47
 
-6.6 Future Scope and Enhancements .. 47
+6.6 Future Scope and Enhancements	47
 
-References ................................................ 48
+References	48
 
-Appendices (Glossary, API Reference, Revision History) .. 49
+Appendices (Glossary, API Reference, Revision History)	49
 
 
-## List of Figures
+# List of Figures
 
-*Figure 2.2.1: System UML Use Case Diagram .. 11*
 
+![Figure 2.2.1: System UML Use Case Diagram	11](docs/images/fig_page_8_1.jpeg)
 
-![Figure 2.4.1a: Activity Diagram — Buyer Lifecycle .. 14](docs/images/fig_page_6_1.png)
+*Figure 2.2.1: System UML Use Case Diagram	11*
 
-*Figure 2.4.1a: Activity Diagram — Buyer Lifecycle .. 14*
 
+![Figure 2.4.1a: Activity Diagram — Buyer Lifecycle	14](docs/images/fig_page_6_1.png)
 
-![Figure 2.4.1b: Activity Diagram — Seller Lifecycle with ML Validation .. 15](docs/images/fig_page_7_1.jpeg)
+*Figure 2.4.1a: Activity Diagram — Buyer Lifecycle	14*
 
-*Figure 2.4.1b: Activity Diagram — Seller Lifecycle with ML Validation .. 15*
 
+![Figure 2.4.1b: Activity Diagram — Seller Lifecycle with ML Validation	15](docs/images/fig_page_7_1.jpeg)
 
-![Figure 2.3.1: Multi-Role Swimlane Activity Workflow .. 15](docs/images/fig_page_8_1.jpeg)
+*Figure 2.4.1b: Activity Diagram — Seller Lifecycle with ML Validation	15*
 
-*Figure 2.3.1: Multi-Role Swimlane Activity Workflow .. 15*
 
+![Figure 2.3.1: Multi-Role Swimlane Activity Workflow	15](docs/images/fig_swimlane.png)
 
-![Figure 2.4.2: Data Flow Diagram (DFD Level 0 — Context Model) .. 16](docs/images/fig_swimlane.png)
+*Figure 2.3.1: Multi-Role Swimlane Activity Workflow	15*
 
-*Figure 2.4.2: Data Flow Diagram (DFD Level 0 — Context Model) .. 16*
 
-*Figure 2.4.3: Data Flow Diagram (DFD Level 1 — Functional Decompositions) .. 16*
+![Figure 2.4.2: Data Flow Diagram (DFD Level 0 — Context Model)	16](docs/images/fig_dfd_lvl0.png)
 
-*Figure 2.4.4: Data Flow Diagram (DFD Level 2 — Valuation & Escrow Sub-Processes) .. 17*
+*Figure 2.4.2: Data Flow Diagram (DFD Level 0 — Context Model)	16*
 
 
-![Figure 3.2.1: UML Class Diagram — Relational Domain Entities .. 23](docs/images/fig_page_10_1.png)
+![Figure 2.4.3: Data Flow Diagram (DFD Level 1 — Functional Decompositions)	16](docs/images/fig_dfd_lvl1.png)
 
-*Figure 3.2.1: UML Class Diagram — Relational Domain Entities .. 23*
+*Figure 2.4.3: Data Flow Diagram (DFD Level 1 — Functional Decompositions)	16*
 
 
-![Figure 3.2.2: Class Diagram — Service & Algorithmic Intelligence Architecture .. 24](docs/images/fig_page_11_1.jpeg)
+![Figure 2.4.4: Data Flow Diagram (DFD Level 2 — Valuation & Escrow Sub-Processes)	17](docs/images/fig_dfd_lvl2.png)
 
-*Figure 3.2.2: Class Diagram — Service & Algorithmic Intelligence Architecture .. 24*
+*Figure 2.4.4: Data Flow Diagram (DFD Level 2 — Valuation & Escrow Sub-Processes)	17*
 
 
-![Figure 3.3.1: Sequence Diagram — Seller Intake & ML Barometer Valuation .. 25](docs/images/fig_collab_appointment.png)
+![Figure 3.2.1: UML Class Diagram — Relational Domain Entities	23](docs/images/fig_page_9_1.png)
 
-*Figure 3.3.1: Sequence Diagram — Seller Intake & ML Barometer Valuation .. 25*
+*Figure 3.2.1: UML Class Diagram — Relational Domain Entities	23*
 
 
-![Figure 3.3.2: Sequence Diagram — Buyer Negotiation & Site Visit Booking .. 26](docs/images/fig_collab_escrow.png)
+![Figure 3.2.2: Class Diagram — Service & Algorithmic Intelligence Architecture	24](docs/images/fig_class_service.png)
 
-*Figure 3.3.2: Sequence Diagram — Buyer Negotiation & Site Visit Booking .. 26*
+*Figure 3.2.2: Class Diagram — Service & Algorithmic Intelligence Architecture	24*
 
 
-![Figure 3.4.1: Collaboration Diagram — Real-Time Site Tour Scheduling .. 27](docs/images/fig_state_property.png)
+![Figure 3.3.1: Sequence Diagram — Seller Intake & ML Barometer Valuation	25](docs/images/fig_page_10_1.png)
 
-*Figure 3.4.1: Collaboration Diagram — Real-Time Site Tour Scheduling .. 27*
+*Figure 3.3.1: Sequence Diagram — Seller Intake & ML Barometer Valuation	25*
 
 
-![Figure 3.4.2: Collaboration Diagram — Fiduciary Escrow Settlement & Dispute .. 27](docs/images/fig_state_escrow.png)
+![Figure 3.3.2: Sequence Diagram — Buyer Negotiation & Site Visit Booking	26](docs/images/fig_page_11_1.jpeg)
 
-*Figure 3.4.2: Collaboration Diagram — Fiduciary Escrow Settlement & Dispute .. 27*
+*Figure 3.3.2: Sequence Diagram — Buyer Negotiation & Site Visit Booking	26*
 
-*Figure 3.5.1: State Chart Diagram — Property Listing Lifecycle .. 28*
 
-*Figure 3.5.2: State Chart Diagram — Escrow Fiduciary Lifecycle .. 28*
+![Figure 3.4.1: Collaboration Diagram — Real-Time Site Tour Scheduling	27](docs/images/fig_collab_appointment.png)
 
-*Figure 4.1: UML Component Architecture Diagram .. 29*
+*Figure 3.4.1: Collaboration Diagram — Real-Time Site Tour Scheduling	27*
 
-*Figure 4.2: UML Deployment Architecture Diagram .. 30*
 
-*Figure 4.4: Relational Database Entity-Relationship (ER) Architecture .. 33*
+![Figure 3.4.2: Collaboration Diagram — Fiduciary Escrow Settlement & Dispute	27](docs/images/fig_collab_escrow.png)
 
+*Figure 3.4.2: Collaboration Diagram — Fiduciary Escrow Settlement & Dispute	27*
 
-## List of Tables
+
+![Figure 3.5.1: State Chart Diagram — Property Listing Lifecycle	28](docs/images/fig_state_property.png)
+
+*Figure 3.5.1: State Chart Diagram — Property Listing Lifecycle	28*
+
+
+![Figure 3.5.2: State Chart Diagram — Escrow Fiduciary Lifecycle	28](docs/images/fig_state_escrow.png)
+
+*Figure 3.5.2: State Chart Diagram — Escrow Fiduciary Lifecycle	28*
+
+
+![Figure 4.1: UML Component Architecture Diagram	29](docs/images/fig_component.png)
+
+*Figure 4.1: UML Component Architecture Diagram	29*
+
+
+![Figure 4.2: UML Deployment Architecture Diagram	30](docs/images/fig_deployment.png)
+
+*Figure 4.2: UML Deployment Architecture Diagram	30*
+
+
+![Figure 4.4: Relational Database Entity-Relationship (ER) Architecture	33](docs/images/fig_er_model.png)
+
+*Figure 4.4: Relational Database Entity-Relationship (ER) Architecture	33*
+
+
+# List of Tables
+
+
+| Abbreviation | Full Term / Definition |
+| --- | --- |
+| API | Application Programming Interface |
+| ASGI | Asynchronous Server Gateway Interface |
+| BHK | Bedroom, Hall, Kitchen |
+| CRUD | Create, Read, Update, Delete |
+| DFD | Data Flow Diagram |
+| EMI | Equated Monthly Installment |
+| ER | Entity-Relationship |
+| FIFO | First In, First Out |
+| FR | Functional Requirement |
+| HNI | High Net-Worth Individual |
+| KYC | Know Your Customer |
+| MAE | Mean Absolute Error |
+| ML | Machine Learning |
+| MSE | Mean Squared Error |
+| NFR | Non-Functional Requirement |
+| ORM | Object-Relational Mapping |
+| RERA | Real Estate Regulatory Authority |
+| SRS | Software Requirements Specification |
+| TIET | Thapar Institute of Engineering and Technology |
+| UHNW | Ultra High Net-Worth |
+| UML | Unified Modeling Language |
+| UPI | Unified Payments Interface |
+| URL | Uniform Resource Locator |
+| WAL | Write-Ahead Logging |
+| WSGI | Web Server Gateway Interface |
+
+*Table 1.1: Stakeholder Roles and Access Rights	6*
 
 
 | User Class | Primary Objectives | System Capabilities | Access Restrictions |
@@ -231,7 +292,7 @@ Appendices (Glossary, API Reference, Revision History) .. 49
 | Estate Proprietor (Seller) | Catalog luxury estates, calibrate asking prices, manage HNI inquiries. | Submit listings, review AI Barometer estimates, receive tour requests, confirm appointments, inspect escrow status. | Strictly prohibited from viewing buyer-only dashboards or accessing admin command center. |
 | Platform Administrator | Supervise marketplace health, resolve duplicate disputes, disburse escrow. | Oversee platform GMV, resolve flagged duplicates, execute bilateral escrow refunds, toggle KYC verification, suspend accounts. | Strictly prohibited from submitting property listings, maintaining separation of oversight and commerce. |
 
-*Table 1.1: Stakeholder Roles and Access Rights .. 6*
+*Table 2.1: Functional Requirements Specification	9*
 
 
 | ID & Feature | Inputs & Preconditions | Processing & Validation | Outputs & Exceptions |
@@ -252,7 +313,7 @@ Appendices (Glossary, API Reference, Revision History) .. 49
 | FR-14: KYC Accreditation Management | Administrator, user_id, action: toggle verification. | Verify admin credentials, invert is_verified boolean flag on UserProfile record. | Awards Gold Verified badge to legitimate sellers/buyers; revokes unverified status. |
 | FR-15: 1-Click Platform Health Audit | Administrator triggering automated diagnostic scan. | Aggregate price outliers (>1.8x y_hat), unverified sellers, duplicate flags, pending escrows. | Renders real-time diagnostic alert banner with system health metrics. |
 
-*Table 2.1: Functional Requirements Specification .. 9*
+*Table 2.3: User Story Story Cards & Acceptance Criteria	13*
 
 
 | Story ID & Persona | User Story Statement | Business Value / Rationale | Acceptance Criteria |
@@ -263,7 +324,7 @@ Appendices (Glossary, API Reference, Revision History) .. 49
 | US-04<br>(Proprietor & Buyer) | As a negotiating party, I want direct in-app messaging paired with tour scheduling, so that we can agree on inspection dates without leaking phone numbers. | Prevents broker hijacking, keeps communication context linked to the estate, reduces friction. | 1. Real-time WebSocket dispatches with unread indicators.<br>2. Tour scheduling lifecycle (Request -> Confirm -> Decline).<br>3. Tracks Time-to-Appointment metric. |
 | US-05<br>(Platform Admin) | As the platform administrator, I want an executive Command Center to resolve duplicate listings and escrow disputes, so that I maintain marketplace trust. | Protects platform integrity from fraudulent brokers and safeguards buyer capital. | 1. Sovereign Command Center accessible only to staff/admin.<br>2. 1-click duplicate resolution (Approve/De-list/Expunge).<br>3. Bilateral escrow dispute override (Force Refund/Disburse). |
 
-*Table 2.3: User Story Story Cards & Acceptance Criteria .. 13*
+*Table 2.7: Non-Functional Quality Requirements	19*
 
 
 | Identifier & Category | Measurable Requirement | Verification Method |
@@ -277,7 +338,7 @@ Appendices (Glossary, API Reference, Revision History) .. 49
 | NFR-07: Usability & Ergonomics | Critical user actions (Chat, Book Tour, Escrow) achievable within <= 3 clicks from listing. | Empirical user task completion walkthroughs. |
 | NFR-08: Cross-Browser Portability | Identical visual rendering across Chrome, Firefox, Safari, and Edge on desktop and mobile. | Cross-browser automated visual regression checks. |
 
-*Table 2.7: Non-Functional Quality Requirements .. 19*
+*Table 2.9: Requirements Traceability Matrix	21*
 
 
 | FR ID | Priority | Design Artifact | Code Module | Test Case ID |
@@ -292,7 +353,7 @@ Appendices (Glossary, API Reference, Revision History) .. 49
 | FR-10 | P0 | Seq Fig 3.3.2 | payments/views.py, models.py | TC-09 |
 | FR-12 | P0 | Collab Fig 3.4.2 | accounts/views.py | TC-10 |
 
-*Table 2.9: Requirements Traceability Matrix .. 21*
+*Table 4.4: Relational Database Schema & Data Dictionary	33*
 
 
 | Table Name | Field Name | Data Type & Constraints | Description / Relationship |
@@ -306,7 +367,7 @@ Appendices (Glossary, API Reference, Revision History) .. 49
 | chat_appointment | id, conversation_id, requested_by_id, status, scheduled_for, confirmed_at | INTEGER PK, FK(chat_conversation), FK(auth_user), VARCHAR(10), DATETIME, DATETIME NULL | VIP site visit appointment record with state machine transitions (REQUESTED, CONFIRMED, DECLINED). |
 | payments_payment | id, public_id, estate_id, buyer_id, amount_paise, status, payment_method, invoice_number | INTEGER PK, UUID UNIQUE, FK(properties_property), FK(auth_user), BIGINT, VARCHAR(10), VARCHAR(20), VARCHAR(50) | Fiduciary escrow transaction record storing monetary sums in paise and invoice references. |
 
-*Table 4.4: Relational Database Schema & Data Dictionary .. 33*
+*Table 4.7: System Test Accounts and Credentials	36*
 
 
 | Role Classification | Username | Password | Designated Testing Focus |
@@ -316,7 +377,7 @@ Appendices (Glossary, API Reference, Revision History) .. 49
 | Accredited Buyer | guntaas2006 | guntaas123 | Verify access to Saved Residences, Escrow Ledger, and Estate Concierge AI. Listing properties is strictly blocked. |
 | Accredited Buyer (Peer) | buyer1 | buyer123 | Verify multi-party negotiation chat, tour scheduling, and peer appointment requests. |
 
-*Table 4.7: System Test Accounts and Credentials .. 36*
+*Table 5.2: Comprehensive Verification Test Cases	38*
 
 
 | Test ID | Requirement Link | Preconditions & Inputs | Execution Steps | Expected vs Actual Result |
@@ -332,7 +393,7 @@ Appendices (Glossary, API Reference, Revision History) .. 49
 | TC-09 | FR-10, FR-11 | Buyer commits Rs. 10,000 escrow token via Card rail. | 1. POST /payments/checkout/<br>2. Simulate webhook signature. | Expected: Status PAID, receipt minted.<br>Actual: Paid in Fiduciary trust. PASS. |
 | TC-10 | FR-12, BR-03 | Buyer escalates dispute. Admin authorizes bilateral refund. | 1. Admin posts refund action<br>2. Verify status and notes. | Expected: Status REFUNDED, capital returned.<br>Actual: Refunded, audit logged. PASS. |
 
-*Table 5.2: Comprehensive Verification Test Cases .. 38*
+*Table 5.3: Test Execution Summary	40*
 
 
 | Defect ID & Symptom | Root Cause Analysis | Engineering Fix Implemented | Retest Verification |
@@ -342,62 +403,12 @@ Appendices (Glossary, API Reference, Revision History) .. 49
 | DEF-03: Non-Seller Listing Access | Buyers and Admins saw '+ List Estate' in navbar and could reach submit form by URL. | Added is_seller template conditions and @login_required role guards in submit_property view. | Verified Admin and Buyer receive 302 redirect + access denied alert. PASS. |
 | DEF-04: Floating-Point Rounding in Escrow | Direct Python float arithmetic in payment calculations risked minor fractional cent errors. | Migrated all monetary values to 64-bit integer paise (1 INR = 100 paise) and Decimal objects. | Verified exact balance reconciliations across refunds and disbursements. PASS. |
 
-*Table 5.3: Test Execution Summary .. 40*
-
-*Table 5.4: Defect Tracking and Retest Verification .. 41*
+*Table 5.4: Defect Tracking and Retest Verification	41*
 
 
-## List of Abbreviations
+# List of Abbreviations
 
-API      : Application Programming Interface
-
-ASGI     : Asynchronous Server Gateway Interface
-
-BHK      : Bedroom, Hall, Kitchen
-
-CRUD     : Create, Read, Update, Delete
-
-DFD      : Data Flow Diagram
-
-EMI      : Equated Monthly Installment
-
-ER       : Entity-Relationship
-
-FIFO     : First In, First Out
-
-FR       : Functional Requirement
-
-HNI      : High Net-Worth Individual
-
-KYC      : Know Your Customer
-
-MAE      : Mean Absolute Error
-
-ML       : Machine Learning
-
-MSE      : Mean Squared Error
-
-NFR      : Non-Functional Requirement
-
-ORM      : Object-Relational Mapping
-
-RERA     : Real Estate Regulatory Authority
-
-SRS      : Software Requirements Specification
-
-TIET     : Thapar Institute of Engineering and Technology
-
-UHNW     : Ultra High Net-Worth
-
-UML      : Unified Modeling Language
-
-UPI      : Unified Payments Interface
-
-URL      : Uniform Resource Locator
-
-WAL      : Write-Ahead Logging
-
-WSGI     : Web Server Gateway Interface
+*Table 0.1: Engineering Acronyms and Technical Abbreviations*
 
 
 # 1 Project Overview and Context
@@ -501,6 +512,9 @@ The functional requirements specify the complete behavioral envelope of Property
 
 The system Use Case diagram illustrates the behavioral boundary between the three primary actors (Accredited Buyer, Estate Proprietor, and Platform Administrator) and the external Payment Gateway:
 
+
+![Figure 2.2.1: System UML Use Case Diagram](docs/images/fig_page_8_1.jpeg)
+
 *Figure 2.2.1: System UML Use Case Diagram*
 
 
@@ -583,7 +597,7 @@ System workflows are modeled to demonstrate operational transitions across users
 To illustrate multi-party concurrency, Figure 2.3.1 displays the cross-functional swimlane workflow partitioned across Buyer, Controller, ML Engine, and Seller:
 
 
-![Figure 2.3.1: Multi-Role Swimlane Activity Workflow](docs/images/fig_page_8_1.jpeg)
+![Figure 2.3.1: Multi-Role Swimlane Activity Workflow](docs/images/fig_swimlane.png)
 
 *Figure 2.3.1: Multi-Role Swimlane Activity Workflow*
 
@@ -593,7 +607,7 @@ To illustrate multi-party concurrency, Figure 2.3.1 displays the cross-functiona
 The DFD Level 0 model establishes the absolute system boundary, mapping all information exchanges between PropertyPulse and external entities:
 
 
-![Figure 2.4.2: Data Flow Diagram (DFD Level 0 — Context Model)](docs/images/fig_swimlane.png)
+![Figure 2.4.2: Data Flow Diagram (DFD Level 0 — Context Model)](docs/images/fig_dfd_lvl0.png)
 
 *Figure 2.4.2: Data Flow Diagram (DFD Level 0 — Context Model)*
 
@@ -602,12 +616,18 @@ The DFD Level 0 model establishes the absolute system boundary, mapping all info
 
 The DFD Level 1 model decomposes the central application into five core subsystems interacting with four persistent relational data stores:
 
+
+![Figure 2.4.3: Data Flow Diagram (DFD Level 1 — Functional Decompositions)](docs/images/fig_dfd_lvl1.png)
+
 *Figure 2.4.3: Data Flow Diagram (DFD Level 1 — Functional Decompositions)*
 
 
 ### 2.4.4 Data Flow Diagram (DFD Level 2 — Sub-Process Decomposition)
 
 The DFD Level 2 model provides deep mathematical decomposition of Process 2.0 (Valuation Pipeline) and Process 4.0 (Escrow Fiduciary Engine):
+
+
+![Figure 2.4.4: Data Flow Diagram (DFD Level 2 — Valuation & Escrow Sub-Processes)](docs/images/fig_dfd_lvl2.png)
 
 *Figure 2.4.4: Data Flow Diagram (DFD Level 2 — Valuation & Escrow Sub-Processes)*
 
@@ -671,7 +691,7 @@ Trade-off Evaluation: While microservice architectures offer distributed scaling
 *Figure 3.2.1 documents the primary domain entity classes, their internal member attributes, operations, and relational cardinalities:*
 
 
-![Figure 3.2.1: UML Class Diagram — Relational Domain Entities](docs/images/fig_page_10_1.png)
+![Figure 3.2.1: UML Class Diagram — Relational Domain Entities](docs/images/fig_page_9_1.png)
 
 *Figure 3.2.1: UML Class Diagram — Relational Domain Entities*
 
@@ -681,7 +701,7 @@ Trade-off Evaluation: While microservice architectures offer distributed scaling
 *Figure 3.2.2 models the service layer, including the Machine Learning PricePredictor, the multi-persona ChatbotEngine, the DuplicateDetector, and the EscrowFiduciaryService:*
 
 
-![Figure 3.2.2: Class Diagram — Service & Algorithmic Intelligence Architecture](docs/images/fig_page_11_1.jpeg)
+![Figure 3.2.2: Class Diagram — Service & Algorithmic Intelligence Architecture](docs/images/fig_class_service.png)
 
 *Figure 3.2.2: Class Diagram — Service & Algorithmic Intelligence Architecture*
 
@@ -694,7 +714,7 @@ Trade-off Evaluation: While microservice architectures offer distributed scaling
 *Figure 3.3.1 illustrates the chronological sequence of interactions occurring during property submission, automated feature scaling, regression inference, and duplicate checking:*
 
 
-![Figure 3.3.1: Sequence Diagram — Seller Intake & ML Barometer Valuation](docs/images/fig_collab_appointment.png)
+![Figure 3.3.1: Sequence Diagram — Seller Intake & ML Barometer Valuation](docs/images/fig_page_10_1.png)
 
 *Figure 3.3.1: Sequence Diagram — Seller Intake & ML Barometer Valuation*
 
@@ -704,7 +724,7 @@ Trade-off Evaluation: While microservice architectures offer distributed scaling
 *Figure 3.3.2 illustrates the sequence of interactions connecting the buyer, conversation controller, appointment state machine, and multi-rail escrow checkout:*
 
 
-![Figure 3.3.2: Sequence Diagram — Buyer Negotiation & Site Visit Booking](docs/images/fig_collab_escrow.png)
+![Figure 3.3.2: Sequence Diagram — Buyer Negotiation & Site Visit Booking](docs/images/fig_page_11_1.jpeg)
 
 *Figure 3.3.2: Sequence Diagram — Buyer Negotiation & Site Visit Booking*
 
@@ -717,7 +737,7 @@ Trade-off Evaluation: While microservice architectures offer distributed scaling
 *Figure 3.4.1 models the structural relationships and numbered message dispatches coordinating site tour requests, status transitions, and peer notification alerts:*
 
 
-![Figure 3.4.1: Collaboration Diagram — Real-Time Site Tour Scheduling](docs/images/fig_state_property.png)
+![Figure 3.4.1: Collaboration Diagram — Real-Time Site Tour Scheduling](docs/images/fig_collab_appointment.png)
 
 *Figure 3.4.1: Collaboration Diagram — Real-Time Site Tour Scheduling*
 
@@ -727,7 +747,7 @@ Trade-off Evaluation: While microservice architectures offer distributed scaling
 *Figure 3.4.2 depicts the structural message flows governing buyer token commitment, gateway verification, fiduciary trust locking, and administrator dispute intervention:*
 
 
-![Figure 3.4.2: Collaboration Diagram — Fiduciary Escrow Settlement & Dispute](docs/images/fig_state_escrow.png)
+![Figure 3.4.2: Collaboration Diagram — Fiduciary Escrow Settlement & Dispute](docs/images/fig_collab_escrow.png)
 
 *Figure 3.4.2: Collaboration Diagram — Fiduciary Escrow Settlement & Dispute*
 
@@ -739,12 +759,18 @@ Trade-off Evaluation: While microservice architectures offer distributed scaling
 
 *Figure 3.5.1 models the complete state transition graph of a property listing from initial draft intake through active public discovery, duplicate dispute hold, and administrative suspension:*
 
+
+![Figure 3.5.1: State Chart Diagram — Property Listing Lifecycle](docs/images/fig_state_property.png)
+
 *Figure 3.5.1: State Chart Diagram — Property Listing Lifecycle*
 
 
 ### 3.5.2 Escrow Fiduciary State Machine
 
 *Figure 3.5.2 models the lifecycle of an escrow transaction, from checkout intent generation to fiduciary trust lock, inspection clearance, and bilateral dispute refund:*
+
+
+![Figure 3.5.2: State Chart Diagram — Escrow Fiduciary Lifecycle](docs/images/fig_state_escrow.png)
 
 *Figure 3.5.2: State Chart Diagram — Escrow Fiduciary Lifecycle*
 
@@ -756,12 +782,18 @@ Trade-off Evaluation: While microservice architectures offer distributed scaling
 
 The component architecture diagram illustrates the structural packaging of the codebase, highlighting clear decoupling between the Presentation components, the Django core application controllers, the asynchronous ASGI routing layer, the Machine Learning prediction module, and the relational persistence engine:
 
+
+![Figure 4.1: UML Component Architecture Diagram](docs/images/fig_component.png)
+
 *Figure 4.1: UML Component Architecture Diagram*
 
 
 ## 4.2 Deployment Diagram
 
 *Figure 4.2 models the physical runtime deployment architecture, depicting the client workstation executing modern web browsers, the application host server running the Daphne ASGI process on TCP port 8000, and the storage subsystem managing the SQLite database and media assets:*
+
+
+![Figure 4.2: UML Deployment Architecture Diagram](docs/images/fig_deployment.png)
 
 *Figure 4.2: UML Deployment Architecture Diagram*
 
@@ -786,6 +818,9 @@ The component architecture diagram illustrates the structural packaging of the c
 ## 4.4 Database and Storage Design
 
 *Figure 4.4 details the Entity-Relationship architecture governing the persistence layer:*
+
+
+![Figure 4.4: Relational Database Entity-Relationship (ER) Architecture](docs/images/fig_er_model.png)
 
 *Figure 4.4: Relational Database Entity-Relationship (ER) Architecture*
 
