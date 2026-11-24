@@ -16,9 +16,15 @@ load_dotenv(BASE_DIR / ".env")
 # --------------------------------------------------------------------------
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-key-change-me")
 DEBUG = os.getenv("DJANGO_DEBUG", "True") == "True"
-ALLOWED_HOSTS = [h.strip() for h in os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",") if h.strip()]
-if "testserver" not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append("testserver")
+ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.trycloudflare.com",
+    "https://*.onrender.com",
+    "https://*.railway.app",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://172.17.132.196:8000",
+]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
