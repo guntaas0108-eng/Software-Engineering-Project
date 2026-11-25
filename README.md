@@ -42,8 +42,8 @@
 | **Institution:** | Thapar Institute of Engineering and Technology, Patiala, Punjab |
 | **Course Instructor / Evaluator:** | **Ms. Anushka** |
 | **Academic Class / Group:** | **3C14**, BE Third Year, Computer Engineering (COE) |
-| **Evaluation Milestone:** | Software Requirements Specification (SRS) & Milestone Review |
-| **Document Release:** | **Version 1.0 (October 2026)** |
+| **Evaluation Milestone:** | **Final Project Evaluation & Laboratory Capstone Presentation** |
+| **Document Release:** | **Version 2.0 (November 2026 - Production Release)** |
 
 ---
 
@@ -62,6 +62,7 @@
 
 The repository maintains full software engineering artifacts compliant with IEEE/course requirements:
 
+- 📘 [**Team Engineering Journals (Weeks 1 – 11)**](journals/README.md): **Complete weekly engineering journals across all 11 weeks for all 4 team members (44 verified individual entries with full task breakdowns, code diffs, and sprint outcomes).**
 - 🌟 [**Comprehensive Platform & Feature Guide (CHANGES_AND_FEATURES_GUIDE.md)**](CHANGES_AND_FEATURES_GUIDE.md): **Complete breakdown of the November 2026 Production Release — Emerald & Gold luxury redesign, strictly segregated Buyer vs. Seller AI assistants, Sovereign Administrator Command Center, Escrow custody rails, and login credentials.**
 - 📕 [**Official Software Requirements Specification (SRS.pdf)**](SRS.pdf) *(or view in [docs/SRS.pdf](docs/SRS.pdf))*: Complete 16-page compiled academic document with cover page, Table of Contents, and high-resolution UML diagrams matching TIET course requirements.
 - 📑 [**Software Requirements Specification (Markdown)**](SRS.md) *(or view in [docs/SRS.md](docs/SRS.md))*: Formal specification covering scope, user classes, functional & non-functional requirements, UML diagrams (Use Case, Class, Activity, Sequence), and mathematical models.
@@ -72,7 +73,6 @@ The repository maintains full software engineering artifacts compliant with IEEE
 - 📑 [**REST API Documentation**](docs/api-reference.md): Endpoints, JSON payloads, response formats, and error handling.
 - 📑 [**Machine Learning Formulation**](docs/ml-model.md): Multiple Linear Regression derivations, residual metrics, and synthetic seed datasets.
 - 📑 [**Evaluation & Performance Metrics**](docs/evaluation-metrics.md): Time-to-Appointment attribution and measurement criteria.
-- 📘 [**Team Engineering Journals**](journals/README.md): Individual student development logs for Sprints 1 through 5 (Weeks 1 to 7).
 
 ---
 

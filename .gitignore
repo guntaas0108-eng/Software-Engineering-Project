@@ -13,4 +13,6 @@ node_modules/
 .env
 *.env
 *.zip
+*.log
+cloudflared.log
 

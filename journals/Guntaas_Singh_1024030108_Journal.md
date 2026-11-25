@@ -1,4 +1,4 @@
-# Weekly Engineering Journal (7 Weeks)
+# Weekly Engineering Journal (Weeks 1 – 11)
 
 **Student Name:** Guntaas Singh  
 **Roll Number:** 1024030108  
@@ -177,3 +177,129 @@ The project package contains a backend foundation for storing payment informatio
 Payment processing needs persistent transaction records and server-side validation. A database model and order endpoint alone do not complete the buyer checkout experience.
 
 ---
+
+---
+
+# Week 8 Journal — Sprint 5: Payment Backend & Seller Integration
+
+## Student
+Guntaas Singh — Person 2: Backend, Database & Seller Module
+
+## Objective
+Take a larger backend ownership role in Sprint 5 by connecting the payment foundation with existing property and seller records while preserving seller-side listing operations and ownership rules.
+
+## Work Done
+- Reviewed the `Payment` model and its relationships with the buyer, property/estate and appointment records.
+- Reviewed the payment status lifecycle (`CREATED`, `PAID`, `FAILED`, `CANCELLED` and `REFUNDED`) and the provider order/payment identifiers stored for reconciliation.
+- Examined how payment records should be associated with the correct authenticated buyer and the relevant property or appointment.
+- Reviewed seller property creation, editing, deletion and listing-status operations to identify regression risks from payment integration.
+- Prepared backend checks to prevent a buyer from creating a payment against a property they do not have permission to access.
+- Coordinated with Atiksh on the order-creation and verification service boundaries, and with Dhruv on the data required by buyer checkout screens.
+
+## Outcome
+The backend integration responsibilities and data relationships between payments, buyers, properties and appointments are documented for Sprint 5. The complete checkout lifecycle still requires local Django and Razorpay sandbox verification.
+
+## Issues / Follow-up
+- Verify payment migrations on a clean database and on a database containing existing property records.
+- Confirm that the amount and currency are calculated and validated on the server.
+- Test seller property CRUD after payment migrations are applied.
+- Ensure payment status changes cannot be made by an ordinary seller or buyer through an unprotected endpoint.
+- Review deletion behavior so payment history is retained appropriately when a property or appointment changes.
+
+## Learning
+I learned that payment records must be linked to trusted database objects and authenticated users. Backend ownership checks are essential because the browser must not decide which property or amount is being paid for.
+
+---
+
+# Week 9 Journal — Sprint 5: Backend Integrity & Appointment Linking
+
+## Student
+Guntaas Singh — Person 2: Backend, Database & Seller Module
+
+## Objective
+Strengthen database integrity across property listings, appointments and payment records, with additional responsibility for seller-side appointment and inquiry workflows.
+
+## Work Done
+- Reviewed the relationships between `Property`, buyer/seller accounts, conversations, appointments and payment records.
+- Examined appointment status transitions and the event-history records used to retain a history of status changes.
+- Prepared validation checks for appointment ownership, property ownership, future appointment dates and permitted status transitions.
+- Reviewed how appointment-related payments should reference the correct appointment and buyer without creating duplicate or orphaned records.
+- Checked seller dashboard requirements for incoming inquiries, appointment requests and property-specific activity.
+- Coordinated with Haneesh on validation of property input fields used by the ML predictor, so invalid area or property attributes are rejected before prediction.
+- Coordinated with Atiksh on transaction-state updates and the need for server-side verification before a payment is marked successful.
+
+## Outcome
+The database-integrity and seller/appointment integration scope is defined. The relationships and state transitions require verification through migrations and tests in the running Django application.
+
+## Issues / Follow-up
+- Test buyer-to-seller appointment creation and seller confirmation/rejection using separate accounts.
+- Verify that unrelated users cannot view or change another user's appointment or payment.
+- Check duplicate appointment and duplicate payment handling under repeated requests.
+- Confirm database constraints and transaction handling for concurrent checkout or appointment updates.
+- Record migration and test output rather than assuming that schema changes are applied.
+
+## Learning
+I learned that related workflows need consistent ownership and state rules. A payment, appointment and property must remain linked to the correct users and records throughout their lifecycle.
+
+---
+
+# Week 10 Journal — Sprint 5: Database, Admin & Seller Operations
+
+## Student
+Guntaas Singh — Person 2: Backend, Database & Seller Module
+
+## Objective
+Take a larger role in backend quality by reviewing database constraints, seller operations, admin data visibility and the reliability of payment-related records.
+
+## Work Done
+- Reviewed the database schema and migrations for accounts, properties, chat/appointments and payments.
+- Checked important relationships, deletion behavior, nullable references and uniqueness requirements for transaction identifiers.
+- Reviewed seller-facing property operations to ensure that only the listing owner or an authorized administrator can edit, archive or delete a listing.
+- Examined the data needed by admin screens to review users, properties, appointments and payment status.
+- Prepared checks for consistent payment amount storage in paise and display conversion to rupees.
+- Coordinated with Atiksh on which payment fields should be read-only in admin and which status changes must be performed only through verified backend workflows.
+- Coordinated with Haneesh to ensure database changes do not alter the model feature names or stored predicted-price field.
+
+## Outcome
+A database and seller-operations review checklist is prepared for the final Sprint 5 integration. Admin visibility and record integrity should be considered complete only after role-based access and CRUD behavior are tested.
+
+## Issues / Follow-up
+- Run `makemigrations --check`, `migrate` and the relevant Django tests.
+- Verify that payment identifiers cannot be duplicated where uniqueness is required.
+- Test seller ownership restrictions and admin permissions with separate user roles.
+- Confirm that payment history remains auditable after a listing is marked sold or archived.
+- Check query behavior for seller dashboards and avoid unnecessary repeated database queries.
+
+## Learning
+I learned that database integrity and admin permissions are part of the business logic. A correct-looking dashboard is not sufficient unless the underlying records and allowed state transitions are protected.
+
+---
+
+# Week 11 Journal — Sprint 5: Backend Release & Deployment Readiness
+
+## Student
+Guntaas Singh — Person 2: Backend, Database & Seller Module
+
+## Objective
+Prepare the backend and database layer for the final project release by consolidating seller, property, appointment and payment integration checks and documenting the remaining deployment requirements.
+
+## Work Done
+- Reviewed the backend setup instructions and the required environment variables for local and production execution.
+- Prepared a final migration review covering all Django applications and the order in which schema changes should be applied.
+- Reviewed production database configuration and identified the need to use environment-based database credentials rather than committing secrets.
+- Checked that seller and property operations remain compatible with the payment and appointment relationships.
+- Prepared a backend smoke-test sequence covering registration/login, seller listing CRUD, buyer property browsing, appointment creation and payment-record access.
+- Coordinated with Haneesh on the final ML feature contract and with Atiksh on test evidence, payment verification and release documentation.
+
+## Outcome
+The backend release checklist and local smoke-test sequence are prepared. Deployment readiness remains conditional on successful migration, runtime, authorization and integration tests in the target environment.
+
+## Issues / Follow-up
+- Apply migrations and run Django checks in the release environment.
+- Verify PostgreSQL configuration if PostgreSQL is selected for production.
+- Confirm media uploads and static files are configured separately.
+- Test buyer/seller role permissions and payment/appointment access restrictions.
+- Record actual CI and runtime test results before signing off the backend.
+
+## Learning
+I learned that a release-ready backend needs repeatable migrations, environment-based configuration, consistent authorization and evidence from integrated tests.

@@ -1,4 +1,4 @@
-# Weekly Engineering Journal (7 Weeks)
+# Weekly Engineering Journal (Weeks 1 – 11)
 
 **Student Name:** Dhruv Rajput  
 **Roll Number:** 1024030538  
@@ -179,3 +179,127 @@ The buyer-facing payment UI requirements have been outlined. The checkout and pa
 A payment interface must communicate each possible result clearly and rely on server-verified payment status rather than trusting the browser alone.
 
 ---
+
+---
+
+# Week 8 Journal — Sprint 5: Buyer Checkout Interface
+
+## Student
+Dhruv Rajput — Person 3: Frontend, Buyer & Buyer Barometer
+
+## Objective
+Move the buyer-facing payment interface from planning into implementation by connecting the checkout experience to the payment backend while preserving the existing property discovery and Buyer Barometer experience.
+
+## Work Done
+- Reviewed the buyer journey from property details to a payment action and identified the information required before checkout.
+- Prepared the checkout interface states for a pending order, payment initiation, successful verification, failed payment and user cancellation.
+- Reviewed how property title, buyer-facing amount, payment type and transaction status should be presented.
+- Coordinated with Guntaas to align the checkout form with the server-side payment and property identifiers.
+- Coordinated with Atiksh to ensure the UI displays success only after the backend confirms the verified payment status.
+- Kept search, property details, saved properties and Buyer Barometer pages in the regression checklist.
+
+## Outcome
+The buyer checkout interface requirements and backend integration points are defined for implementation. The browser flow must not be considered complete until it is tested with Razorpay test credentials and server-verified status.
+
+## Issues / Follow-up
+- Connect the checkout button to the order-creation endpoint.
+- Display clear pending, success, failure and cancellation messages.
+- Avoid trusting client-submitted amounts or payment-success flags.
+- Test checkout navigation on desktop and mobile-sized screens.
+- Re-test existing buyer browsing, filtering and saved-property pages.
+
+## Learning
+I learned that a payment UI must clearly communicate the payment state while relying on the backend as the source of truth.
+
+---
+
+# Week 9 Journal — Sprint 5: Buyer Dashboard & Payment Status
+
+## Student
+Dhruv Rajput — Person 3: Frontend, Buyer & Buyer Barometer
+
+## Objective
+Improve the buyer dashboard so users can understand their saved properties, appointment requests and payment history without confusing pending payments with completed transactions.
+
+## Work Done
+- Reviewed the buyer dashboard sections that display saved listings, appointments and property-related actions.
+- Prepared a consistent payment-status presentation for pending, paid, failed, cancelled and refunded transactions.
+- Reviewed the information required on a payment result/receipt view, including reference number, amount, currency, property or appointment context and date.
+- Coordinated with Guntaas on the buyer-specific records returned by the backend.
+- Coordinated with Atiksh on the status values and receipt access rules so the frontend uses the server's verified payment state.
+- Included regression checks for the Buyer Barometer labels and the property detail valuation display.
+
+## Outcome
+The buyer-facing status and dashboard requirements are documented for integration. Receipt and transaction displays remain subject to backend permissions and actual payment verification.
+
+## Issues / Follow-up
+- Connect dashboard cards to real buyer-specific database records.
+- Ensure failed or cancelled attempts are not displayed as successful payments.
+- Test that one buyer cannot view another buyer's receipt or appointment details.
+- Verify empty states when the buyer has no saved properties, appointments or payments.
+- Confirm that displayed valuation and payment amounts use consistent currency formatting.
+
+## Learning
+I learned that dashboards should represent the true state of backend records and handle empty or failed states as carefully as successful ones.
+
+---
+
+# Week 10 Journal — Sprint 5: Buyer Barometer & Responsive Regression
+
+## Student
+Dhruv Rajput — Person 3: Frontend, Buyer & Buyer Barometer
+
+## Objective
+Take additional responsibility for buyer experience regression testing while completing the buyer-facing payment and property information screens.
+
+## Work Done
+- Reviewed Buyer Barometer states for Great Deal, Fair Price, Above Market and Pending Analysis.
+- Checked that the displayed comparison uses the property's listed price and available predicted price rather than a hardcoded frontend value.
+- Reviewed responsive layouts for property cards, property details, saved properties, checkout and payment result screens.
+- Prepared UI checks for long locality names, missing property images, unavailable predicted valuations and empty search results.
+- Coordinated with Haneesh to keep the ML valuation explanation consistent with the model's actual output and documented limitations.
+- Coordinated with Guntaas to verify that buyer pages consume the correct property, appointment and payment records.
+
+## Outcome
+The buyer-facing regression checklist covers the main discovery, valuation and payment states. Visual and functional acceptance still requires browser testing against the running application.
+
+## Issues / Follow-up
+- Test the buyer flow at desktop and mobile viewport sizes.
+- Confirm that missing ML predictions display a pending/unavailable state rather than a fabricated price.
+- Check search and filter combinations, saved-property actions and navigation back to property details.
+- Verify that payment result screens refresh from backend status.
+- Record screenshots or test evidence only after the actual browser checks are performed.
+
+## Learning
+I learned that frontend quality depends on correct data states as much as visual layout. A clear unavailable state is better than displaying a misleading value.
+
+---
+
+# Week 11 Journal — Sprint 5: Buyer Release Acceptance
+
+## Student
+Dhruv Rajput — Person 3: Frontend, Buyer & Buyer Barometer
+
+## Objective
+Prepare the buyer-facing portion of PropertyPulse for the final demonstration by reviewing the complete buyer journey and documenting release acceptance checks.
+
+## Work Done
+- Prepared an end-to-end buyer journey covering registration/login, property search, property details, saved listings, seller contact, appointment request and checkout.
+- Reviewed the payment result and receipt presentation for clarity and consistency with backend status.
+- Checked that Buyer Barometer explanations do not describe R² or other regression metrics as a percentage accuracy claim.
+- Prepared acceptance checks for empty states, validation messages, failed requests and unauthorized access responses.
+- Coordinated with Guntaas and Atiksh on buyer-to-backend integration and with Haneesh on the displayed ML valuation and model limitations.
+- Documented remaining browser checks that require the integrated local application and test payment credentials.
+
+## Outcome
+The buyer release acceptance sequence is documented. The buyer module should be signed off only after the complete flow is exercised with a real test buyer account and the resulting backend records are checked.
+
+## Issues / Follow-up
+- Execute the full buyer journey using a separate buyer account.
+- Verify checkout and receipt states using Razorpay test mode.
+- Confirm that saved-property and appointment data remain private to the logged-in buyer.
+- Re-test responsive layout and major navigation links.
+- Report any remaining UI defects with the page, steps and observed result.
+
+## Learning
+I learned that acceptance testing should follow the user's complete journey rather than checking each page in isolation.

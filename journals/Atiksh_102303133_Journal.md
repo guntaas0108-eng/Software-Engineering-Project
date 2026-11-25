@@ -1,4 +1,4 @@
-# Weekly Engineering Journal (7 Weeks)
+# Weekly Engineering Journal (Weeks 1 – 11)
 
 **Student Name:** Atiksh  
 **Roll Number:** 102303133  
@@ -181,3 +181,127 @@ The Sprint 5 package contains an initial payment backend and admin dashboard. Th
 Admin visibility is useful for monitoring transactions, but a complete payment feature also requires a buyer checkout flow, server-side verification, failure handling, and end-to-end tests.
 
 ---
+
+---
+
+# Week 8 Journal — Sprint 5: Payment Checkout & Verification Integration
+
+## Student
+Atiksh Gupta — Person 4: Chat, Appointments, Payments, Admin, CI/CD and Testing
+
+## Objective
+Continue the Sprint 5 payment foundation by integrating the buyer checkout with the Razorpay-oriented backend and strengthening verification and failure handling.
+
+## Work Done
+- Reviewed the order-creation and payment-verification endpoints and their expected request/response contracts.
+- Coordinated the buyer checkout states with Dhruv and the payment/property relationships with Guntaas.
+- Reviewed server-side signature verification requirements and the rule that a browser callback alone must not mark a payment as paid.
+- Prepared test scenarios for missing credentials, order-creation errors, invalid signatures, valid signatures and repeated checkout attempts.
+- Reviewed admin visibility requirements for payment status, provider order ID, provider payment ID and timestamps.
+- Kept the existing chat and appointment workflows in the regression checklist.
+
+## Outcome
+The payment integration and verification scenarios are documented for implementation and sandbox testing. Razorpay test-mode completion must be supported by actual callback and database evidence.
+
+## Issues / Follow-up
+- Configure test keys through local environment variables only.
+- Verify order amount and currency on the server.
+- Test valid and invalid signature paths.
+- Add or verify webhook handling and idempotent event processing.
+- Run Django tests and record actual results.
+
+## Learning
+I learned that payment verification must be performed on the server and that retries, failures and duplicate callbacks need explicit handling.
+
+---
+
+# Week 9 Journal — Sprint 5: Webhooks, Admin & Payment Reconciliation
+
+## Student
+Atiksh Gupta — Person 4: Chat, Appointments, Payments, Admin, CI/CD and Testing
+
+## Objective
+Extend payment operations beyond checkout by defining webhook processing, reconciliation and useful admin visibility for payment support.
+
+## Work Done
+- Reviewed the need to reconcile browser verification results with provider-side payment events.
+- Prepared webhook validation requirements, including raw request-body signature verification and safe handling of repeated events.
+- Reviewed payment status transitions and the need to prevent an older or duplicate event from incorrectly overwriting a final status.
+- Reviewed the payment admin dashboard fields needed for operational inspection and support.
+- Coordinated with Guntaas on transaction identifiers and database constraints, and with Dhruv on buyer-visible payment result states.
+- Prepared test cases for valid webhook signatures, invalid signatures, duplicate event delivery and unknown payment references.
+
+## Outcome
+Webhook and reconciliation requirements are documented for the payment workflow. They should not be described as operational until the endpoint is implemented, configured and tested with Razorpay test-mode events.
+
+## Issues / Follow-up
+- Implement or verify webhook endpoint and secret configuration.
+- Make webhook processing idempotent.
+- Confirm that webhook events are linked to the correct local payment record.
+- Test payment status reconciliation and admin visibility.
+- Ensure logs do not expose secrets or sensitive payment data.
+
+## Learning
+I learned that payment systems need a reliable server-to-server reconciliation path because a user may close the browser or lose connectivity after completing checkout.
+
+---
+
+# Week 10 Journal — Sprint 5: Admin, CI & End-to-End Testing
+
+## Student
+Atiksh Gupta — Person 4: Chat, Appointments, Payments, Admin, CI/CD and Testing
+
+## Objective
+Increase integration and QA ownership by preparing a repeatable test plan for payment, appointment, chat and admin workflows and reviewing automated CI coverage.
+
+## Work Done
+- Reviewed Django admin registrations and the information required to inspect users, properties, conversations, appointments and payments.
+- Prepared role-based access tests for staff dashboards and protected payment receipts.
+- Reviewed the CI workflow steps for dependency installation, Django system checks, migration checks and test execution.
+- Prepared an end-to-end scenario using separate buyer and seller accounts: property inquiry, chat, appointment request, seller response and payment attempt.
+- Coordinated with Guntaas on database integrity and with Haneesh on ML regression checks after backend changes.
+- Distinguished tests that are written from tests that have actually been executed, so the report does not overstate completion.
+
+## Outcome
+The integration test plan and CI review scope are prepared. CI and end-to-end status remain pending until the workflow and local tests are run and their output is recorded.
+
+## Issues / Follow-up
+- Execute the CI workflow and fix actual failures.
+- Run migrations and the complete Django test suite on a clean test database.
+- Test chat and appointment permissions with multiple user roles.
+- Test Razorpay sandbox success, failure, cancellation and webhook scenarios.
+- Record test counts, failures and environment versions from the actual run.
+
+## Learning
+I learned that a test plan, a test case and a passing test result are different things. Release reporting must be based on executed evidence.
+
+---
+
+# Week 11 Journal — Sprint 5: Release QA & Deployment Handover
+
+## Student
+Atiksh Gupta — Person 4: Chat, Appointments, Payments, Admin, CI/CD and Testing
+
+## Objective
+Consolidate Sprint 5 testing, release documentation and deployment handover requirements for the integrated PropertyPulse application.
+
+## Work Done
+- Prepared a final QA checklist covering authentication, property discovery, seller CRUD, ML prediction, chat, appointments, payments and admin.
+- Reviewed production configuration requirements for secret keys, allowed hosts, HTTPS, database credentials, static files and media storage.
+- Reviewed the need to keep Razorpay test credentials separate from production credentials and never commit `.env` files.
+- Prepared a deployment handover checklist covering environment setup, migrations, static collection, health checks and rollback considerations.
+- Coordinated with Guntaas on database migration and backend readiness, Haneesh on model artifact compatibility and Dhruv on buyer-facing acceptance.
+- Updated the release evidence requirements so unexecuted sandbox, browser or CI tests remain explicitly marked as pending.
+
+## Outcome
+The release QA and deployment handover checklist is prepared. The project should be marked ready only after the integrated application passes its runtime checks and the deployment environment is configured and verified.
+
+## Issues / Follow-up
+- Run the full test suite and attach the exact output.
+- Verify the production database and media-storage configuration.
+- Perform a Razorpay sandbox transaction and verify the resulting local payment record.
+- Run deployment checks and health endpoint probes in the target environment.
+- Do not report a live deployment unless a real deployed URL has been tested.
+
+## Learning
+I learned that release readiness is an evidence-based decision. Secure configuration, repeatable deployment steps and verified end-to-end behavior are all required before handover.
