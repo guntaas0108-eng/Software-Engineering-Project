@@ -2,10 +2,10 @@
 ### *(Course UCS503 / UCS503P — Software Engineering Lab, Thapar Institute of Engineering and Technology)*
 
 > ### 🌐 **LIVE PLATFORM WEBSITE LINK**:
-> ### 👉 **[CLICK HERE TO ENTER PROPERTYPULSE](https://upgrading-screening-replacing-immunology.trycloudflare.com/)** 👈
+> ### 👉 **[CLICK HERE TO ENTER PROPERTYPULSE](https://negotiation-oxygen-infant-rise.trycloudflare.com/)** 👈
 > *(Public Encrypted HTTPS Link — Live & Accessible Worldwide on Any Device / Phone)*
 
-[![Live Demo](https://img.shields.io/badge/Live%20Website-Click%20To%20Enter-gold?style=for-the-badge&logo=googlechrome&logoColor=white)](https://upgrading-screening-replacing-immunology.trycloudflare.com/)
+[![Live Demo](https://img.shields.io/badge/Live%20Website-Click%20To%20Enter-gold?style=for-the-badge&logo=googlechrome&logoColor=white)](https://negotiation-oxygen-infant-rise.trycloudflare.com/)
 [![Final Report Docx](https://img.shields.io/badge/Final%20Report-Download%20DOCX-blue?style=for-the-badge&logo=microsoftword&logoColor=white)](UCS503_Final_Project_Report_PropertyPulse.docx)
 [![Report Markdown](https://img.shields.io/badge/Full%20Report-Read%20Online-darkgreen?style=for-the-badge&logo=markdown&logoColor=white)](FINAL_PROJECT_REPORT.md)
 
