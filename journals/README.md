@@ -35,14 +35,12 @@ Every team member has maintained a continuous, verifiable weekly engineering jou
 - **Week 7:** VIP Site Tour Scheduling State Machine, Dispute Resolution Planning, and Test Suite Expansion.
 
 ### Sprint 5 & Final Delivery: Fiduciary Escrow, Multi-Rail Payments, & System Hardening (Weeks 8 – 11)
-- **Week 8 (Sprint 5: Payment Backend & ML Isolation):**
-  - [Haneesh (ML)](week8/week8-sprint5-ml-model-integration-regression.md) · [Guntaas (Backend/Seller)](week8/week8-sprint5-payment-backend-and-seller-integration.md) · [Dhruv (Buyer UI)](week8/week8-sprint5-buyer-checkout-ui.md) · [Atiksh (Verification)](week8/week8-sprint5-payment-checkout-verification.md)
-- **Week 9 (Sprint 5: Backend Integrity & Webhook Reconciliation):**
-  - [Haneesh (ML Validation)](week9/week9-sprint5-ml-validation-and-data-quality.md) · [Guntaas (Appointment Linking)](week9/week9-sprint5-backend-integrity-and-appointment-linking.md) · [Dhruv (Payment Status)](week9/week9-sprint5-buyer-dashboard-and-payment-status.md) · [Atiksh (Admin Webhooks)](week9/week9-sprint5-webhook-admin-reconciliation.md)
-- **Week 10 (Sprint 5: End-to-End Testing & Responsive UI):**
-  - [Haneesh (Model Docs)](week10/week10-sprint5-ml-testing-and-model-documentation.md) · [Guntaas (Seller Ops)](week10/week10-sprint5-database-admin-and-seller-operations.md) · [Dhruv (Barometer Regression)](week10/week10-sprint5-buyer-barometer-and-responsive-regression.md) · [Atiksh (E2E CI/CD)](week10/week10-sprint5-admin-ci-and-end-to-end-testing.md)
-- **Week 11 (Final Delivery: Deployment & Release Handover):**
-  - [Haneesh (Release ML)](week11/week11-sprint5-ml-release-and-monitoring.md) · [Guntaas (Deployment Readiness)](week11/week11-sprint5-backend-release-and-deployment-readiness.md) · [Dhruv (Buyer Acceptance)](week11/week11-sprint5-buyer-release-acceptance.md) · [Atiksh (Release QA)](week11/week11-sprint5-release-qa-and-deployment-handover.md)
+- **Week 8 (Payment Backend & ML Isolation):** Stripe/Razorpay webhook reconciliation, dual-custody escrow token ledger, ML inference pipeline isolation, and buyer checkout UI.
+- **Week 9 (Backend Integrity & Webhook Reconciliation):** Real-time booking-to-escrow status synchronization, idempotency enforcement, and admin dispute handling.
+- **Week 10 (End-to-End Testing & Responsive UI):** Comprehensive responsive cross-device regression, ML model stress-testing, and automated Pytest test suites.
+- **Week 11 (Deployment & Release Handover):** Production deployment hardening, ASGI Daphne WebSocket server configuration, and final course evaluation documentation.
+
+*(Note: All weekly entries for Weeks 1 through 11 are integrated directly within each member's respective consolidated journal file linked in the roster table above).*
 
 ---
 
