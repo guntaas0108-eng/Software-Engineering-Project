@@ -6,6 +6,7 @@ urlpatterns = [
     path("signup/", views.signup, name="signup"),
     path("login/", views.RoleBasedLoginView.as_view(), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("switch-role/", views.switch_role, name="switch_role"),
     # Sovereign Administrator Command Center Routes
     path("command-center/", views.platform_admin_dashboard, name="platform_admin"),
     path("command-center/duplicate/<int:pk>/<str:action>/", views.admin_resolve_duplicate, name="admin_resolve_duplicate"),

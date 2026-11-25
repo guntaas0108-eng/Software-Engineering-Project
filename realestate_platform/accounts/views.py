@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Sum, Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
@@ -54,22 +55,63 @@ def platform_admin_required(view_func):
 
 
 def signup(request):
-    """Accredited user registration."""
+    """Accredited user registration with explicit Buyer / Seller persona choice."""
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # Assign requested role if provided, otherwise default to BUYER
             role = request.POST.get("role", UserProfile.Role.BUYER)
-            if role in [UserProfile.Role.BUYER, UserProfile.Role.SELLER]:
-                profile, _ = UserProfile.objects.get_or_create(user=user)
-                profile.role = role
-                profile.save()
+            if role not in [UserProfile.Role.BUYER, UserProfile.Role.SELLER]:
+                role = UserProfile.Role.BUYER
+
+            profile, _ = UserProfile.objects.get_or_create(user=user)
+            profile.role = role
+            profile.save()
+
             login(request, user)
-            return redirect("property_list")
+
+            if role == UserProfile.Role.SELLER:
+                messages.success(
+                    request,
+                    f"Welcome to PropertyPulse, {user.username}! Your Estate Proprietor account is active. "
+                    "You can now submit property listings via '+ List Estate' and consult your Portfolio Strategist AI."
+                )
+                return redirect("my_listings")
+            else:
+                messages.success(
+                    request,
+                    f"Welcome to PropertyPulse, {user.username}! Your Accredited Buyer account is active. "
+                    "Explore our curated luxury residences and engage with your Estate Concierge AI."
+                )
+                return redirect("property_list")
     else:
         form = UserCreationForm()
     return render(request, "accounts/signup.html", {"form": form})
+
+
+@login_required
+def switch_role(request):
+    """Allows an authenticated user to seamlessly toggle their persona between Buyer and Seller."""
+    profile, _ = UserProfile.objects.get_or_create(user=request.user)
+    if profile.role == UserProfile.Role.SELLER:
+        profile.role = UserProfile.Role.BUYER
+        profile.save(update_fields=["role"])
+        messages.success(
+            request,
+            "Switched to Accredited Buyer mode. You now have access to buyer discovery, saved estates, and Estate Concierge AI."
+        )
+        return redirect("property_list")
+    elif profile.role == UserProfile.Role.BUYER:
+        profile.role = UserProfile.Role.SELLER
+        profile.save(update_fields=["role"])
+        messages.success(
+            request,
+            "Switched to Estate Proprietor mode. You can now list properties via '+ List Estate' and consult Portfolio Strategist AI."
+        )
+        return redirect("my_listings")
+    else:
+        messages.info(request, "Administrator roles are sovereign and cannot be toggled dynamically.")
+        return redirect("platform_admin")
 
 
 # ==============================================================================

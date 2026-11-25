@@ -1,24 +1,95 @@
 {% extends "base.html" %}
 {% load property_extras %}
-{% block title %}Sign Up — PropertyPulse{% endblock %}
+{% block title %}Create Account — PropertyPulse{% endblock %}
 {% block content %}
-<div class="pp-auth-wrap">
-    <div class="pp-auth-card">
-        <div class="pp-auth-brand">PropertyPulse</div>
-        <p class="pp-auth-tagline">Create an account to list properties, save favourites, and get AI price estimates.</p>
-        <form method="post">
+<div class="pp-auth-wrap py-5">
+    <div class="pp-auth-card shadow-lg" style="max-width:540px; margin:0 auto; background:#0B1C15; border:1px solid rgba(212,175,55,0.3); border-radius:12px; padding:2.5rem;">
+        <div class="pp-auth-brand text-center mb-2" style="font-family:'Cormorant Garamond', serif; font-size:2.2rem; color:var(--gold-lt); letter-spacing:1px;">PropertyPulse</div>
+        <p class="pp-auth-tagline text-center mb-4" style="color:var(--sand); font-size:0.9rem;">Join the premier curated real estate marketplace. Choose your account persona below.</p>
+        
+        <form method="post" id="signupForm">
             {% csrf_token %}
+
+            <!-- Interactive Persona Selection -->
+            <div class="mb-4">
+                <label class="d-block text-gold fw-semibold mb-2" style="font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase;">
+                    Select Account Persona
+                </label>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <input type="radio" class="btn-check" name="role" id="role_buyer" value="BUYER" checked autocomplete="off">
+                        <label class="btn w-100 p-3 text-start d-flex flex-column h-100 role-card" for="role_buyer" id="card_buyer" style="background:#0F241C; border:2px solid var(--gold); border-radius:8px; cursor:pointer; transition:all 0.2s;">
+                            <div class="d-flex align-items-center mb-1">
+                                <span style="font-size:1.2rem; margin-right:8px;">🏷️</span>
+                                <strong style="color:var(--gold-lt); font-size:0.95rem;">Accredited Buyer</strong>
+                            </div>
+                            <small style="color:var(--sand); font-size:0.75rem; line-height:1.4;">
+                                Browse catalog, book VIP tours, calculate financing, and hold escrow tokens.
+                            </small>
+                        </label>
+                    </div>
+                    <div class="col-6">
+                        <input type="radio" class="btn-check" name="role" id="role_seller" value="SELLER" autocomplete="off">
+                        <label class="btn w-100 p-3 text-start d-flex flex-column h-100 role-card" for="role_seller" id="card_seller" style="background:#091712; border:1px solid rgba(255,255,255,0.15); border-radius:8px; cursor:pointer; transition:all 0.2s;">
+                            <div class="d-flex align-items-center mb-1">
+                                <span style="font-size:1.2rem; margin-right:8px;">🏛️</span>
+                                <strong style="color:var(--ivory); font-size:0.95rem;">Estate Proprietor</strong>
+                            </div>
+                            <small style="color:var(--sand); font-size:0.75rem; line-height:1.4;">
+                                List luxury estates, calibrate asking prices with ML, and manage inquiries.
+                            </small>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             {% for field in form %}
             <div class="mb-3">
-                <label for="{{ field.id_for_label }}" class="pp-label">{{ field.label }}</label>
+                <label for="{{ field.id_for_label }}" class="pp-label text-gold small text-uppercase" style="letter-spacing:0.08em; font-size:0.75rem;">{{ field.label }}</label>
                 {{ field|with_error_class }}
-                {% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
+                {% if field.help_text %}<div class="form-text text-muted small" style="font-size:0.72rem;">{{ field.help_text|safe }}</div>{% endif %}
                 {% if field.errors %}<div class="text-danger small mt-1">{{ field.errors|first }}</div>{% endif %}
             </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+
+            <button type="submit" class="btn btn-primary w-100 py-2 mt-3 fw-semibold" style="letter-spacing:0.1em; text-transform:uppercase; font-size:0.85rem;">Create Account &rarr;</button>
         </form>
-        <p class="mt-3 text-center pp-muted mb-0">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+
+        <p class="mt-4 text-center pp-muted mb-0" style="font-size:0.85rem;">
+            Already have an account? <a href="{% url 'login' %}" style="color:var(--gold-lt); text-decoration:none; font-weight:600;">Log in</a>
+        </p>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const buyerRadio = document.getElementById('role_buyer');
+        const sellerRadio = document.getElementById('role_seller');
+        const cardBuyer = document.getElementById('card_buyer');
+        const cardSeller = document.getElementById('card_seller');
+
+        function updateRoleHighlight() {
+            if (buyerRadio.checked) {
+                cardBuyer.style.border = '2px solid var(--gold)';
+                cardBuyer.style.background = '#0F241C';
+                cardBuyer.querySelector('strong').style.color = 'var(--gold-lt)';
+
+                cardSeller.style.border = '1px solid rgba(255,255,255,0.15)';
+                cardSeller.style.background = '#091712';
+                cardSeller.querySelector('strong').style.color = 'var(--ivory)';
+            } else {
+                cardSeller.style.border = '2px solid var(--gold)';
+                cardSeller.style.background = '#0F241C';
+                cardSeller.querySelector('strong').style.color = 'var(--gold-lt)';
+
+                cardBuyer.style.border = '1px solid rgba(255,255,255,0.15)';
+                cardBuyer.style.background = '#091712';
+                cardBuyer.querySelector('strong').style.color = 'var(--ivory)';
+            }
+        }
+
+        buyerRadio.addEventListener('change', updateRoleHighlight);
+        sellerRadio.addEventListener('change', updateRoleHighlight);
+    });
+</script>
 {% endblock %}

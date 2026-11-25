@@ -127,11 +127,15 @@
                                 <li><a class="dropdown-item" href="{% url 'seller_analytics' %}">&#128200; Proprietor Analytics</a></li>
                                 <li><a class="dropdown-item fw-semibold" href="{% url 'chat_inbox' %}" style="color:var(--gold-lt) !important;">&#9993; Inquiries &amp; Site Visits &rarr;</a></li>
                                 <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'switch_role' %}" style="color:var(--gold-lt); font-size:0.82rem;">&#8644; Switch to Buyer Mode</a></li>
+                                <li><hr class="dropdown-divider"></li>
                             {% else %}
                                 <li><h6 class="dropdown-header">Investor / Buyer</h6></li>
                                 <li><a class="dropdown-item" href="{% url 'buyer_dashboard' %}">&#9825; Saved Residences</a></li>
                                 <li><a class="dropdown-item" href="{% url 'my_transactions' %}">&#128176; Escrow Ledger</a></li>
                                 <li><a class="dropdown-item fw-semibold" href="{% url 'chat_inbox' %}" style="color:var(--gold-lt) !important;">&#9993; All Inquiries &rarr;</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'switch_role' %}" style="color:var(--gold-lt); font-size:0.82rem;">&#8644; Switch to Seller Mode</a></li>
                                 <li><hr class="dropdown-divider"></li>
                             {% endif %}
                             <li>
