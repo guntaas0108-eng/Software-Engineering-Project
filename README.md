@@ -228,11 +228,11 @@ Software-Engineering-Project-main/
 │   ├── ml-model.md              # Mathematical derivations and formulas
 │   ├── api-reference.md         # Comprehensive REST API specifications
 │   └── evaluation-metrics.md    # Course metric attribution specifications
-├── journals/                    # Individual Student Weekly Engineering Journals
-│   ├── Guntaas_Singh_1024030108_Journal.md
-│   ├── Haneesh_1024030112_Journal.md
-│   ├── Dhruv_Rajput_1024030538_Journal.md
-│   ├── Atiksh_102303133_Journal.md
+├── journals/                    # Individual Student Weekly Journal Folders (Week_01.md – Week_11.md)
+│   ├── Guntaas_Singh_1024030108/
+│   ├── Haneesh_1024030112/
+│   ├── Dhruv_Rajput_1024030538/
+│   ├── Atiksh_102303133/
 │   └── README.md                # Engineering journal directory overview
 ├── project-proposal/            # Approved UCS503P Course Project Proposal
 │   ├── Software_Eng_Project.pdf # Compiled proposal PDF

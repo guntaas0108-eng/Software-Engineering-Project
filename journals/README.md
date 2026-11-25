@@ -8,16 +8,16 @@
 
 ---
 
-## 👥 Student Engineering Journals (Consolidated Weeks 1 – 11)
+## 👥 Student Engineering Journals (Individual Folders · Weeks 1 – 11)
 
-Every team member has maintained a continuous, verifiable weekly engineering journal detailing individual objectives, concrete implementation work, technical outcomes, and software engineering learnings across all 11 weeks:
+Every team member maintains a dedicated folder containing individual weekly markdown entries (`Week_01.md` through `Week_11.md`) detailing objectives, concrete implementation work, technical outcomes, and learnings across all 11 weeks:
 
-| Student Name | Roll Number | Laboratory Role & Responsibilities | Consolidated Journal File |
+| Student Name | Roll Number | Laboratory Role & Responsibilities | Weekly Folder (Weeks 1 – 11) |
 | :--- | :--- | :--- | :---: |
-| **Guntaas Singh** | `1024030108` | Full-Stack Architecture, Role-Based Access Controls, Emerald & Gold UI Design, Escrow Payments | [📘 View Journal](Guntaas_Singh_1024030108_Journal.md) |
-| **Haneesh** | `1024030112` | Machine Learning Multiple Linear Regression, Feature Scaling, Dataset Engineering, Barometer Metrics | [📘 View Journal](Haneesh_1024030112_Journal.md) |
-| **Dhruv Rajput** | `1024030538` | Relational Database Models, SQLite3 WAL, Duplicate Detection Scanner, Tour Scheduling Engine | [📘 View Journal](Dhruv_Rajput_1024030538_Journal.md) |
-| **Atiksh Gupta** | `102303133` | Daphne ASGI WebSockets, Real-Time In-App Chat, Unit & Integration Test Suites, CI/CD Pipeline | [📘 View Journal](Atiksh_102303133_Journal.md) |
+| **Guntaas Singh** | `1024030108` | Full-Stack Architecture, Role-Based Access Controls, Emerald & Gold UI Design, Escrow Payments | [📁 Open Folder](Guntaas_Singh_1024030108/) |
+| **Haneesh** | `1024030112` | Machine Learning Multiple Linear Regression, Feature Scaling, Dataset Engineering, Barometer Metrics | [📁 Open Folder](Haneesh_1024030112/) |
+| **Dhruv Rajput** | `1024030538` | Relational Database Models, SQLite3 WAL, Duplicate Detection Scanner, Tour Scheduling Engine | [📁 Open Folder](Dhruv_Rajput_1024030538/) |
+| **Atiksh Gupta** | `102303133` | Daphne ASGI WebSockets, Real-Time In-App Chat, Unit & Integration Test Suites, CI/CD Pipeline | [📁 Open Folder](Atiksh_102303133/) |
 
 ---
 
@@ -40,7 +40,7 @@ Every team member has maintained a continuous, verifiable weekly engineering jou
 - **Week 10 (End-to-End Testing & Responsive UI):** Comprehensive responsive cross-device regression, ML model stress-testing, and automated Pytest test suites.
 - **Week 11 (Deployment & Release Handover):** Production deployment hardening, ASGI Daphne WebSocket server configuration, and final course evaluation documentation.
 
-*(Note: All weekly entries for Weeks 1 through 11 are integrated directly within each member's respective consolidated journal file linked in the roster table above).*
+*(Note: Open any team member's folder above to browse individual weekly logs `Week_01.md` through `Week_11.md` directly on GitHub).*
 
 ---
 
